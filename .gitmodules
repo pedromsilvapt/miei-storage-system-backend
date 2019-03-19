@@ -1,3 +1,3 @@
 [submodule "ClientApp"]
 	path = ClientApp
-	url = git@github.com:gustavollg/foodss-frontend.git
+	url = https://github.com/pedromsilvapt/miei-foodss-backend.git
