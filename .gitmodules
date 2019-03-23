@@ -1,0 +1,3 @@
+[submodule "foodss-backend/ClientApp"]
+	path = foodss-backend/ClientApp
+	url = https://github.com/gustavollg/foodss-frontend.git
