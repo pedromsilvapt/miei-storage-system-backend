@@ -1,4 +1,4 @@
-# food-storage-management-backend
+# storage-system-management-backend
 Back-end application of a food storage management system.
 
 # Requirements
@@ -12,10 +12,10 @@ When cloning this repository one should use the `--recurse-submodules` to automa
 git clone --recurse-submodules https://github.com/pedromsilvapt/miei-foodss-backend ./backend/
 ```
 
-When the project is cloned, head into the `backend/ClientApp` folder and install the required dependencies
+When the project is cloned, head into the `backend/foodss-backend/ClientApp` folder and install the required dependencies
 
 ```shell
-cd backend/ClientApp
+cd backend/foodss-backend/ClientApp
 npm install
 ```
 
