@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace foodss_backend
+namespace StorageSystem
 {
     public class Startup
     {

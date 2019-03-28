@@ -10,7 +10,9 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
-    <RootNamespace>foodss_backend</RootNamespace>
+    <RootNamespace>StorageSystem</RootNamespace>
+    <AssemblyName>storage-system</AssemblyName>
+    <StartupObject>StorageSystem.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
