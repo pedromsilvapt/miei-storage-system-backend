@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,11 @@ namespace StorageSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Database Configuration
+            var section = this.Configuration.GetSection("Database");
+            var connection = $"server={section.GetValue<string>("Host")};database={section.GetValue<string>("Name")};user={section.GetValue<string>("Name")};password={section.GetValue<string>("Pass")}";
+            services.AddDbContext<Models.StorageSystemContext>(options => options.UseMySQL(connection));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
