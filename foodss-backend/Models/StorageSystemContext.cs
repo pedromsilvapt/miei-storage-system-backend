@@ -25,6 +25,8 @@ namespace StorageSystem.Models
             UserProductPreference.OnModelCreating(modelBuilder);
             StorageUser.OnModelCreating(modelBuilder);
             ProductItem.OnModelCreating(modelBuilder);
+
+            Seeding.OnModelCreating(modelBuilder);
         }
     }
 }
