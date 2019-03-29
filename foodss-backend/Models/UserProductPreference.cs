@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StorageSystem.Models
 {
-    public class UserProductPreferences
+    public class UserProductPreference
     {
         [Required]
         public int UserId { get; set; }
@@ -23,7 +23,7 @@ namespace StorageSystem.Models
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserProductPreferences>()
+            modelBuilder.Entity<UserProductPreference>()
                 .HasKey(user => new { user.UserId, user.ProductId });
         }
     }

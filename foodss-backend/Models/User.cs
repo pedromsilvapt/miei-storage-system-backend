@@ -35,7 +35,7 @@ namespace StorageSystem.Models
         public ICollection<ShoppingListItem> ShoppingListItems { get; set; }
 
         [InverseProperty("User")]
-        public ICollection<UserProductPreferences> Preferences { get; set; }
+        public ICollection<UserProductPreference> Preferences { get; set; }
 
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
