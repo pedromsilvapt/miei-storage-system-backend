@@ -24,8 +24,8 @@ namespace StorageSystem
 
             // Database Configuration
             var section = this.Configuration.GetSection("Database");
-            var connection = $"server={section.GetValue<string>("Host")};database={section.GetValue<string>("Name")};user={section.GetValue<string>("Name")};password={section.GetValue<string>("Pass")}";
-            services.AddDbContext<Models.StorageSystemContext>(options => options.UseMySQL(connection));
+            var connection = $"server={section.GetValue<string>("Host")};database={section.GetValue<string>("Name")};user={section.GetValue<string>("User")};password={section.GetValue<string>("Pass")}";
+            services.AddDbContextPool<Models.StorageSystemContext>(options => options.UseMySql(connection));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -65,7 +65,15 @@ namespace StorageSystem
 
                 if (env.IsDevelopment())
                 {
+                    // a) This version is slower when launching the server
+                    // Because it restarts the angular compilation process every time
+                    // However it is simpler since it does not require running the command manually
                     spa.UseAngularCliServer(npmScript: "start");
+
+                    // b) This significantly improves the start speed of the server
+                    // But requires running the command 'npm start' on the ClientApp/ folder
+                    // manually and leaving that command running
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
         }
