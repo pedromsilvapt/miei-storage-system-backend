@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StorageSystem.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace StorageSystem.Models
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(new[] {
-                new User() { Id = 1, Name = "Pedro M. Silva", Email = "pedro@alunos.uminho.pt", Password = "password", Salt = "123" },
-                new User() { Id = 2, Name = "Gustavo Linhares", Email = "gustavo@alunos.uminho.pt", Password = "password", Salt = "123" }
+                new User() { Id = 1, Name = "Pedro M. Silva", Email = "pedro@alunos.uminho.pt", Password = UserService.HashPassword("password", "123"), Salt = "123" },
+                new User() { Id = 2, Name = "Gustavo Linhares", Email = "gustavo@alunos.uminho.pt", Password = UserService.HashPassword("password", "123"), Salt = "123" }
             });
 
             modelBuilder.Entity<StorageUser>().HasData(new[]{

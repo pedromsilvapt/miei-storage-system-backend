@@ -52,7 +52,6 @@ namespace StorageSystem.Controllers
         {
             var userId = 1;
 
-
             Storage storage = await context.Storages
                 .Include(s => s.Users)
                 .FirstOrDefaultAsync(s => s.Id == id);
