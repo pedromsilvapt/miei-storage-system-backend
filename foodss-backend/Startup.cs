@@ -90,12 +90,12 @@ namespace StorageSystem
                     // a) This version is slower when launching the server
                     // Because it restarts the angular compilation process every time
                     // However it is simpler since it does not require running the command manually
-                    spa.UseAngularCliServer(npmScript: "start");
+                    //spa.UseAngularCliServer(npmScript: "start");
 
                     // b) This significantly improves the start speed of the server
                     // But requires running the command 'npm start' on the ClientApp/ folder
                     // manually and leaving that command running
-                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
         }

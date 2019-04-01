@@ -13,6 +13,11 @@ using System.Threading.Tasks;
 
 namespace StorageSystem.Services
 {
+    public class ExistingEmailException : Exception
+    {
+        public ExistingEmailException(string email) : base("Email is already registerd: " + email) { }
+    }
+
     public class UserService
     {
         private StorageSystemContext context;
@@ -45,6 +50,26 @@ namespace StorageSystem.Services
 
                 return Encoding.UTF8.GetString(hashed);
             }
+        }
+
+        public async Task<User> Register(string email, string name, string password)
+        {
+            var existingUser = await context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
+
+            if (existingUser != null)
+            {
+                throw new ExistingEmailException(email);
+            }
+
+            var (hashed, salt) = HashPassword(password);
+
+            var newUser = new User() { Name = name, Email = email, Password = hashed, Salt = salt };
+
+            await context.AddAsync(newUser);
+            
+            await context.SaveChangesAsync();
+
+            return newUser;
         }
 
         public async Task<(User, JwtSecurityToken)?> AuthenticateCredentialsAsync(string email, string password)

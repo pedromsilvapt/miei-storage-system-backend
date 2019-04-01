@@ -23,6 +23,13 @@ namespace StorageSystem.Controllers
         public static UserDTO FromModel(User model, string token = null) => new UserDTO() { Id = model.Id, Name = model.Name, Email = model.Email, Token = token };
     }
 
+    public class UserRegistrationDTO
+    {
+        public string Email { get; set; }
+        public string Name { get; set; }
+        public string Password { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : Controller
@@ -51,6 +58,23 @@ namespace StorageSystem.Controllers
             var (user, token) = result.Value;
 
             return UserDTO.FromModel(user, token.RawData);
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDTO>> RegisterUser(UserRegistrationDTO user)
+        {
+            try
+            {
+                var userModel = await userService.Register(user.Email, user.Name, user.Password);
+
+                return UserDTO.FromModel(userModel);
+            }
+            catch (ExistingEmailException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
