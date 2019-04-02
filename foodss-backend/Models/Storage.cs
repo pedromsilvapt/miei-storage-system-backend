@@ -5,12 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StorageSystem.Models
 {
-    public enum StorageType
-    {
-        Personal,
-        Commercial
-    }
-
     public class Storage
     {
         [Key]
@@ -19,7 +13,7 @@ namespace StorageSystem.Models
         [MaxLength(100)]
         public string Name { get; set; }
         [Required]
-        public StorageType Type { get; set; }
+        public bool Shared { get; set; }
         [Required]
         public int OwnerId { get; set; }
 

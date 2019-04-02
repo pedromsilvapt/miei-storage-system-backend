@@ -22,6 +22,9 @@ namespace StorageSystem.Models
         [Required]
         [MaxLength(8)]
         public string Salt { get; set; }
+        [Required]
+        public bool Verified { get; set; }
+        public string VerificationCode { get; set; }
 
         public ICollection<StorageInvitation> Invitations { get; set; }
 
@@ -47,6 +50,10 @@ namespace StorageSystem.Models
                 .WithOne(i => i.User)
                 .HasForeignKey("UserEmail")
                 .HasPrincipalKey("Email");
+            entity.Property(u => u.Verified)
+                .HasDefaultValue(false);
+            entity.Property(u => u.VerificationCode)
+                .HasDefaultValue(null);
         }
     }
 }

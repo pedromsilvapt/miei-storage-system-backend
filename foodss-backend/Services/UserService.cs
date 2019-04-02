@@ -78,7 +78,7 @@ namespace StorageSystem.Services
                 .Where(u => u.Email == email)
                 .FirstOrDefaultAsync();
 
-            if (user == null)
+            if ((user == null) || (user.Verified == false))
             {
                 return null;
             }

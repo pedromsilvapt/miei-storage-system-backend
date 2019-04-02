@@ -17,6 +17,7 @@ namespace StorageSystem.Models
         public bool HasExpiryDate { get; set; }
         [Required]
         public int StorageId { get; set; }
+        public double? MaxTemperature { get; set; }
 
         // Relations
 

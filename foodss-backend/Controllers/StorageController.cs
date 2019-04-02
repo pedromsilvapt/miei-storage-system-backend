@@ -13,9 +13,9 @@ namespace StorageSystem.Controllers
         public int Id { get; set; }
         public string Name { get; set; }
         public int OwnerId { get; set; }
-        public StorageType Type { get; set; }
+        public bool Shared { get; set; }
 
-        public static StorageDTO FromModel(Storage model) => new StorageDTO() { Id = model.Id, Name = model.Name, OwnerId = model.OwnerId, Type = model.Type };
+        public static StorageDTO FromModel(Storage model) => new StorageDTO() { Id = model.Id, Name = model.Name, OwnerId = model.OwnerId, Shared = model.Shared };
     }
 
     [Route("api/[controller]")]
