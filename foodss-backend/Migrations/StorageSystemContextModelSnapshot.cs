@@ -27,6 +27,8 @@ namespace StorageSystem.Migrations
 
                     b.Property<bool>("HasExpiryDate");
 
+                    b.Property<double?>("MaxTemperature");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200);
@@ -105,7 +107,7 @@ namespace StorageSystem.Migrations
 
                     b.Property<int>("OwnerId");
 
-                    b.Property<int>("Type");
+                    b.Property<bool>("Shared");
 
                     b.HasKey("Id");
 
@@ -119,21 +121,21 @@ namespace StorageSystem.Migrations
                             Id = 1,
                             Name = "Despensa Privada",
                             OwnerId = 1,
-                            Type = 0
+                            Shared = true
                         },
                         new
                         {
                             Id = 2,
                             Name = "Despensa Partilhada",
                             OwnerId = 2,
-                            Type = 0
+                            Shared = true
                         },
                         new
                         {
                             Id = 3,
                             Name = "Despensa Partilhada",
                             OwnerId = 2,
-                            Type = 0
+                            Shared = false
                         });
                 });
 
@@ -206,6 +208,14 @@ namespace StorageSystem.Migrations
                         .IsRequired()
                         .HasMaxLength(8);
 
+                    b.Property<string>("VerificationCode")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(null);
+
+                    b.Property<bool>("Verified")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -216,16 +226,20 @@ namespace StorageSystem.Migrations
                             Id = 1,
                             Email = "pedro@alunos.uminho.pt",
                             Name = "Pedro M. Silva",
-                            Password = "password",
-                            Salt = "123"
+                            Password = @"Gb^�L���
+�H����v�Mb��Qaef��",
+                            Salt = "123",
+                            Verified = true
                         },
                         new
                         {
                             Id = 2,
                             Email = "gustavo@alunos.uminho.pt",
                             Name = "Gustavo Linhares",
-                            Password = "password",
-                            Salt = "123"
+                            Password = @"Gb^�L���
+�H����v�Mb��Qaef��",
+                            Salt = "123",
+                            Verified = true
                         });
                 });
 
