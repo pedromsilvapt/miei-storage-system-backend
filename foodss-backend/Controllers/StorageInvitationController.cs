@@ -129,5 +129,38 @@ namespace StorageSystem.Controllers
 
             return StorageInvitationDTO.FromModel(invitation);
         }
+
+        [HttpDelete("{email}")]
+        public async Task<ActionResult> RemoveInvitation(int storageId, string email)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeInvitations(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+            
+            StorageInvitation invitation = storage.Invitations
+                .Where(i => i.UserEmail == email)
+                .FirstOrDefault();
+
+            // If the invitation is null, then it already doesn't exist in the database
+            // And since we're trying to remove it here, that means objective accomplished
+            if (invitation != null)
+            {
+                context.StorageInvitations.Remove(invitation);
+
+                await context.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
     }
 }
