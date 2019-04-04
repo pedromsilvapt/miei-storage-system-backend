@@ -69,5 +69,29 @@ namespace StorageSystem.Controllers
 
             return StorageDTO.FromModel(storage);
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteStorageById(int id)
+        {
+            var userId = 1;
+
+            Storage storage = await context.Storages.FindAsync(id);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            // Let's assume only the owner can delete a storage
+            if (storage.OwnerId != userId)
+            {
+                return Unauthorized();
+            }
+
+            context.Storages.Remove(storage);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
