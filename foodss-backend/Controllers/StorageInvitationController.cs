@@ -18,6 +18,11 @@ namespace StorageSystem.Controllers
     [ApiController]
     public class StorageInvitationController : Controller
     {
+        public class StorageInvitationInputDTO
+        {
+            public string UserEmail { get; set; }
+        }
+
         public class StorageInvitationDTO
         {
             public int StorageId { get; set; }
@@ -80,5 +85,49 @@ namespace StorageSystem.Controllers
                 .ToList();
         }
 
+        [HttpPost]
+        public async Task<ActionResult<StorageInvitationDTO>> CreateInvitation(int storageId, StorageInvitationInputDTO input)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeInvitations(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            // If we try to invite an email already associated with an account...
+            User emailOwner = await context.Users
+                .Where(u => u.Email == input.UserEmail)
+                .FirstOrDefaultAsync();
+
+            // Now the storage users are available through the property storage.Users
+            if (storage.Users.Where(u => u.UserId == emailOwner.Id).Count() > 0)
+            {
+                return BadRequest();
+            }
+
+            StorageInvitation invitation = storage.Invitations
+                .Where(i => i.UserEmail == input.UserEmail)
+                .FirstOrDefault();
+
+            // If the invitation already exists, then this is a successful no-op
+            if (invitation == null)
+            {
+                invitation = new StorageInvitation() { StorageId = storageId, UserEmail = input.UserEmail };
+
+                context.StorageInvitations.Add(invitation);
+
+                await context.SaveChangesAsync();
+            }
+
+            return StorageInvitationDTO.FromModel(invitation);
+        }
     }
 }
