@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StorageSystem.Models;
+using StorageSystem.Services;
 
 namespace StorageSystem.Controllers
 {
@@ -25,22 +28,25 @@ namespace StorageSystem.Controllers
         public static StorageDTO FromModel(Storage model) => new StorageDTO() { Id = model.Id, Name = model.Name, OwnerId = model.OwnerId, Shared = model.Shared };
     }
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class StorageController : Controller
     {
         private readonly StorageSystemContext context;
 
-        public StorageController(StorageSystemContext context)
+        private readonly UserService userService;
+
+        public StorageController(StorageSystemContext context, UserService userService)
         {
             this.context = context;
+            this.userService = userService;
         }
 
         [HttpGet]
         public async Task<IEnumerable<StorageDTO>> GetStorages()
         {
-            // Ideally this should be retrieved from some session variable to identify the user who made the request
-            var userId = 1;
+            int userId = userService.GetUserId(this.User);
 
             // We query the pivot table to get the storage id's associated with the user
             ICollection<int> storageIds = await context.StorageUsers
@@ -57,7 +63,7 @@ namespace StorageSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StorageDTO>> FindStorageById(int id)
         {
-            var userId = 1;
+            int userId = userService.GetUserId(this.User);
 
             Storage storage = await context.Storages
                 .Include(s => s.Users)
@@ -80,7 +86,7 @@ namespace StorageSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<StorageDTO>> CreateStorage(StorageInputDTO storageInput)
         {
-            var userId = 1;
+            int userId = userService.GetUserId(this.User);
 
             Storage storageModel = new Storage() { Name = storageInput.Name, Shared = false, OwnerId = userId };
 
@@ -94,11 +100,11 @@ namespace StorageSystem.Controllers
         [HttpPost("{id}")]
         public async Task<ActionResult<StorageDTO>> UpdateStorage(int id, StorageInputDTO storageInput)
         {
-            var userId = 1;
+            int userId = userService.GetUserId(this.User);
 
-            Storage storageModel = await context.Storages.FindAsync( id );
+            Storage storageModel = await context.Storages.FindAsync(id);
 
-            if ( storageModel == null)
+            if (storageModel == null)
             {
                 return NotFound();
             }
@@ -123,7 +129,7 @@ namespace StorageSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteStorageById(int id)
         {
-            var userId = 1;
+            int userId = userService.GetUserId(this.User);
 
             Storage storage = await context.Storages.FindAsync(id);
 
