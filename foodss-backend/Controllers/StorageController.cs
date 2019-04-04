@@ -91,6 +91,35 @@ namespace StorageSystem.Controllers
             return StorageDTO.FromModel(storageModel);
         }
 
+        [HttpPost("{id}")]
+        public async Task<ActionResult<StorageDTO>> UpdateStorage(int id, StorageInputDTO storageInput)
+        {
+            var userId = 1;
+
+            Storage storageModel = await context.Storages.FindAsync( id );
+
+            if ( storageModel == null)
+            {
+                return NotFound();
+            }
+
+            // TODO Decide if only the owner should be able to edit a storage, or any member of the storage can edit it as well
+            if (storageModel.OwnerId != userId)
+            {
+                return Unauthorized();
+            }
+
+            // TODO There should be further input validation, such as a minimum length for the name attribute
+            // in order to prevent empty storage names ""
+            storageModel.Name = storageInput.Name;
+
+            context.Storages.Update(storageModel);
+
+            await context.SaveChangesAsync();
+
+            return StorageDTO.FromModel(storageModel);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteStorageById(int id)
         {
