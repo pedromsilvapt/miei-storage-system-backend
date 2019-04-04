@@ -37,6 +37,8 @@
     <Compile Remove="Migrations\20190328202940_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20190328214052_InitialCreate.cs" />
     <Compile Remove="Migrations\20190328214052_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20190404162509_ChangePasswordHashes.cs" />
+    <Compile Remove="Migrations\20190404162509_ChangePasswordHashes.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

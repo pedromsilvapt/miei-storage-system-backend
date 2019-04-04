@@ -48,7 +48,7 @@ namespace StorageSystem.Services
 
                 var hashed = mySHA256.ComputeHash(salted);
 
-                return Encoding.UTF8.GetString(hashed);
+                return Convert.ToBase64String(hashed);
             }
         }
 
