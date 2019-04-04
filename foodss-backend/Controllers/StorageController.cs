@@ -8,6 +8,13 @@ using StorageSystem.Models;
 
 namespace StorageSystem.Controllers
 {
+    // Used when creating/updating a storage, sent from the client to the server
+    public class StorageInputDTO
+    {
+        public string Name { get; set; }
+    }
+
+    // Used when viewing one/many storage(s), sent from the server to the client
     public class StorageDTO
     {
         public int Id { get; set; }
@@ -69,6 +76,21 @@ namespace StorageSystem.Controllers
 
             return StorageDTO.FromModel(storage);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<StorageDTO>> CreateStorage(StorageInputDTO storageInput)
+        {
+            var userId = 1;
+
+            Storage storageModel = new Storage() { Name = storageInput.Name, Shared = false, OwnerId = userId };
+
+            await context.Storages.AddAsync(storageModel);
+
+            await context.SaveChangesAsync();
+
+            return StorageDTO.FromModel(storageModel);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteStorageById(int id)
         {
