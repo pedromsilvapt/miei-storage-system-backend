@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StorageSystem.Models;
 using StorageSystem.Services;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace StorageSystem.Controllers
 {
@@ -82,6 +84,29 @@ namespace StorageSystem.Controllers
         public async Task<ActionResult<UserDTO>> GetCurrentSession()
         {
             User user = await userService.GetUserAsync(this.User);
+
+            return UserDTO.FromModel(user);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{id}/verify/{code}")]
+        public async Task<ActionResult<UserDTO>> VerifyUser(int id, string code)
+        {
+            User user = await context.Users
+                .Where(u => (u.Id == id) && (u.Verified == false) && (u.VerificationCode == code))
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            user.VerificationCode = null;
+            user.Verified = true;
+
+            context.Update(user);
+
+            await context.SaveChangesAsync();
 
             return UserDTO.FromModel(user);
         }
