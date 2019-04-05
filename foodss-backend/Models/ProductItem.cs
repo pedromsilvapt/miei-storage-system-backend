@@ -15,10 +15,10 @@ namespace StorageSystem.Models
         public int OwnerId { get; set; }
         [Required]
         public bool Shared { get; set; }
-        public DateTime ExpiryDate { get; set; }
+        public DateTime? ExpiryDate { get; set; }
         [Required]
-        public int AvailableCount { get; set; }
-        public int ConsumedCount { get; set; }
+        public DateTime AddedDate { get; set; }
+        public DateTime? ConsumedDate { get; set; }
 
         // Relations
         [InverseProperty("Items")]
@@ -26,11 +26,5 @@ namespace StorageSystem.Models
 
         [InverseProperty("Items")]
         public Product Product { get; set; }
-
-        public static void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            // Unfortunately we cannot set a default value with annotations
-            modelBuilder.Entity<ProductItem>().Property(p => p.ConsumedCount).HasDefaultValue(0);
-        }
     }
 }
