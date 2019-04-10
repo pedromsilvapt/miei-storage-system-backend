@@ -2,7 +2,13 @@
   margin-left: 23px;
   margin-right: 23px;
   @media screen and (max-width: 991px) {
-    margin-left: 0;
+    margin-left: 17px;
     margin-right: 0;
+  }
+}
+
+@media (min-width: 575.98px) {
+  .d-down-none-inverse {
+    display: none !important;
   }
 }

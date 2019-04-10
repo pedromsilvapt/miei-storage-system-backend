@@ -15,12 +15,25 @@
       <a class="nav-link" href="#" translate>general.storages</a>
     </li>
   </ul>
+  <div class="btn-group d-down-none-inverse" dropdown>
+    <button id="button-basic_sc" dropdownToggle type="button" class="btn btn-transparent dropdown-toggle text-dark"
+            aria-controls="dropdown-basic_sc">
+      {{currentLanguage.minTitle}} <span class="caret"></span>
+    </button>
+    <ul id="dropdown-basic_sc" *dropdownMenu class="dropdown-menu"
+        role="menu" aria-labelledby="button-basic_sc">
+      <li role="menuitem" *ngFor="let language of languagesConfig">
+        <button class="dropdown-item" (click)="selectLanguage(language.code)">{{language.title}}</button>
+      </li>
+      <!--<li class="divider dropdown-divider"></li>-->
+    </ul>
+  </div>
   <ul class="nav navbar-nav ml-auto">
-    <li class="nav-item d-md-down-none">
+    <li class="nav-item d-down-none">
       <div class="btn-group" dropdown>
         <button id="button-basic" dropdownToggle type="button" class="btn btn-transparent dropdown-toggle text-dark"
                 aria-controls="dropdown-basic">
-          {{currentLanguage.title}} <span class="caret"></span>
+          {{currentLanguage.minTitle}} <span class="caret"></span>
         </button>
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
             role="menu" aria-labelledby="button-basic">
@@ -31,7 +44,8 @@
         </ul>
       </div>
     </li>
-    <li class="nav-item d-md-down-none">
+    <!--<li class="nav-item d-md-down-none">-->
+    <li class="nav-item dropdown">
       <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">7</span></a>
     </li>
     <li class="nav-item dropdown" dropdown placement="bottom right">

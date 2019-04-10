@@ -1,19 +1,23 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {navItems} from './_nav';
+import {NavData} from './_nav';
 import {DOCUMENT} from '@angular/common';
+import {TranslationService} from 'angular-l10n';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.scss']
 })
-export class LeftSidebarComponent implements OnDestroy {
-  public navItems = navItems;
+export class LeftSidebarComponent implements OnInit, OnDestroy {
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
 
-  constructor(@Inject(DOCUMENT) document?: any) {
+  public navItems: NavData[] = [];
+  public translationChangedSubscription: Subscription;
+
+  constructor(private translationService: TranslationService, @Inject(DOCUMENT) document?: any) {
 
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
@@ -25,7 +29,29 @@ export class LeftSidebarComponent implements OnDestroy {
     });
   }
 
+  ngOnInit(): void {
+    this.translationChangedSubscription = this.translationService.translationChanged().subscribe(lang => {
+      this.navItems = [
+        {
+          title: true,
+          name: 'Menu'
+        },
+        {
+          name: this.translationService.translate('general.home'),
+          url: '/',
+          icon: 'icon-home'
+        },
+        {
+          name: this.translationService.translate('general.storages'),
+          url: '/storages',
+          icon: 'icon-drawer'
+        }
+      ];
+    });
+  }
+
   ngOnDestroy(): void {
+    this.translationChangedSubscription.unsubscribe();
     this.changes.disconnect();
   }
 }
