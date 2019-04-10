@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import {LocaleService} from 'angular-l10n';
 
 @Component({
   // tslint:disable-next-line

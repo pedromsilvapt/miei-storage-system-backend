@@ -1,0 +1,13 @@
+{
+  "geral": {
+    "home": "Home",
+    "storages": "Dispensas",
+    "shopping_list_suggestion": "Sugestão de lista de compras"
+  },
+  "info-cards": {
+    "registered_products": "Produtos registados",
+    "products_near_expire_date": "Produtos próximos de expirar",
+    "products_near_to_end": "Produtos próximos de acabar",
+    "products_consumed_this_month": "Produtos consumidos este mês"
+  }
+}

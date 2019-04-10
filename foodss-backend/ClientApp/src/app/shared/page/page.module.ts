@@ -15,6 +15,8 @@ import { NavbarComponent } from './header/navbar/navbar.component';
 import { BreadcrumbComponent } from './header/breadcrumb/breadcrumb.component';
 import {RouterModule} from '@angular/router';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import {BsDropdownModule} from 'ngx-bootstrap';
+import {TranslationModule} from 'angular-l10n';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
     AppHeaderModule,
     AppFooterModule,
     AppSidebarModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    BsDropdownModule,
+    TranslationModule
   ],
   exports: [
     NavbarComponent,

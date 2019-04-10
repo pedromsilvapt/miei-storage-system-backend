@@ -5,6 +5,7 @@ import {ChartsModule} from 'ng2-charts';
 import {FormsModule} from '@angular/forms';
 import {InfoCardService} from './info-card.service';
 import {RouterModule} from '@angular/router';
+import {TranslationModule} from 'angular-l10n';
 
 @NgModule({
   declarations: [InfoCardComponent],
@@ -12,7 +13,8 @@ import {RouterModule} from '@angular/router';
     CommonModule,
     FormsModule,
     ChartsModule,
-    RouterModule
+    RouterModule,
+    TranslationModule
   ],
   exports: [InfoCardComponent],
   providers: [InfoCardService]

@@ -21,6 +21,8 @@
     "@angular/router": "~7.2.0",
     "@coreui/angular": "^2.4.3",
     "@coreui/coreui": "^2.1.8",
+    "@swimlane/ngx-datatable": "^14.0.0",
+    "angular-l10n": "^7.1.0",
     "chart.js": "^2.8.0",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",

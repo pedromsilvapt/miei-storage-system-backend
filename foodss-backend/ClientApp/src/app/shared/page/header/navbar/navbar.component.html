@@ -9,13 +9,28 @@
   [mobileAsideMenuToggler]="false">
   <ul class="nav navbar-nav d-md-down-none">
     <li class="nav-item px-3">
-      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="#" translate>geral.home</a>
     </li>
     <li class="nav-item px-3">
-      <a class="nav-link" href="#">Dispensas</a>
+      <a class="nav-link" href="#" translate>geral.storages</a>
     </li>
   </ul>
   <ul class="nav navbar-nav ml-auto">
+    <li class="nav-item d-md-down-none">
+      <div class="btn-group" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-transparent dropdown-toggle text-dark"
+                aria-controls="dropdown-basic">
+          {{currentLanguage.title}} <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li role="menuitem" *ngFor="let language of languagesConfig">
+            <button class="dropdown-item" (click)="selectLanguage(language.code)">{{language.title}}</button>
+          </li>
+          <!--<li class="divider dropdown-divider"></li>-->
+        </ul>
+      </div>
+    </li>
     <li class="nav-item d-md-down-none">
       <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">7</span></a>
     </li>

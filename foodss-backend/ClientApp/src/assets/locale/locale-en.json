@@ -1,0 +1,13 @@
+{
+  "geral": {
+    "home": "Home",
+    "storages": "Storages",
+    "shopping_list_suggestion": "Shopping List Suggestion"
+  },
+  "info-cards": {
+    "registered_products": "Registered products",
+    "products_near_expire_date": "Products near the expiration date",
+    "products_near_to_end": "Products near to end",
+    "products_consumed_this_month": "Products consumed this month"
+  }
+}

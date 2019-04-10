@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {InfoCard} from '../components/info-card/model/InfoCard';
-import {InfoCardService} from '../components/info-card/info-card.service';
+import {InfoCard} from '../shared/components/info-card/model/InfoCard';
+import {InfoCardService} from '../shared/components/info-card/info-card.service';
 
 @Component({
   selector: 'app-home',
@@ -25,25 +25,25 @@ export class HomeComponent implements OnInit {
 
   buildInfoCardBlue(): InfoCard {
     return new InfoCard(this.infoCardService.getProductsOnStock(),
-      'Produtos registados', 'ic-blue',
+      'info-cards.registered_products', 'ic-blue',
       '#');
   }
 
   buildInfoCardRed(): InfoCard {
     return new InfoCard(this.infoCardService.getProductsConsumedThisMonth(),
-      'Produtos próximos de expirar', 'ic-red',
+      'info-cards.products_near_expire_date', 'ic-red',
       '#');
   }
 
   buildInfoCardYellow(): InfoCard {
     return new InfoCard(this.infoCardService.getProductsNearToEnd(),
-      'Produtos próximos de acabar', 'ic-yellow',
+      'info-cards.products_near_to_end', 'ic-yellow',
       '#');
   }
 
   buildInfoCardGreen(): InfoCard {
     return new InfoCard(this.infoCardService.getProductsNearExpirationDate(),
-      'Produtos utilizados este mês', 'ic-green',
+      'info-cards.products_consumed_this_month', 'ic-green',
       '#');
   }
 
