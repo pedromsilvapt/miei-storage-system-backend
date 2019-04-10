@@ -1,19 +1,21 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {FoodssComponent} from './foodss/foodss.component';
-
+import { StorageSystemComponent } from './storage-system/storage-system.component';
+import {HomeRoutes} from './home/home.routes';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: 'foodss', pathMatch: 'full'
+    path: '', redirectTo: 'storage-system', pathMatch: 'full'
   },
   {
-    path: 'foodss', component: FoodssComponent,
+    path: 'storage-system', component: StorageSystemComponent,
     data: {
       title: 'Home'
     },
-    children: []
+    children: [
+      ...HomeRoutes
+    ]
   }
 ];
 

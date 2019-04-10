@@ -33,7 +33,7 @@ export const navItems: NavData[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: 'icon-speedometer',
+    icon: 'icon-drawer',
     badge: {
       variant: 'info',
       text: 'NEW'

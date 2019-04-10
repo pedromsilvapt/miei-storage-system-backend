@@ -10,13 +10,11 @@ import {
 } from '@coreui/angular';
 
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
-import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import {PageFooterComponent} from './footer/page-footer.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { BreadcrumbComponent } from './header/breadcrumb/breadcrumb.component';
 import {RouterModule} from '@angular/router';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
-import {TabsModule} from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -24,7 +22,6 @@ import {TabsModule} from 'ngx-bootstrap';
     BreadcrumbComponent,
     PageFooterComponent,
     LeftSidebarComponent,
-    RightSidebarComponent
   ],
   imports: [
     CommonModule,
@@ -34,15 +31,13 @@ import {TabsModule} from 'ngx-bootstrap';
     AppHeaderModule,
     AppFooterModule,
     AppSidebarModule,
-    PerfectScrollbarModule,
-    TabsModule.forRoot()
+    PerfectScrollbarModule
   ],
   exports: [
     NavbarComponent,
     BreadcrumbComponent,
     PageFooterComponent,
     LeftSidebarComponent,
-    RightSidebarComponent
   ]
 })
 export class PageModule { }

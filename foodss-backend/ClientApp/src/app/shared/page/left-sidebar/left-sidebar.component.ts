@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {navItems} from './_nav';
 import {DOCUMENT} from '@angular/common';
 
@@ -7,8 +7,7 @@ import {DOCUMENT} from '@angular/common';
   templateUrl: './left-sidebar.component.html',
   styleUrls: ['./left-sidebar.component.scss']
 })
-export class LeftSidebarComponent implements OnInit {
-
+export class LeftSidebarComponent implements OnDestroy {
   public navItems = navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;
@@ -16,7 +15,7 @@ export class LeftSidebarComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) document?: any) {
 
-    this.changes = new MutationObserver(() => {
+    this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
     });
     this.element = document.body;
@@ -26,7 +25,7 @@ export class LeftSidebarComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    this.changes.disconnect();
   }
-
 }

@@ -8,18 +8,22 @@ import { AppComponent } from './app.component';
 // Import 3rd party components
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import {PageModule} from './shared/page/page.module';
-import {FoodssComponent} from './foodss/foodss.component';
+
+import { StorageSystemComponent } from './storage-system/storage-system.component';
+import { HomeComponent } from './home/home.component';
+import {HomeModule} from './home/home.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    FoodssComponent,
-  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BsDropdownModule.forRoot(),
     PageModule,
+    HomeModule
+  ],
+  declarations: [
+    AppComponent,
+    StorageSystemComponent,
   ],
   providers: [{
     provide: LocationStrategy,

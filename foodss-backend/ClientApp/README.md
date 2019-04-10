@@ -1,2 +1,2 @@
-# food-storage-management-frontend
-Front-end application of a food storage management system.
+# storage-system-frontend
+Front-end application of a storage management system.

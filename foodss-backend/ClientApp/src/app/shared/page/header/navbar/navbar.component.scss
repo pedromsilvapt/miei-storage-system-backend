@@ -1,0 +1,8 @@
+.avatar-margin {
+  margin-left: 23px;
+  margin-right: 23px;
+  @media screen and (max-width: 991px) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
