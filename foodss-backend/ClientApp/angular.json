@@ -27,7 +27,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/simple-line-icons/css/simple-line-icons.css",
+              "src/scss/style.scss"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -84,7 +87,10 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.min.css",
+              "node_modules/simple-line-icons/css/simple-line-icons.css",
+              "src/scss/style.scss"
             ],
             "scripts": [],
             "assets": [
