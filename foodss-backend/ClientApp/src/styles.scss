@@ -1,1 +1,61 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import '~@swimlane/ngx-datatable/release/themes/bootstrap.css';
+
+.ngx-datatable.bootstrap .datatable-header .datatable-header-cell .datatable-header-cell-label {
+  font-weight: bold;
+}
+
+.ngx-datatable.bootstrap .datatable-footer .datatable-footer-inner {
+  background-color: #FFF;
+}
+
+.ngx-datatable.bootstrap .datatable-footer .datatable-pager ul li:not(.disabled).active a, .ngx-datatable.bootstrap .datatable-footer .datatable-pager ul li:not(.disabled):hover a {
+  background-color: rgba(158, 158, 158, 0.2);
+  font-weight: bold;
+}
+
+.ngx-datatable .datatable-footer .datatable-pager .pager li, .ngx-datatable .datatable-footer .datatable-pager .pager li a {
+  outline: none;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.ngx-datatable.bootstrap .datatable-footer .datatable-pager .pager li a {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.ngx-datatable.bootstrap .datatable-footer {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.ngx-datatable.bootstrap .datatable-body .datatable-body-row .datatable-body-cell {
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: middle;
+  line-height: 30px;
+}
+
+.ui-select-container > div.ui-select-match > span.ui-select-toggle.form-control {
+  position: relative;
+  background-color: #FFF;
+}
+
+.select-sm > .ui-select-container > div.ui-select-match > span.ui-select-toggle.form-control {
+  position: relative;
+  background-color: #FFF;
+}
+
+.invalid-select-sm > .ui-select-container > div.ui-select-match > span.ui-select-toggle.form-control {
+  position: relative;
+  background-color: #FFF;
+  border-color: #F86C6B;
+}
+
+.ui-select-choices.dropdown-menu {
+  display: block;
+}

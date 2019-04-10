@@ -1,4 +1,4 @@
-import {ChartCard} from './ChartCard';
+import {ChartCard} from './chart-card.model';
 
 export class InfoCard {
   value: number;

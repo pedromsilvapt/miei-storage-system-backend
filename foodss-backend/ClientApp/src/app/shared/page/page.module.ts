@@ -17,6 +17,7 @@ import {RouterModule} from '@angular/router';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BsDropdownModule} from 'ngx-bootstrap';
 import {TranslationModule} from 'angular-l10n';
+import {RightSidebarComponent} from './right-sidebar/right-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {TranslationModule} from 'angular-l10n';
     BreadcrumbComponent,
     PageFooterComponent,
     LeftSidebarComponent,
+    RightSidebarComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-md-4">
+    <input
+      type="text"
+      class="form-control"
+      style="width: 100%;"
+      placeholder="{{translationService.translate('datatable.filter')}}"
+      (keyup)="updateFilter($event)"
+    />
+  </div>
+  <div class="col-md-8">
+    <div class="pull-right" style="width: 160px">
+      <ng-select [allowClear]="false"
+                 [items]="['5', '8', '10', '25']"
+                 (data)="updateLength($event)"
+                 [active]="[datatableLengthLimit.toString()]"
+                 placeholder="{{translationService.translate('datatable.select')}}">
+      </ng-select>
+    </div>
+  </div>
+</div>
+
+<ngx-datatable class="bootstrap"
+               [rows]="rows"
+               [columnMode]="'force'"
+               [headerHeight]="50"
+               [footerHeight]="50"
+               [messages]="translateDefaultDatatableMessages()"
+               [rowHeight]="'auto'"
+               [sorts]="[{prop: sortDefaultColumn ? sortDefaultColumn : 'name', dir: 'asc'}]"
+               [limit]="datatableLengthLimit">
+<span *ngFor="let column of columns; let index = index">
+  <ngx-datatable-column [name]="column.name" *ngIf="column.name != 'actions'" [sortable]="column.sortable">
+    <ng-template ngx-datatable-header-template let-sort="sortFn">
+      <span (click)="sort()" [ngStyle]="{'cursor': column.sortable ? 'pointer' : 'auto'}">
+        <strong translate>{{column.translationKey}}</strong>
+      </span>
+    </ng-template>
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <ng-template [ngIf]="row[column.name + 'RouterLink']" [ngIfElse]="columnWithoutLink">
+        <a [routerLink]="row[column.name + 'RouterLink']">
+          {{value}}
+        </a>
+      </ng-template>
+      <ng-template #columnWithoutLink>
+        {{value}}
+      </ng-template>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column [name]="column.name" *ngIf="column.name == 'actions'">
+    <ng-template ngx-datatable-header-template>
+      <strong translate>{{column.translationKey}}</strong>
+    </ng-template>
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+      <ng-container *ngFor="let button of value">
+        <button class="{{button.buttonClass}}" (click)="onClickActionButton({button: button, row: row})">
+          <ng-template [ngIf]="button.iconClass" [ngIfElse]="actionButtonWithText">
+            <i class="{{button.iconClass}}"></i>
+          </ng-template>
+          <ng-template #actionButtonWithText>
+            <span translate>{{button.translationKey}}</span>
+          </ng-template>
+        </button>
+      </ng-container>
+    </ng-template>
+  </ngx-datatable-column>
+</span>
+</ngx-datatable>

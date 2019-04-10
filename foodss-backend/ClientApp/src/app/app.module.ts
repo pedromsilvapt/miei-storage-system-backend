@@ -14,6 +14,7 @@ import {HomeModule} from './home/home.module';
 import {L10nLoader, TranslationModule} from 'angular-l10n';
 import {l10nConfig} from '../assets/locale/l10n-config';
 import {HttpClientModule} from '@angular/common/http';
+import {ModalModule} from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import {HttpClientModule} from '@angular/common/http';
     PageModule,
     HomeModule,
     HttpClientModule,
-    TranslationModule.forRoot(l10nConfig)
+    TranslationModule.forRoot(l10nConfig),
+    ModalModule.forRoot()
   ],
   declarations: [
     AppComponent,

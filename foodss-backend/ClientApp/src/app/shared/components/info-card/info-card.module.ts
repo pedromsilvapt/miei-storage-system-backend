@@ -11,7 +11,6 @@ import {TranslationModule} from 'angular-l10n';
   declarations: [InfoCardComponent],
   imports: [
     CommonModule,
-    FormsModule,
     ChartsModule,
     RouterModule,
     TranslationModule

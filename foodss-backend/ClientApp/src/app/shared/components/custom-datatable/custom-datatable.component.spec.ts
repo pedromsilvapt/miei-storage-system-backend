@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PagedTableComponent } from './paged-table.component';
+import { CustomDatatableComponent } from './custom-datatable.component';
 
-describe('PagedTableComponent', () => {
-  let component: PagedTableComponent;
-  let fixture: ComponentFixture<PagedTableComponent>;
+describe('CustomDatatableComponent', () => {
+  let component: CustomDatatableComponent;
+  let fixture: ComponentFixture<CustomDatatableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PagedTableComponent ]
+      declarations: [ CustomDatatableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PagedTableComponent);
+    fixture = TestBed.createComponent(CustomDatatableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

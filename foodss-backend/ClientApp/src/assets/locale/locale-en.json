@@ -1,13 +1,26 @@
 {
-  "geral": {
+  "general": {
     "home": "Home",
     "storages": "Storages",
-    "shopping_list_suggestion": "Shopping List Suggestion"
+    "shopping_list_suggestion": "Shopping List Suggestion",
+    "of": "of",
+    "product": "Product",
+    "amount": "Amount",
+    "action": "Action",
+    "actions": "Actions"
   },
   "info-cards": {
     "registered_products": "Registered products",
     "products_near_expire_date": "Products near the expiration date",
     "products_near_to_end": "Products near to end",
     "products_consumed_this_month": "Products consumed this month"
+  },
+  "datatable": {
+    "empty_message": "No data to display",
+    "total_message": "total",
+    "total_message_plural": "total",
+    "selected_message": "selected",
+    "filter": "Filter",
+    "select": "Select"
   }
 }

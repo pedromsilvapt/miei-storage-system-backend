@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {InfoCard} from '../shared/components/info-card/model/InfoCard';
+import {InfoCard} from '../shared/components/info-card/model/info-card.model';
 import {InfoCardService} from '../shared/components/info-card/info-card.service';
 
 @Component({
