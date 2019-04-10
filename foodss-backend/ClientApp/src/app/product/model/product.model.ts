@@ -1,4 +1,3 @@
-import {StorageModel} from '../../storage/model/storage.model';
 import {User} from '../../user/model/user.model';
 
 export class Product {
@@ -8,12 +7,11 @@ export class Product {
   amount: number;
   barCode: string;
   hasExpireDate: boolean;
-  storage: StorageModel;
-  ownwer: User;
+  // TODO analisar necessidade de atributo abaixo
+  // storage: StorageModel;
+  userOwner: User;
   isShared: boolean;
   expireDate: Date;
   addedDate: Date;
   consumedDate: Date;
-
-
 }

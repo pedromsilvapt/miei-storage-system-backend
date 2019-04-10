@@ -87,7 +87,7 @@ export class ListaComprasComponent extends DatatablePageContent<Array<Product>> 
   public createDatatableColumns(): Array<ColumnDatatable> {
     const columns: Array<ColumnDatatable> = [];
 
-    columns.push(new ColumnDatatable('product', 'general.product', true));
+    columns.push(new ColumnDatatable('product', 'general.product', true, true));
     columns.push(new ColumnDatatable('amount', 'general.amount', true));
     columns.push(new ColumnDatatable('actions', 'general.actions', false));
 
@@ -103,7 +103,7 @@ export class ListaComprasComponent extends DatatablePageContent<Array<Product>> 
         const row = {
           id: product.id,
           product: product.name,
-          // productRouterLink: 'product/' + product.id,
+          productRouterLink: 'product/' + product.id,
           amount: product.amount,
           actions: this.createDatatableActionButtons()
         };

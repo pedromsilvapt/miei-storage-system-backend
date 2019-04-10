@@ -1,0 +1,40 @@
+<div class="row" style="margin-bottom: 24px">
+  <div class="col-6">
+    <button class="btn bg-success" [routerLink]="'form'">
+      Adicionar Despensa
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <ng-container *ngFor="let storage of storages; let index = index">
+    <div class="col-sm-12 col-md-6 col-lg-6">
+
+      <app-panel [title]="storage.name">
+        <div panel-right-header>
+          <button class="btn p-0">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+        <ng-container *ngIf="storage.isShared" panel-body>
+          <tabset>
+            <!--<tab *ngFor="let productsByPerson of groupSharedStorageProductsByUsers(storage)"-->
+                 <!--[heading]="productsByPerson[0].userOwner.name" [disabled]="false">-->
+              <!--{{productsByPerson[0].userOwner.name}}-->
+            <!--</tab>-->
+            <!--<tab *ngFor="let a of [1, 2, 3]" heading="Static Title {{a}}">-->
+              <!--{{a}}-->
+            <!--</tab>-->
+            <tab *ngFor="let person of getSharedStoragePeople(storage); let index = index"
+                 [heading]="person">
+              <app-storage-datatable [products]="groupSharedStorageProductsByUsers(storage)[person]"></app-storage-datatable>
+            </tab>
+          </tabset>
+        </ng-container>
+        <ng-container *ngIf="!storage.isShared" panel-body>
+          <app-storage-datatable [products]="storage.products"></app-storage-datatable>
+        </ng-container>
+      </app-panel>
+    </div>
+  </ng-container>
+</div>

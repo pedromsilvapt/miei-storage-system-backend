@@ -11,12 +11,12 @@ export abstract class DatatablePageContent<T> {
   abstract executeDeleteAction(event: any): void;
 
   public createDatatableActionButtons(): Array<ActionButtonDatatable> {
-    const editButtonClass = 'btn border-info bg-white';
-    const editButtonIconClass = 'icon-pencil';
+    const editButtonClass = 'btn border-primary bg-white text-dark-primary';
+    const editButtonIconClass = 'fas fa-pencil-alt';
     const editButton: ActionButtonDatatable = new ActionButtonDatatable('edit', editButtonClass, editButtonIconClass);
 
-    const deleteButtonClass = 'btn border-danger bg-white';
-    const deleteButtonIconClass = 'icon-trash';
+    const deleteButtonClass = 'btn border-danger bg-white text-dark-danger';
+    const deleteButtonIconClass = 'fas fa-trash-alt';
     const deleteButton: ActionButtonDatatable = new ActionButtonDatatable('delete', deleteButtonClass, deleteButtonIconClass);
 
     return [editButton, deleteButton];

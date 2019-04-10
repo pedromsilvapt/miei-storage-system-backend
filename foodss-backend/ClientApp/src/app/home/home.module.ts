@@ -1,20 +1,19 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HomeComponent} from './home.component';
-import {BsDropdownModule} from 'ngx-bootstrap';
-import {InfoCardModule} from '../shared/components/info-card/info-card.module';
-import {PanelModule} from '../shared/components/panel/panel.module';
-import {CustomDatatableModule} from '../shared/components/custom-datatable/custom-datatable.module';
 import {ListaComprasComponent} from '../shared/components/lista-compras/lista-compras.component';
+import {InfoCardComponent} from '../shared/components/info-card/info-card.component';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
-  declarations: [HomeComponent, ListaComprasComponent],
+  declarations: [
+    HomeComponent,
+    ListaComprasComponent,
+    InfoCardComponent,
+  ],
   imports: [
     CommonModule,
-    BsDropdownModule,
-    InfoCardModule,
-    PanelModule,
-    CustomDatatableModule,
+    SharedModule
   ]
 })
 export class HomeModule { }

@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {LocaleService} from 'angular-l10n';
-import {languagesConfig} from '../../../../../assets/locale/l10n-config';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -9,23 +7,8 @@ import {languagesConfig} from '../../../../../assets/locale/l10n-config';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public locale: LocaleService) { }
+  constructor() { }
 
-  languagesConfig: Array<any>;
-  currentLanguage: string;
-
-  ngOnInit() {
-    this.languagesConfig = languagesConfig;
-    this.updateCurrentLanguage();
-  }
-
-  public selectLanguage(language: string): void {
-    this.locale.setCurrentLanguage(language);
-    this.updateCurrentLanguage();
-  }
-
-  public updateCurrentLanguage() {
-    this.currentLanguage = languagesConfig.find(languageConfig => languageConfig.code === this.locale.getCurrentLanguage());
-  }
+  ngOnInit() { }
 
 }

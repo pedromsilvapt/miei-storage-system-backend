@@ -1,11 +1,12 @@
 {
   "general": {
     "home": "Home",
-    "storages": "Dispensas",
+    "storages": "Despensas",
     "shopping_list_suggestion": "Sugestão de lista de compras",
     "of": "de",
     "product": "Produto",
     "amount": "Quantidade",
+    "expire_date": "Validade",
     "action": "Ação",
     "actions": "Ações"
   },

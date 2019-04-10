@@ -37,13 +37,23 @@
       </span>
     </ng-template>
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-      <ng-template [ngIf]="row[column.name + 'RouterLink']" [ngIfElse]="columnWithoutLink">
+      <ng-template [ngIf]="column.hasLink" [ngIfElse]="notColumnWithLink">
         <a [routerLink]="row[column.name + 'RouterLink']">
-          {{value}}
+          <ng-template [ngIf]="column.type == 'date'" [ngIfElse]="notDateTypeColumnWithLink">
+            {{value | date: 'dd/MM/yyyy'}}
+          </ng-template>
+          <ng-template #notDateTypeColumnWithLink>
+            {{value}}
+          </ng-template>
         </a>
       </ng-template>
-      <ng-template #columnWithoutLink>
-        {{value}}
+      <ng-template #notColumnWithLink>
+        <ng-template [ngIf]="column.type == 'date'" [ngIfElse]="notDateTypeColumnWithoutLink">
+          {{value | date: 'dd/MM/yyyy'}}
+        </ng-template>
+        <ng-template #notDateTypeColumnWithoutLink>
+          {{value}}
+        </ng-template>
       </ng-template>
     </ng-template>
   </ngx-datatable-column>
@@ -60,7 +70,7 @@
           <ng-template #actionButtonWithText>
             <span translate>{{button.translationKey}}</span>
           </ng-template>
-        </button>
+        </button>&nbsp;
       </ng-container>
     </ng-template>
   </ngx-datatable-column>

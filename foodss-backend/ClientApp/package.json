@@ -26,6 +26,7 @@
     "chart.js": "^2.8.0",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
+    "lodash": "^4.17.11",
     "ng2-charts": "^2.0.4",
     "ng2-select": "^2.0.0",
     "ng2-slim-loading-bar": "^4.0.0",
