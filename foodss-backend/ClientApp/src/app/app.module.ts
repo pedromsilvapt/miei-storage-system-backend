@@ -10,6 +10,7 @@ import {PageModule} from './shared/page/page.module';
 
 import {StorageSystemComponent} from './storage-system/storage-system.component';
 import {HomeModule} from './home/home.module';
+import {LoginModule} from './login/login.module';
 
 import {L10nLoader, TranslationModule} from 'angular-l10n';
 import {l10nConfig} from '../assets/locale/l10n-config';
@@ -27,6 +28,7 @@ import {ProductModule} from './product/product.module';
     TabsModule.forRoot(),
     PageModule,
     HomeModule,
+    LoginModule,
     ProductModule,
     UserFormModule,
     StorageModule,
