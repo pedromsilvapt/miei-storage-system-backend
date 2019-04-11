@@ -111,5 +111,55 @@ namespace StorageSystem.Controllers
                 .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items)))
                 .ToListAsync();
         }
+
+        public class SearchQuery
+        {
+            public int? Skip { get; set; }
+            public int? Take { get; set; }
+            public string Barcode { get; set; }
+            public string Name { get; set; }
+        }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<ICollection<ProductDTO>>> SearchProducts(int storageId, [FromQuery]SearchQuery query)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeProducts(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            // Search by barcode has precedence: if a barcode is provided, only items that match that barcode are returned
+            if (query.Barcode != null)
+            {
+                return await context.Products
+                    .Where(p => (p.StorageId == storage.Id) && (p.Barcode == query.Barcode))
+                    .Include(p => p.Items)
+                    // Since there can be no two products with the same barcode, we can limit our search to one item only
+                    .Take(1)
+                    .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items)))
+                    .ToListAsync();
+            }
+            else
+            {
+                return await context.Products
+                    .Where(p => (p.StorageId == storage.Id) && p.Name.ToLower().Contains(query.Name.ToLower()))
+                    .Include(p => p.Items)
+                    // How many records to skip (defaults to 0)
+                    .Skip(query.Skip ?? 0)
+                    // How many records to return (defaults to 20)
+                    .Take(query.Take ?? 20)
+                    .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items)))
+                    .ToListAsync();
+            }
+        }
     }
 }
