@@ -214,5 +214,44 @@ namespace StorageSystem.Controllers
 
             return ProductDTO.FromModel(product);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> RemoveInvitation(int storageId, int id)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeProducts(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            Product product = await context.Products
+                .Where(i => (i.Id == id) && (i.StorageId == storage.Id))
+                .Include(p => p.Items)
+                .FirstOrDefaultAsync();
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (product.Items.Where(i => i.ConsumedDate != null).Count() > 0)
+            {
+                return BadRequest( new { message = "Cannot delete product: still has not consumed items left." } );
+            }
+
+            context.Products.Remove(product);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
