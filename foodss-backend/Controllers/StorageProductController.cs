@@ -18,6 +18,15 @@ namespace StorageSystem.Controllers
     [ApiController]
     public class StorageProductController : Controller
     {
+        public class ProductInputDTO
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Barcode { get; set; }
+            public bool HasExpiryDate { get; set; }
+            public double? MaxTemperature { get; set; }
+        }
+
         public class ProductDTO
         {
             public int Id { get; set; }
@@ -160,6 +169,50 @@ namespace StorageSystem.Controllers
                     .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items)))
                     .ToListAsync();
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> CreateProduct(int storageId, ProductInputDTO input)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeProducts(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            // If we try to invite an email already associated with an account...
+            Product existingBarcode = await context.Products
+                .Where(p => (p.StorageId == storage.Id) && (p.Barcode == input.Barcode))
+                .FirstOrDefaultAsync();
+
+            // Now the storage users are available through the property storage.Users
+            if (existingBarcode != null)
+            {
+                return BadRequest(new { message = "Duplicated barcode." });
+            }
+
+            Product product = new Product()
+            {
+                StorageId = storage.Id,
+                Name = input.Name,
+                Barcode = input.Barcode,
+                HasExpiryDate = input.HasExpiryDate,
+                MaxTemperature = input.MaxTemperature
+            };
+
+            context.Products.Add(product);
+
+            await context.SaveChangesAsync();
+
+            return ProductDTO.FromModel(product);
         }
     }
 }
