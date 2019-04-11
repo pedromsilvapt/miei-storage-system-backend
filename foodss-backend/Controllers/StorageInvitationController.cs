@@ -108,7 +108,8 @@ namespace StorageSystem.Controllers
                 .FirstOrDefaultAsync();
 
             // Now the storage users are available through the property storage.Users
-            if (storage.Users.Where(u => u.UserId == emailOwner.Id).Count() > 0)
+            // If the user exist and is already a member of the storage, we cannot invite him/her
+            if (emailOwner != null && storage.Users.Where(u => u.UserId == emailOwner.Id).Count() > 0)
             {
                 return BadRequest();
             }
