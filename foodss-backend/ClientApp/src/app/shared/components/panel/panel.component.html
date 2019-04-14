@@ -2,16 +2,18 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12">
-
         <div class="pull-left" translate><b>{{title}}</b></div>
         <div class="pull-right">
-          <ng-content select="[panel-right-header]"></ng-content>
-        </div>
 
+          <ng-content select="[panel-right-header]"></ng-content>
+
+        </div>
       </div>
     </div>
   </div>
   <div class="card-body">
+
     <ng-content select="[panel-body]"></ng-content>
+
   </div>
 </div>

@@ -1,26 +1,36 @@
 import {NgModule} from '@angular/core';
 import {TranslationModule} from 'angular-l10n';
-import {PanelModule} from './components/panel/panel.module';
 import {BsDropdownModule, TabsModule} from 'ngx-bootstrap';
-import {CustomDatatableModule} from './components/custom-datatable/custom-datatable.module';
 import {RouterModule} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {SharedComponentsModule} from './components/shared-components.module';
+import {SharedDirectivesModule} from './directives/shared-directives.module';
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [],
   imports: [
     BsDropdownModule,
-    PanelModule,
-    TranslationModule,
-    CustomDatatableModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
     RouterModule,
     TabsModule,
+    TranslationModule,
+    SharedComponentsModule,
+    SharedDirectivesModule
   ],
   exports: [
-    PanelModule,
-    CustomDatatableModule,
+    BsDropdownModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    RouterModule,
     TabsModule,
     TranslationModule,
-    RouterModule
+    SharedComponentsModule,
+    SharedDirectivesModule
   ]
 })
 export class SharedModule { }

@@ -1,17 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {StorageModel} from './model/storage.model';
 import * as _ from 'lodash';
-import {Product} from '../product/model/product.model';
 
 @Component({
   selector: 'app-storage',
-  templateUrl: './storage.component.html',
-  styleUrls: ['./storage.component.scss']
+  templateUrl: './storage.component.html'
 })
 export class StorageComponent implements OnInit {
 
   // TODO variable below should be of type StorageModel
-  public storages: Array<StorageModel> = [
+  public storages: Array<any> = [
     {
       id: 1,
       name: 'Despensa 01',

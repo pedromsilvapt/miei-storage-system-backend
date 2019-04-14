@@ -13,11 +13,13 @@ export abstract class DatatablePageContent<T> {
   public createDatatableActionButtons(): Array<ActionButtonDatatable> {
     const editButtonClass = 'btn border-primary bg-white text-dark-primary';
     const editButtonIconClass = 'fas fa-pencil-alt';
-    const editButton: ActionButtonDatatable = new ActionButtonDatatable('edit', editButtonClass, editButtonIconClass);
+    const editButton: ActionButtonDatatable = new ActionButtonDatatable('edit',
+      editButtonClass, editButtonIconClass);
 
     const deleteButtonClass = 'btn border-danger bg-white text-dark-danger';
     const deleteButtonIconClass = 'fas fa-trash-alt';
-    const deleteButton: ActionButtonDatatable = new ActionButtonDatatable('delete', deleteButtonClass, deleteButtonIconClass);
+    const deleteButton: ActionButtonDatatable = new ActionButtonDatatable('delete',
+      deleteButtonClass, deleteButtonIconClass);
 
     return [editButton, deleteButton];
   }

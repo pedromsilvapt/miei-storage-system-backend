@@ -12,9 +12,7 @@ const routes: Routes = [
   {
     path: '', redirectTo: 'storage-system', pathMatch: 'full'
   },
-  {
-    path: 'login', children: [...LoginRoutes], component: StorageSystemComponent
-  },
+  ...LoginRoutes,
   ...UserFormRoutes,
   {
     path: 'storage-system', component: StorageSystemComponent,
