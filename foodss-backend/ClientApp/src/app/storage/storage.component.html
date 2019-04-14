@@ -18,14 +18,7 @@
         </div>
         <ng-container *ngIf="storage.isShared" panel-body>
           <tabset>
-            <!--<tab *ngFor="let productsByPerson of groupSharedStorageProductsByUsers(storage)"-->
-                 <!--[heading]="productsByPerson[0].userOwner.name" [disabled]="false">-->
-              <!--{{productsByPerson[0].userOwner.name}}-->
-            <!--</tab>-->
-            <!--<tab *ngFor="let a of [1, 2, 3]" heading="Static Title {{a}}">-->
-              <!--{{a}}-->
-            <!--</tab>-->
-            <tab *ngFor="let person of getSharedStoragePeople(storage); let index = index"
+            <tab *ngFor="let person of getSharedStoragePeople(storage)"
                  [heading]="person">
               <app-storage-datatable [products]="groupSharedStorageProductsByUsers(storage)[person]"></app-storage-datatable>
             </tab>

@@ -5,18 +5,18 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.scss']
+  // styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    public username : string;
+    public username: string;
 
-    public password : string;
+    public password: string;
 
-    private http : HttpClient;
+    private http: HttpClient;
 
-    private router : Router;
+    private router: Router;
 
-    constructor(http : HttpClient, router : Router ) {
+    constructor(http: HttpClient, router: Router ) {
         this.http = http;
         this.router = router;
     }
@@ -24,13 +24,13 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
     }
 
-    login () {
+    login() {
         // TODO URL should be dynamic and injected by the server
         this.http.post( 'http://localhost:5000/api/user/authenticate', {
             email: this.username,
             password: this.password
-        } ).subscribe( ( result : any ) => {
-            this.router.navigate( [ 'storage-system' ] )
+        } ).subscribe( ( result: any ) => {
+            this.router.navigate( [ 'storage-system' ] );
         } );
     }
 }

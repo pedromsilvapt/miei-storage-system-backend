@@ -1,0 +1,58 @@
+<div class="container">
+
+  <div class="row justify-content-center">
+    <ng-container *ngFor="let step of steps; let index = index">
+
+      <ng-template [ngIf]="step.active" [ngIfElse]="stepNotActive">
+        <div class="text-center" style="font-size: 1.2em;" appFilledCircle [size]="circleSize"
+             [isLast]="index === (steps.length - 1)">
+          <i *ngIf="step.iconClass" class="{{step.iconClass}}"></i>
+        </div>
+      </ng-template>
+
+      <ng-template [ngIf]="index !== (steps.length - 1)">
+        <div appLineSeparator [stepsLength]="steps.length" [padding]="padding" [size]="circleSize"></div>
+      </ng-template>
+
+      <ng-template #stepNotActive>
+        <div class="text-center" style="font-size: 1.2em;" appEmptyCircle [size]="circleSize"
+             [isLast]="index === (steps.length - 1)">
+          <i *ngIf="step.iconClass" class="{{step.iconClass}}"></i>
+        </div>
+      </ng-template>
+
+    </ng-container>
+  </div>
+
+  <div class="row" style="padding-top: 20px; padding-bottom: 20px;">
+    <ng-content select="app-step"></ng-content>
+  </div>
+
+  <div class="row float-right">
+
+    <ng-template [ngIf]="activeStep === (steps.length - 1)" [ngIfElse]="firstSteps">
+      <button class="btn bg-gray-400" [routerLink]="routerLinkLastStepButton" translate>{{titleLastStepButton}}</button>
+    </ng-template>
+
+    <ng-template #firstSteps>
+
+      <ng-template [ngIf]="activeStep !== (steps.length - 2)" [ngIfElse]="oneBeforeLastStep">
+        <ng-template [ngIf]="activeStep === 0">
+          <button class="btn bg-gray-400" [routerLink]="routerLinkLastStepButton" translate>form.back</button>&nbsp;
+        </ng-template>
+        <button class="btn bg-gray-400" [disabled]="activeStep === 0" (click)="activateStep(activeStep - 1)" translate>
+          form.previous</button>&nbsp;
+        <button class="btn bg-gray-400" (click)="onClickNextStepButtonEvent()" translate>form.next</button>
+      </ng-template>
+
+      <ng-template #oneBeforeLastStep>
+        <button class="btn bg-gray-400" [disabled]="activeStep === 0" (click)="activateStep(activeStep - 1)" translate>
+          form.previous</button>&nbsp;
+        <button class="btn bg-gray-400" (click)="onClickSubmitButtonEvent()" translate>form.submit</button>
+      </ng-template>
+
+    </ng-template>
+
+  </div>
+
+</div>

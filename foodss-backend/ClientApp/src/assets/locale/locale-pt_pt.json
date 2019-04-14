@@ -6,11 +6,9 @@
     "of": "de",
     "product": "Produto",
     "amount": "Quantidade",
-    "expire_date": "Validade",
-    "action": "Ação",
-    "actions": "Ações"
+    "expire_date": "Validade"
   },
-  "info-cards": {
+  "info_cards": {
     "registered_products": "Produtos registados",
     "products_near_expire_date": "Produtos próximos de expirar",
     "products_near_to_end": "Produtos próximos de acabar",
@@ -22,6 +20,25 @@
     "total_message_plural": "totais",
     "selected_message": "selecionado",
     "filter": "Filtrar",
-    "select": "Selecione"
+    "select": "Selecione",
+    "action": "Ação",
+    "actions": "Ações"
+  },
+  "form": {
+    "name": "Nome",
+    "email": "Email",
+    "username": "Login",
+    "password": "Senha",
+    "confirm_password": "Confirmar senha",
+    "account_sign_up": "Registo de Conta",
+    "next": "Próximo",
+    "previous": "Anterior",
+    "back": "Voltar",
+    "back_to_login_page": "Voltar à página de login",
+    "back_to_storage_page": "Voltar à página de despensa",
+    "submit": "Submeter",
+    "required_field": "Campo obrigatório.",
+    "invalid_email": "Email inválido.",
+    "invalid_confirm_password": "Senhas não conferem."
   }
 }

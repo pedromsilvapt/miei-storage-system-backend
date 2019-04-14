@@ -8,6 +8,7 @@
       (keyup)="updateFilter($event)"
     />
   </div>
+
   <div class="col-md-8">
     <div class="pull-right" style="width: 160px">
       <ng-select [allowClear]="false"
@@ -29,13 +30,15 @@
                [rowHeight]="'auto'"
                [sorts]="[{prop: sortDefaultColumn ? sortDefaultColumn : 'name', dir: 'asc'}]"
                [limit]="datatableLengthLimit">
-<span *ngFor="let column of columns; let index = index">
+<ng-container *ngFor="let column of columns; let index = index">
+
   <ngx-datatable-column [name]="column.name" *ngIf="column.name != 'actions'" [sortable]="column.sortable">
     <ng-template ngx-datatable-header-template let-sort="sortFn">
       <span (click)="sort()" [ngStyle]="{'cursor': column.sortable ? 'pointer' : 'auto'}">
         <strong translate>{{column.translationKey}}</strong>
       </span>
     </ng-template>
+
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <ng-template [ngIf]="column.hasLink" [ngIfElse]="notColumnWithLink">
         <a [routerLink]="row[column.name + 'RouterLink']">
@@ -47,6 +50,7 @@
           </ng-template>
         </a>
       </ng-template>
+
       <ng-template #notColumnWithLink>
         <ng-template [ngIf]="column.type == 'date'" [ngIfElse]="notDateTypeColumnWithoutLink">
           {{value | date: 'dd/MM/yyyy'}}
@@ -57,16 +61,19 @@
       </ng-template>
     </ng-template>
   </ngx-datatable-column>
+
   <ngx-datatable-column [name]="column.name" *ngIf="column.name == 'actions'">
     <ng-template ngx-datatable-header-template>
       <strong translate>{{column.translationKey}}</strong>
     </ng-template>
+
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <ng-container *ngFor="let button of value">
         <button class="{{button.buttonClass}}" (click)="onClickActionButton({button: button, row: row})">
           <ng-template [ngIf]="button.iconClass" [ngIfElse]="actionButtonWithText">
             <i class="{{button.iconClass}}"></i>
           </ng-template>
+
           <ng-template #actionButtonWithText>
             <span translate>{{button.translationKey}}</span>
           </ng-template>
@@ -74,5 +81,6 @@
       </ng-container>
     </ng-template>
   </ngx-datatable-column>
-</span>
+
+</ng-container>
 </ngx-datatable>

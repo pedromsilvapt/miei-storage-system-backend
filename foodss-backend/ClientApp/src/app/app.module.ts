@@ -9,32 +9,24 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {PageModule} from './shared/page/page.module';
 
 import {StorageSystemComponent} from './storage-system/storage-system.component';
-import {HomeModule} from './home/home.module';
-import {LoginModule} from './login/login.module';
 
 import {L10nLoader, TranslationModule} from 'angular-l10n';
 import {l10nConfig} from '../assets/locale/l10n-config';
 import {HttpClientModule} from '@angular/common/http';
 import {ModalModule, TabsModule} from 'ngx-bootstrap';
-import {StorageModule} from './storage/storage.module';
-import {UserFormModule} from './user/form/user-form.module';
-import {ProductModule} from './product/product.module';
+import {StorageSystemModule} from './storage-system/storage-system.module';
 
 @NgModule({
   imports: [
-    BrowserModule,
     AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    PageModule,
-    HomeModule,
-    LoginModule,
-    ProductModule,
-    UserFormModule,
-    StorageModule,
+    BrowserModule,
     HttpClientModule,
-    TranslationModule.forRoot(l10nConfig),
-    ModalModule.forRoot()
+    PageModule,
+    StorageSystemModule,
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
+    TabsModule.forRoot(),
+    TranslationModule.forRoot(l10nConfig)
   ],
   declarations: [
     AppComponent,

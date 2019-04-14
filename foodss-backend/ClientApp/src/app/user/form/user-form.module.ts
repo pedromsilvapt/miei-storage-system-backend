@@ -1,15 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
 import {UserFormComponent} from './user-form.component';
-import {FormsModule} from '@angular/forms';
-import {PanelModule} from '../../shared/components/panel/panel.module';
+import {SharedModule} from '../../shared/shared.module';
+import {StepperModule} from '../components/stepper/stepper.module';
 
 @NgModule({
   declarations: [UserFormComponent],
   imports: [
-    CommonModule,
-    FormsModule,
-    PanelModule,
+    StepperModule,
+    SharedModule,
   ]
 })
 export class UserFormModule { }

@@ -6,11 +6,9 @@
     "of": "of",
     "product": "Product",
     "amount": "Amount",
-    "expire_date": "Expiration",
-    "action": "Action",
-    "actions": "Actions"
+    "expire_date": "Expiration"
   },
-  "info-cards": {
+  "info_cards": {
     "registered_products": "Registered products",
     "products_near_expire_date": "Products near the expiration date",
     "products_near_to_end": "Products near to end",
@@ -22,6 +20,25 @@
     "total_message_plural": "total",
     "selected_message": "selected",
     "filter": "Filter",
-    "select": "Select"
+    "select": "Select",
+    "action": "Action",
+    "actions": "Actions"
+  },
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "username": "Username",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "account_sign_up": "Sign Up",
+    "next": "Next",
+    "previous": "Previous",
+    "back": "Back",
+    "back_to_login_page": "Back to login page",
+    "back_to_storage_page": "Back to storage page",
+    "submit": "Submit",
+    "required_field": "Required field.",
+    "invalid_email": "Invalid email.",
+    "invalid_confirm_password": "Passwords doesn't match."
   }
 }

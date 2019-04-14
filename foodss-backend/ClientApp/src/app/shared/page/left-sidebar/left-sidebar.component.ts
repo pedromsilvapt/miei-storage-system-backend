@@ -6,8 +6,7 @@ import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-left-sidebar',
-  templateUrl: './left-sidebar.component.html',
-  styleUrls: ['./left-sidebar.component.scss']
+  templateUrl: './left-sidebar.component.html'
 })
 export class LeftSidebarComponent implements OnInit, OnDestroy {
   public sidebarMinimized = true;
