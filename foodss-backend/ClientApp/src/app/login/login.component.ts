@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   // styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    public username: string;
+    public email: string;
 
     public password: string;
 
@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
 
     login() {
         // TODO URL should be dynamic and injected by the server
-        this.http.post( 'http://localhost:5000/api/user/authenticate', {
-            email: this.username,
+      this.http.post( 'http://localhost:60947/api/user/authenticate', {
+            email: this.email,
             password: this.password
         } ).subscribe( ( result: any ) => {
             this.router.navigate( [ 'storage-system' ] );
