@@ -25,16 +25,11 @@ export class AddStorageComponent implements OnInit {
   goalstorage: string;
   namestorage: string;
   delete: string = '';
-  public user: Elementos = new Elementos();
-
-  private http: HttpClient;
-
-  private router: Router;
 
   @Input()
   required: boolean
 
-  constructor(private _formBuilder: FormBuilder) { }
+  constructor(private _formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.formGroup = this._formBuilder.group({
@@ -81,14 +76,14 @@ export class AddStorageComponent implements OnInit {
   }
 
   addstorage() {
-    // TODO URL should be dynamic and injected by the server
-    this.http.post('api/Storage/CreateStorage', {
-      namestorage: this.namestorage,
-      goalstorage: this.goalstorage,
-      user: this.user.emails,
-    }).subscribe((result: any) => {
-      this.router.navigate(['storage-system/storage']);
-    });
+      // TODO URL should be dynamic and injected by the server
+      this.http.post('api/storage', {
+        name: this.namestorage,
+        invitations: this.em.value,
+      }).subscribe((result: any) => {
+        this.router.navigate(['storage-system', 'storage']);
+      });
+    }
   }
 
 }
