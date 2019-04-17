@@ -3,7 +3,10 @@ import {HomeModule} from '../home/home.module';
 import {LoginModule} from '../login/login.module';
 import {ProductModule} from '../product/product.module';
 import {UserFormModule} from '../user/form/user-form.module';
-import {StorageModule} from '../storage/storage.module';
+import { StorageModule } from '../storage/storage.module';
+import { AddStorageModule } from '../add-storage/add-storage.module';
+
+
 
 @NgModule({
   declarations: [],
@@ -13,6 +16,7 @@ import {StorageModule} from '../storage/storage.module';
     ProductModule,
     UserFormModule,
     StorageModule,
+    AddStorageModule,
   ],
   exports: []
 })

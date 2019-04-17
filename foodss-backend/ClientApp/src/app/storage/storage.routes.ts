@@ -7,6 +7,6 @@ export const StorageRoutes: Routes = [
     path: 'storage', component: StorageComponent,
   },
   {
-    path: 'storage/form', component: StorageFormComponent
+    path: 'storage/add-storage', component: StorageFormComponent
   }
 ];
