@@ -2,18 +2,19 @@
 <br />
 <br />
 <br />
-<mat-horizontal-stepper linear #stepper>
-  <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">
-    <form [formGroup]="firstFormGroup">
+<form [formGroup]="formGroup">
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step [completed]="firstStepValid()" errorMessage="Name is required.">
+
       <ng-template matStepLabel>Dispensa</ng-template>
       <br />
       <br />
 
       <div style="text-align:center">
         <h5 style="color:darkblue"><b>Finalidade da dispensa:</b></h5>
-        <div [formGroup]="radiobutton">
-          <mat-radio-group class="example-radio-group" [(ngModel)]="goalstorage" #radioGroup="matRadioGroup" name="radioCtrl" formControlName="radioCtrl" required >
-            <mat-radio-button class="example-radio-button" *ngFor="let option of options" [value]="option" >
+        <div>
+          <mat-radio-group class="example-radio-group" [(ngModel)]="goalstorage" #radioGroup="matRadioGroup" name="typeCtrl" formControlName="typeCtrl" required>
+            <mat-radio-button class="example-radio-button" *ngFor="let option of options" [value]="option">
               {{option}}
             </mat-radio-button>
           </mat-radio-group>
@@ -22,31 +23,30 @@
       <br />
       <div style="text-align:center">
         <mat-form-field>
-          <input matInput placeholder="Nome da dispensa" [(ngModel)]="namestorage"  formControlName="firstCtrl" required>
+          <input matInput placeholder="Nome da dispensa" [(ngModel)]="namestorage" formControlName="nameCtrl" required>
         </mat-form-field>
       </div>
       <div style="text-align:right">
         <button mat-raised-button color="accent" matStepperNext>Próximo</button>
       </div>
-    </form>
-  </mat-step>
+    </mat-step>
 
-  <ng-container *ngIf="show == goalstorage">
-  <mat-step [stepControl]="secondFormGroup" errorMessage="Necessário adicionar um email.">
-    <form [formGroup]="secondFormGroup">
-      <br />
-      <h5 style="color:darkblue"><b style="margin-left:100px">Dispensa Partilhada</b></h5>
-      <br />
-      <h6 style="margin-left:160px"><b>Adicionar elementos para partilhar a dispensa:</b></h6>
-      <ng-template matStepLabel >Adicionar elementos</ng-template>
-        <div [formGroup]="ElementosForm">
+    <ng-container *ngIf="show == goalstorage">
+      <mat-step [completed]="allEmailsValid()" errorMessage="Necessário adicionar um email.">
+        <!--<form [formGroup]="secondFormGroup">-->
+        <br />
+        <h5 style="color:darkblue"><b style="margin-left:100px">Dispensa Partilhada</b></h5>
+        <br />
+        <h6 style="margin-left:160px"><b>Adicionar elementos para partilhar a dispensa:</b></h6>
+        <ng-template matStepLabel>Adicionar elementos</ng-template>
+        <div>
           <div formArrayName="emails">
             <div style="text-align:center">
-              <div *ngFor="let item of em.controls; let pointIndex=index" [formGroupName]="pointIndex">
+              <div *ngFor="let item of em.controls; let pointIndex=index">
                 <mat-form-field>
-                  <input matInput [(ngModel)]="item.email" placeholder="Email" formControlName="point"  required>
+                  <input matInput [formControl]="item" placeholder="Email" required>
                 </mat-form-field>
-                <span *ngIf="delete == !item.email">
+                <span *ngIf="true">
                   <span>
                     <button mat-mini-fab (click)="deleteEmail(pointIndex)">
                       <mat-icon>delete</mat-icon>
@@ -60,20 +60,21 @@
               </button>
             </div>
           </div>
-      </div>
+        </div>
         <div style="text-align:right">
           <button mat-raised-button color="basic" matStepperPrevious>Voltar</button>
           <button mat-raised-button color="accent" matStepperNext (click)="addstorage()">Próximo</button>
         </div>
-    </form>
-  </mat-step>
+        <!--</form>-->
+      </mat-step>
     </ng-container>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    <div style="text-align:center"><h3 style="color:green">Dispensa Criada com Sucesso!</h3></div>
-    <div style="text-align:center">
-      <button mat-button matStepperPrevious>Voltar</button>
-      <button mat-button (click)="stepper.reset()">Refazer</button>
-    </div>
-  </mat-step>
-</mat-horizontal-stepper>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <div style="text-align:center"><h3 style="color:green">Dispensa Criada com Sucesso!</h3></div>
+      <div style="text-align:center">
+        <button mat-button matStepperPrevious>Voltar</button>
+        <button mat-button (click)="stepper.reset()">Refazer</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</form>
