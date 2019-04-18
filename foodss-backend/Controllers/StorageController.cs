@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StorageSystem.Models;
 using StorageSystem.Services;
+using static StorageSystem.Controllers.StorageInvitationController;
 
 namespace StorageSystem.Controllers
 {
@@ -15,6 +16,8 @@ namespace StorageSystem.Controllers
     public class StorageInputDTO
     {
         public string Name { get; set; }
+
+        public ICollection<StorageInvitationInputDTO> Invitations;
     }
 
     // Used when viewing one/many storage(s), sent from the server to the client
@@ -86,15 +89,39 @@ namespace StorageSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<StorageDTO>> CreateStorage(StorageInputDTO storageInput)
         {
-            int userId = userService.GetUserId(this.User);
+            User user = await userService.GetUserAsync(this.User);
 
-            Storage storageModel = new Storage() { Name = storageInput.Name, Shared = false, OwnerId = userId };
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                Storage storageModel = new Storage() { Name = storageInput.Name, Shared = false, OwnerId = user.Id };
 
-            await context.Storages.AddAsync(storageModel);
+                await context.Storages.AddAsync(storageModel);
 
-            await context.SaveChangesAsync();
+                if (storageInput.Invitations != null)
+                {
+                    storageInput.Invitations = storageInput.Invitations.Distinct(new StorageInvitationInputDTOComparer()).ToList();
 
-            return StorageDTO.FromModel(storageModel);
+                    foreach (StorageInvitationInputDTO invitationInput in storageInput.Invitations)
+                    {
+                        if (invitationInput.UserEmail == user.Email)
+                        {
+                            transaction.Rollback();
+
+                            return BadRequest(new { message = "Can't create invitation for yourself." });
+                        }
+
+                        StorageInvitation invitation = new StorageInvitation() { StorageId = storageModel.Id, UserEmail = invitationInput.UserEmail };
+
+                        await context.StorageInvitations.AddAsync(invitation);
+                    }
+                }
+
+                await context.SaveChangesAsync();
+
+                transaction.Commit();
+
+                return StorageDTO.FromModel(storageModel);
+            }
         }
 
         [HttpPost("{id}")]

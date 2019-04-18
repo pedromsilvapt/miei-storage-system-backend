@@ -18,6 +18,19 @@ namespace StorageSystem.Controllers
     [ApiController]
     public class StorageInvitationController : Controller
     {
+        public class StorageInvitationInputDTOComparer : IEqualityComparer<StorageInvitationInputDTO>
+        {
+            public bool Equals(StorageInvitationInputDTO x, StorageInvitationInputDTO y)
+            {
+                return String.Equals(x.UserEmail, y.UserEmail);
+            }
+
+            public int GetHashCode(StorageInvitationInputDTO obj)
+            {
+                return obj.UserEmail.GetHashCode();
+            }
+        }
+
         public class StorageInvitationInputDTO
         {
             public string UserEmail { get; set; }
@@ -123,7 +136,7 @@ namespace StorageSystem.Controllers
             {
                 invitation = new StorageInvitation() { StorageId = storageId, UserEmail = input.UserEmail };
 
-                context.StorageInvitations.Add(invitation);
+                await context.StorageInvitations.AddAsync(invitation);
 
                 await context.SaveChangesAsync();
             }
