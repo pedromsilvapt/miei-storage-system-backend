@@ -215,5 +215,49 @@ namespace StorageSystem.Controllers
             return items.Select(item => ProductItemDTO.FromModel(item)).ToList();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> RemoveProductItem(int storageId, int productId, int id)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeProducts(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            Product product = await GetProduct(productId);
+
+            if ((product == null) || (product.StorageId != storage.Id))
+            {
+                return NotFound();
+            }
+
+            ProductItem item = await context.ProductItems
+                .Where(i => (i.Id == id) && (i.ProductId == product.Id))
+                .FirstOrDefaultAsync();
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            if (!CanUserSeeItem(user, item))
+            {
+                return Unauthorized();
+            }
+
+            context.ProductItems.Remove(item);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
