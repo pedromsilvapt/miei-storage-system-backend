@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StorageSystem.Models;
 using StorageSystem.Services;
+using static StorageSystem.Controllers.StorageProductItemController;
 
 namespace StorageSystem.Controllers
 {
@@ -123,6 +124,44 @@ namespace StorageSystem.Controllers
                 .Include(p => p.Items)
                 .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items), query.IncludeItems ?? false))
                 .ToListAsync();
+        }
+
+        public class DetailsQuery
+        {
+            public bool? IncludeItems { get; set; }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDTO>> DetailsProduct(int storageId, int id, [FromQuery]DetailsQuery query)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeProducts(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            ProductDTO product = await context.Products
+               // Only retrieve the products that belong to this storage
+               .Where(p => (p.StorageId == storage.Id) && (p.Id == id))
+               // Join for each product it's items as well
+               .Include(p => p.Items)
+               .Select(p => ProductDTO.FromModel(p, ListVisibleItems(user, p.Items), query.IncludeItems ?? false))
+               .FirstOrDefaultAsync();
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return product;
         }
 
         public class SearchQuery
