@@ -18,6 +18,15 @@ namespace StorageSystem.Controllers
     [ApiController]
     public class StorageProductItemController : Controller
     {
+        public class ProductItemInputDTO
+        {
+            public bool Shared { get; set; }
+
+            public DateTime? ExpiryDate { get; set; }
+
+            public int? Quantity { get; set; }
+        }
+
         public class ProductItemDTO
         {
             public int Id { get; set; }
@@ -117,6 +126,57 @@ namespace StorageSystem.Controllers
                 // How many records to return (defaults to 20)
                 .Take(query.Take ?? 20)
                 .ToListAsync();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ICollection<ProductItemDTO>>> CreateProductItem(int storageId, int productId, ProductItemInputDTO input)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeProducts(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            Product product = await GetProduct(productId);
+
+            if ((product == null) || (product.StorageId != storage.Id))
+            {
+                return NotFound();
+            }
+
+            bool productHasExpiryDate = product.HasExpiryDate;
+            bool itemHasExpiryDate = input.ExpiryDate != null;
+
+            if (productHasExpiryDate != itemHasExpiryDate)
+            {
+                return BadRequest(new { message = "Product and item expiry dates have to match." });
+            }
+
+            var now = new DateTime();
+
+            ProductItem[] items = Enumerable.Range(0, input.Quantity ?? 1).Select(n => new ProductItem()
+            {
+                ProductId = product.Id,
+                OwnerId = user.Id,
+                Shared = input.Shared,
+                ExpiryDate = input.ExpiryDate,
+                AddedDate = now,
+                ConsumedDate = null
+            }).ToArray();
+
+            await context.ProductItems.AddRangeAsync(items);
+
+            await context.SaveChangesAsync();
+
+            return items.Select(item => ProductItemDTO.FromModel(item)).ToList();
         }
 
     }
