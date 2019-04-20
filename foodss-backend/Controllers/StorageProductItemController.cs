@@ -14,7 +14,7 @@ namespace StorageSystem.Controllers
 {
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/storage/{storageId}/product/{productId}")]
+    [Route("api/storage/{storageId}/product/{productId}/item")]
     [ApiController]
     public class StorageProductItemController : Controller
     {
@@ -128,7 +128,7 @@ namespace StorageSystem.Controllers
                 .ToListAsync();
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ProductItemDTO>> DetailsProductItem (int storageId, int productId, int id)
         {
             Storage storage = await GetStorage(storageId);
@@ -153,8 +153,13 @@ namespace StorageSystem.Controllers
             }
 
             ProductItem item = await context.ProductItems
-                .Where(i => i.Id == id)
+                .Where(i => (i.Id == id) && (i.ProductId == product.Id))
                 .FirstOrDefaultAsync();
+
+            if (item == null)
+            {
+                return NotFound();
+            }
 
             if (!CanUserSeeItem(user, item))
             {
@@ -196,7 +201,13 @@ namespace StorageSystem.Controllers
                 return BadRequest(new { message = "Product and item expiry dates have to match." });
             }
 
-            var now = new DateTime();
+            var now = DateTime.Now;
+
+            // Do not accept expiry dates that are before now
+            if ((input.ExpiryDate != null) && (DateTime.Compare(input.ExpiryDate.Value, now) <= 0))
+            {
+                return BadRequest(new { message = "Expiry date cannot be before now." });
+            }
 
             ProductItem[] items = Enumerable.Range(0, input.Quantity ?? 1).Select(n => new ProductItem()
             {
