@@ -38,7 +38,9 @@ namespace StorageSystem.Controllers
             public int? Count { get; set; }
             public DateTime? ClosestExpiryDate { get; set; }
 
-            public static ProductDTO FromModel(Product model, ICollection<ProductItem> items = null)
+            public ICollection<ProductItemDTO> Items { get; set; }
+
+            public static ProductDTO FromModel(Product model, ICollection<ProductItem> items = null, bool includeItems = false)
                 => new ProductDTO()
                 {
                     Id = model.Id,
@@ -48,7 +50,8 @@ namespace StorageSystem.Controllers
                     StorageId = model.StorageId,
                     MaxTemperature = model.MaxTemperature,
                     Count = items?.Count(),
-                    ClosestExpiryDate = items?.Where(s => s.ExpiryDate != null)?.Min(s => s.ExpiryDate)
+                    ClosestExpiryDate = items?.Where(s => s.ExpiryDate != null)?.Min(s => s.ExpiryDate),
+                    Items = includeItems ? items?.Select(i => ProductItemDTO.FromModel(i))?.ToList() : null
                 };
         }
 
@@ -82,6 +85,7 @@ namespace StorageSystem.Controllers
         {
             public int? Skip { get; set; }
             public int? Take { get; set; }
+            public bool? IncludeItems { get; set; }
         }
 
         private List<ProductItem> ListVisibleItems(User user, ICollection<ProductItem> items)
@@ -117,7 +121,7 @@ namespace StorageSystem.Controllers
                 .OrderBy(product => product.Name)
                 // Join for each product it's items as well
                 .Include(p => p.Items)
-                .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items)))
+                .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items), query.IncludeItems ?? false))
                 .ToListAsync();
         }
 
@@ -125,6 +129,7 @@ namespace StorageSystem.Controllers
         {
             public int? Skip { get; set; }
             public int? Take { get; set; }
+            public bool? IncludeItems { get; set; }
             public string Barcode { get; set; }
             public string Name { get; set; }
         }
@@ -154,7 +159,7 @@ namespace StorageSystem.Controllers
                     .Include(p => p.Items)
                     // Since there can be no two products with the same barcode, we can limit our search to one item only
                     .Take(1)
-                    .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items)))
+                    .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items), query.IncludeItems ?? false))
                     .ToListAsync();
             }
             else
@@ -166,7 +171,7 @@ namespace StorageSystem.Controllers
                     .Skip(query.Skip ?? 0)
                     // How many records to return (defaults to 20)
                     .Take(query.Take ?? 20)
-                    .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items)))
+                    .Select(product => ProductDTO.FromModel(product, ListVisibleItems(user, product.Items), query.IncludeItems ?? false))
                     .ToListAsync();
             }
         }
@@ -244,7 +249,7 @@ namespace StorageSystem.Controllers
 
             if (product.Items.Where(i => i.ConsumedDate != null).Count() > 0)
             {
-                return BadRequest( new { message = "Cannot delete product: still has unconsumed items left." } );
+                return BadRequest(new { message = "Cannot delete product: still has unconsumed items left." });
             }
 
             context.Products.Remove(product);
