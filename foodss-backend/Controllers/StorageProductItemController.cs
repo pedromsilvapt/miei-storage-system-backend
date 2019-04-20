@@ -128,6 +128,42 @@ namespace StorageSystem.Controllers
                 .ToListAsync();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<ProductItemDTO>> DetailsProductItem (int storageId, int productId, int id)
+        {
+            Storage storage = await GetStorage(storageId);
+
+            if (storage == null)
+            {
+                return NotFound();
+            }
+
+            User user = await userService.GetUserAsync(this.User);
+
+            if (!CanUserSeeProducts(user, storage, storage.Users))
+            {
+                return Unauthorized();
+            }
+
+            Product product = await GetProduct(productId);
+
+            if ((product == null) || (product.StorageId != storage.Id))
+            {
+                return NotFound();
+            }
+
+            ProductItem item = await context.ProductItems
+                .Where(i => i.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (!CanUserSeeItem(user, item))
+            {
+                return Unauthorized();
+            }
+
+            return ProductItemDTO.FromModel(item);
+        }
+
         [HttpPost]
         public async Task<ActionResult<ICollection<ProductItemDTO>>> CreateProductItem(int storageId, int productId, ProductItemInputDTO input)
         {
