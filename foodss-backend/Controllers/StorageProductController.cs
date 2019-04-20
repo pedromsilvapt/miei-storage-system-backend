@@ -208,7 +208,7 @@ namespace StorageSystem.Controllers
                 MaxTemperature = input.MaxTemperature
             };
 
-            context.Products.Add(product);
+            await context.Products.AddAsync(product);
 
             await context.SaveChangesAsync();
 
@@ -216,7 +216,7 @@ namespace StorageSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> RemoveInvitation(int storageId, int id)
+        public async Task<ActionResult> RemoveProduct(int storageId, int id)
         {
             Storage storage = await GetStorage(storageId);
 
@@ -244,7 +244,7 @@ namespace StorageSystem.Controllers
 
             if (product.Items.Where(i => i.ConsumedDate != null).Count() > 0)
             {
-                return BadRequest( new { message = "Cannot delete product: still has not consumed items left." } );
+                return BadRequest( new { message = "Cannot delete product: still has unconsumed items left." } );
             }
 
             context.Products.Remove(product);
