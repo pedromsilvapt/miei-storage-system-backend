@@ -10,14 +10,14 @@ import {Language} from 'angular-l10n';
 })
 export class UserFormComponent implements OnInit {
 
-  public user: User = new User();
-  public nextButtonClicked = false;
-  public invalidEmail = false;
-
   @Language() lang: string;
 
   @ViewChild('formFirstStep') formFirstStep: any;
   @ViewChild('formSecondStep') formSecondStep: any;
+
+  public user: User = new User();
+  public nextButtonClicked = false;
+  public invalidEmail = false;
 
   constructor() { }
 

@@ -6,7 +6,15 @@
     "of": "of",
     "product": "Product",
     "amount": "Amount",
-    "expire_date": "Expiration"
+    "expire_date": "Expiration",
+    "operation_performed_successfully": "Operation performed successfully!"
+  },
+  "confirm_removal": {
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "message": "This action cannot be undone.",
+    "deleted": "Deleted!",
+    "was_deleted": "was removed."
   },
   "info_cards": {
     "registered_products": "Registered products",

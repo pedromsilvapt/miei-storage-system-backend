@@ -7,10 +7,13 @@ import {SharedComponentsModule} from './components/shared-components.module';
 import {SharedDirectivesModule} from './directives/shared-directives.module';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import {MessageUtil} from './util/message.util';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [],
   imports: [
+    BrowserAnimationsModule,
     BsDropdownModule,
     CommonModule,
     FormsModule,
@@ -19,9 +22,11 @@ import {HttpClientModule} from '@angular/common/http';
     TabsModule,
     TranslationModule,
     SharedComponentsModule,
-    SharedDirectivesModule
+    SharedDirectivesModule,
   ],
+  providers: [MessageUtil],
   exports: [
+    BrowserAnimationsModule,
     BsDropdownModule,
     CommonModule,
     FormsModule,

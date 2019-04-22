@@ -15,6 +15,8 @@ import {l10nConfig} from '../assets/locale/l10n-config';
 import {HttpClientModule} from '@angular/common/http';
 import {ModalModule, TabsModule} from 'ngx-bootstrap';
 import {StorageSystemModule} from './storage-system/storage-system.module';
+import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -25,7 +27,11 @@ import {StorageSystemModule} from './storage-system/storage-system.module';
     StorageSystemModule,
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
+    SlimLoadingBarModule.forRoot(),
     TabsModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+    }),
     TranslationModule.forRoot(l10nConfig)
   ],
   declarations: [

@@ -6,7 +6,15 @@
     "of": "de",
     "product": "Produto",
     "amount": "Quantidade",
-    "expire_date": "Validade"
+    "expire_date": "Validade",
+    "operation_performed_successfully": "Operação realizada com sucesso!"
+  },
+  "confirm_removal": {
+    "remove": "Remover",
+    "cancel": "Cancelar",
+    "message": "Esta ação não pode ser desfeita.",
+    "deleted": "Removido!",
+    "was_deleted": "foi removido."
   },
   "info_cards": {
     "registered_products": "Produtos registados",
