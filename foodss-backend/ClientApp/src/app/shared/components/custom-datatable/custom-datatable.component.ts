@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {TranslationService} from 'angular-l10n';
 import {DatatableComponent} from '@swimlane/ngx-datatable';
+import {MessageUtil} from '../../util/message.util';
 
 @Component({
   selector: 'app-custom-datatable',
@@ -9,7 +10,7 @@ import {DatatableComponent} from '@swimlane/ngx-datatable';
 })
 export class CustomDatatableComponent implements OnInit {
 
-  constructor(private translationService: TranslationService) { }
+  constructor(private translationService: TranslationService, private messageUtil: MessageUtil) { }
 
   private temp: Array<any> = [];
 
@@ -30,9 +31,11 @@ export class CustomDatatableComponent implements OnInit {
   public onClickActionButton(event: any): void {
     const thisComponent = this;
     if (event.button.type === 'delete') {
-      // TODO add swal for delete
-      console.log('Remember to add swal');
-      thisComponent.clickActionButton.next(event);
+      this.messageUtil.addSwalRemoval(event.row.name, (response) => {
+        if (response.value) {
+          thisComponent.clickActionButton.next(event);
+        }
+      });
     } else {
       this.clickActionButton.next(event);
     }

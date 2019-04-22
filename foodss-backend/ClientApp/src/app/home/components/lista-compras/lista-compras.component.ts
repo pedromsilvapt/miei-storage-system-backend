@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DatatablePageContent} from '../../../shared/page/content/datatable-page.content';
 import {ColumnDatatable} from '../../../shared/components/custom-datatable/model/column.datatable';
 import {Product} from '../../../product/model/product.model';
@@ -86,14 +86,14 @@ export class ListaComprasComponent extends DatatablePageContent<Array<Product>> 
   public createDatatableColumns(): Array<ColumnDatatable> {
     const columns: Array<ColumnDatatable> = [];
 
-    columns.push(new ColumnDatatable('product', 'general.product', true, true));
+    columns.push(new ColumnDatatable('name', 'general.product', true, true));
     columns.push(new ColumnDatatable('amount', 'general.amount', true));
     columns.push(new ColumnDatatable('actions', 'datatable.actions', false));
 
     return columns;
   }
 
-  // TODO edit 'any' from parameter from the function below after REST is implemented!!
+  // TODO edit 'any' from parameter from the function below after REST is implemented.
   public createDatatableRows(products: Array<any>): Array<any> {
     const rows: Array<any> = [];
 
@@ -101,8 +101,8 @@ export class ListaComprasComponent extends DatatablePageContent<Array<Product>> 
       products.forEach(product => {
         const row = {
           id: product.id,
-          product: product.name,
-          productRouterLink: 'product/' + product.id,
+          name: product.name,
+          nameRouterLink: 'product/' + product.id,
           amount: product.amount,
           actions: this.createDatatableActionButtons()
         };

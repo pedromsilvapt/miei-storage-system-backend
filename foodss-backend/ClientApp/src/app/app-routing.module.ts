@@ -7,6 +7,7 @@ import {StorageRoutes} from './storage/storage.routes';
 import {UserFormRoutes} from './user/form/user-form.routes';
 import {ProductDetailRoutes} from './product/product.routes';
 import {AddStorageRoutes} from './add-storage/add-storage.routes';
+import {AuthGuard} from './login/auth.guard';
 
 const routes: Routes = [
   {
@@ -16,6 +17,8 @@ const routes: Routes = [
   ...UserFormRoutes,
   {
     path: 'storage-system', component: StorageSystemComponent,
+    // TODO uncomment line below to activate AuthGuard
+    // canActivate: [AuthGuard],
     data: {
       title: 'Home'
     },

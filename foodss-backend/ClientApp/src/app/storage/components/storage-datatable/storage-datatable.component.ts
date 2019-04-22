@@ -26,7 +26,7 @@ export class StorageDatatableComponent extends DatatablePageContent<Array<Produc
   public createDatatableColumns(): Array<ColumnDatatable> {
     const columns: Array<ColumnDatatable> = [];
 
-    columns.push(new ColumnDatatable('product', 'general.product', true, true));
+    columns.push(new ColumnDatatable('name', 'general.product', true, true));
     columns.push(new ColumnDatatable('amount', 'general.amount', true));
     columns.push(new ColumnDatatable('expireDate', 'general.expire_date', true, false, 'date'));
     columns.push(new ColumnDatatable('actions', 'datatable.actions', false));
@@ -41,8 +41,8 @@ export class StorageDatatableComponent extends DatatablePageContent<Array<Produc
       products.forEach(product => {
         const row = {
           id: product.id,
-          product: product.name,
-          productRouterLink: '/storage-system/product/' + product.id,
+          name: product.name,
+          nameRouterLink: '/storage-system/product/' + product.id,
           expireDate: product.expireDate,
           amount: product.amount,
           actions: this.createDatatableActionButtons()

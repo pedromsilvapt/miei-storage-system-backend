@@ -1,36 +1,26 @@
 import {Component, OnInit} from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import {Language} from 'angular-l10n';
+import {LoginService} from './login.service';
+import {MessageUtil} from '../shared/util/message.util';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  // styleUrls: ['./login.component.scss']
+  templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
-    public email: string;
 
-    public password: string;
+  @Language() lang: string;
 
-    private http: HttpClient;
+  public email: string;
+  public password: string;
 
-    private router: Router;
+  constructor(private loginService: LoginService, private messageUtil: MessageUtil) {
+  }
 
-    constructor(http: HttpClient, router: Router ) {
-        this.http = http;
-        this.router = router;
-    }
+  ngOnInit() {
+  }
 
-    ngOnInit() {
-    }
-
-    login() {
-        // TODO URL should be dynamic and injected by the server
-      this.http.post( 'http://localhost:60947/api/user/authenticate', {
-            email: this.email,
-            password: this.password
-        } ).subscribe( ( result: any ) => {
-            this.router.navigate( [ 'storage-system' ] );
-        } );
-    }
+  signIn() {
+    this.loginService.signIn(this.email, this.password);
+  }
 }
