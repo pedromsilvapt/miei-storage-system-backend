@@ -18,7 +18,7 @@
                          (clickSubmitButton)="callbackOnClickSubmitButton($event)"
                          [titleLastStepButton]="'form.back_to_login_page'" [routerLinkLastStepButton]="'/login'">
 
-              <app-step [iconClass]="'fas fa-user'">
+              <app-step>
                 <form #formFirstStep="ngForm">
 
                   <div class="row">
@@ -46,7 +46,7 @@
                 </form>
               </app-step>
 
-              <app-step [iconClass]="'fas fa-user'">
+              <app-step>
                 <form #formSecondStep="ngForm">
 
                   <div class="row">
@@ -74,7 +74,7 @@
 
                 </form>
               </app-step>
-              <app-step [iconClass]="'fas fa-check'">
+              <app-step>
                 <span style="color: #0a8007;">Registo realizado com sucesso! Confirme o email para ativar a conta.</span>
               </app-step>
 

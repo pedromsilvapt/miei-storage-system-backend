@@ -42,8 +42,7 @@ export class UserFormComponent implements OnInit {
 
   private validateSecondStep(event: {stepper: StepperComponent, activeStep: number}): void {
     const formControls = this.formSecondStep.controls;
-    if (formControls.username.valid === true && formControls.password.valid === true
-      && formControls.confirmPassword.valid === true) {
+    if (formControls.password.valid === true && formControls.confirmPassword.valid === true) {
       this.nextButtonClicked = false;
       this.submitForm(event);
     }

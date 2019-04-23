@@ -18,7 +18,7 @@ export class StepperComponent implements OnInit {
   @Output() clickNextStepButton: EventEmitter<any> = new EventEmitter();
   @Output() clickSubmitButton: EventEmitter<any> = new EventEmitter();
 
-  constructor(private elementRef: ElementRef) { }
+  constructor() { }
 
   ngOnInit(): void {
     Promise.resolve(null).then(() => {

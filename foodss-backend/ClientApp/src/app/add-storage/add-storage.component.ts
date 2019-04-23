@@ -1,10 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { enableProdMode } from '@angular/core';
-import { Elementos } from './Elementos'
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import {Component, enableProdMode, Input, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 enableProdMode();
 
@@ -14,7 +12,6 @@ enableProdMode();
   providers: [{
     provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true }
   }]
-  // styleUrls: ['./login.component.scss']
 })
 export class AddStorageComponent implements OnInit {
 
@@ -27,15 +24,15 @@ export class AddStorageComponent implements OnInit {
   delete: string = '';
 
   @Input()
-  required: boolean
+  required: boolean;
 
-  constructor(private _formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
-    this.formGroup = this._formBuilder.group({
-      nameCtrl: this._formBuilder.control('', [Validators.required]),
-      typeCtrl: this._formBuilder.control('', [Validators.required]),
-      emails: this._formBuilder.array([])
+    this.formGroup = this.formBuilder.group({
+      nameCtrl: this.formBuilder.control('', [Validators.required]),
+      typeCtrl: this.formBuilder.control('', [Validators.required]),
+      emails: this.formBuilder.array([])
     });
 
     this.addEmail();
@@ -46,7 +43,7 @@ export class AddStorageComponent implements OnInit {
   }
 
   addEmail() {
-    this.em.push(this._formBuilder.control('', [Validators.required, Validators.email]));
+    this.em.push(this.formBuilder.control('', [Validators.required, Validators.email]));
   }
 
   deleteEmail(index) {
@@ -54,15 +51,11 @@ export class AddStorageComponent implements OnInit {
   }
 
   firstStepValid() {
-    if (this.formGroup.get('nameCtrl').errors != null || this.formGroup.get('typeCtrl').errors != null) {
-      return false;
-    }
-
-    return true;
+    return !(this.formGroup.get('nameCtrl').errors != null || this.formGroup.get('typeCtrl').errors != null);
   }
 
   allEmailsValid() {
-    if (this.em.length == 0) {
+    if (this.em.length === 0) {
       return false;
     }
 
@@ -76,14 +69,13 @@ export class AddStorageComponent implements OnInit {
   }
 
   addstorage() {
-      // TODO URL should be dynamic and injected by the server
-      this.http.post('api/storage', {
-        name: this.namestorage,
-        invitations: this.em.value,
-      }).subscribe((result: any) => {
-        this.router.navigate(['storage-system', 'storage']);
-      });
-    }
+    // TODO URL should be dynamic and injected by the server
+    this.http.post('api/storage', {
+      name: this.namestorage,
+      invitations: this.em.value,
+    }).subscribe((result: any) => {
+      this.router.navigate(['storage-system', 'storage']);
+    });
   }
-
 }
+

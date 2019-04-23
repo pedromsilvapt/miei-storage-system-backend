@@ -4,21 +4,36 @@
     <ng-container *ngFor="let step of steps; let index = index">
 
       <ng-template [ngIf]="step.active" [ngIfElse]="stepNotActive">
-        <div class="text-center" style="font-size: 1.2em;" appFilledCircle [size]="circleSize"
-             [isLast]="index === (steps.length - 1)">
-          <i *ngIf="step.iconClass" class="{{step.iconClass}}"></i>
+        <div class="text-center" style="font-size: 1em;" appCircleStep [size]="circleSize"
+             [isLast]="index === (steps.length - 1)" [isActive]="true">
+          <ng-template [ngIf]="!step.iconClass && !(index === (steps.length - 1))" [ngIfElse]="stepWithIcon">
+            <span style="font-size: 0.8em;">{{index + 1}}</span>
+          </ng-template>
+          <ng-template #stepWithIcon>
+            <ng-container *ngIf="!(index === (steps.length - 1))">
+              <i class="{{step.iconClass}}" style="margin-top: 8px;"></i>
+            </ng-container>
+            <ng-container *ngIf="index === (steps.length - 1)">
+              <i class="fas fa-check" style="margin-top: 8px;"></i>
+            </ng-container>
+          </ng-template>
+        </div>
+      </ng-template>
+
+      <ng-template #stepNotActive>
+        <div class="text-center" style="font-size: 1.2em;" appCircleStep [size]="circleSize"
+             [isLast]="index === (steps.length - 1)" [isActive]="false">
+          <ng-template [ngIf]="!step.iconClass" [ngIfElse]="stepWithIcon">
+            <span style="font-size: 0.8em;">{{index + 1}}</span>
+          </ng-template>
+          <ng-template #stepWithIcon>
+            <i *ngIf="step.iconClass" class="{{step.iconClass}}"></i>
+          </ng-template>
         </div>
       </ng-template>
 
       <ng-template [ngIf]="index !== (steps.length - 1)">
-        <div appLineSeparator [stepsLength]="steps.length" [padding]="padding" [size]="circleSize"></div>
-      </ng-template>
-
-      <ng-template #stepNotActive>
-        <div class="text-center" style="font-size: 1.2em;" appEmptyCircle [size]="circleSize"
-             [isLast]="index === (steps.length - 1)">
-          <i *ngIf="step.iconClass" class="{{step.iconClass}}"></i>
-        </div>
+        <div appLineSeparator [size]="circleSize"></div>
       </ng-template>
 
     </ng-container>
