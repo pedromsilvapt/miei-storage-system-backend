@@ -27,7 +27,7 @@
         </mat-form-field>
       </div>
       <div style="text-align:right">
-        <button mat-raised-button color="accent" matStepperNext>Próximo</button>
+        <button mat-raised-button color="accent" matStepperNext (click)="addStorage( 1 )">Próximo</button>
       </div>
     </mat-step>
 
@@ -63,17 +63,18 @@
         </div>
         <div style="text-align:right">
           <button mat-raised-button color="basic" matStepperPrevious>Voltar</button>
-          <button mat-raised-button color="accent" matStepperNext (click)="addstorage()">Próximo</button>
+          <button mat-raised-button color="accent" matStepperNext (click)="addStorage( 2 )">Próximo</button>
         </div>
         <!--</form>-->
       </mat-step>
     </ng-container>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
-      <div style="text-align:center"><h3 style="color:green">Dispensa Criada com Sucesso!</h3></div>
-      <div style="text-align:center">
-        <button mat-button matStepperPrevious>Voltar</button>
-        <button mat-button (click)="stepper.reset()">Refazer</button>
+      <div style="text-align:center"><h3 style="color:grey" *ngIf="savedStorage == null">A guardar pedido...</h3></div>
+      <div style="text-align:center"><h3 style="color:green" *ngIf="savedStorage != null">Dispensa Criada com Sucesso!</h3></div>
+      <div style="text-align:center" *ngIf="savedStorage != null">
+        <!--<button mat-button matStepperPrevious>Voltar</button>-->
+        <button mat-button (click)="openStoragePage()">Abrir Despensa</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>
