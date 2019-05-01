@@ -138,6 +138,14 @@ namespace StorageSystem.Controllers
 
                 await context.StorageInvitations.AddAsync(invitation);
 
+                // Adding an invitation to a storage that was not marked as shared before always makes it shared
+                if ( storage.Shared == false )
+                {
+                    storage.Shared = true;
+
+                    context.Storages.Update(storage);
+                }
+
                 await context.SaveChangesAsync();
             }
 
@@ -170,6 +178,15 @@ namespace StorageSystem.Controllers
             if (invitation != null)
             {
                 context.StorageInvitations.Remove(invitation);
+
+                // If there is only one invitation in this storage, and we are removing it,
+                // and if there are no active users as well, then we can consider this storage as not shared anymore
+                if (storage.Invitations.Count <= 1 && storage.Users.Count == 0)
+                {
+                    storage.Shared = false;
+
+                    context.Storages.Update(storage);
+                }
 
                 await context.SaveChangesAsync();
             }

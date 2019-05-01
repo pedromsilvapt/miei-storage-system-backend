@@ -93,7 +93,9 @@ namespace StorageSystem.Controllers
 
             using (var transaction = context.Database.BeginTransaction())
             {
-                Storage storageModel = new Storage() { Name = storageInput.Name, Shared = false, OwnerId = user.Id };
+                bool shared = storageInput.Invitations.Count > 0;
+
+                Storage storageModel = new Storage() { Name = storageInput.Name, Shared = shared, OwnerId = user.Id };
 
                 await context.Storages.AddAsync(storageModel);
 
