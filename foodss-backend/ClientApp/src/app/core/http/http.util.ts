@@ -16,7 +16,7 @@ export class HttpUtil {
     };
     const token: string = localStorage.getItem(environment.userToken);
     if (token) {
-      headerParams.Authorization = 'Bearer' + token;
+      headerParams.Authorization = 'Bearer ' + token;
     }
     return {headers: new HttpHeaders(headerParams)};
   }
