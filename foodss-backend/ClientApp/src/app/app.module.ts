@@ -17,7 +17,7 @@ import {ModalModule, TabsModule} from 'ngx-bootstrap';
 import {StorageSystemModule} from './storage-system/storage-system.module';
 import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
 import {ToastrModule} from 'ngx-toastr';
-
+//import { ExpireDateTableComponent } from './home/components/expire-date-table/expire-date-table.component';
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -37,6 +37,7 @@ import {ToastrModule} from 'ngx-toastr';
   declarations: [
     AppComponent,
     StorageSystemComponent,
+    //ExpireDateTableComponent,
   ],
   providers: [{
     provide: LocationStrategy,
