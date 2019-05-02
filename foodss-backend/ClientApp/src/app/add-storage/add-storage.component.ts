@@ -1,8 +1,9 @@
-import {Component, enableProdMode, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
+import { Component, enableProdMode, Input, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { HttpService } from '../core/http/http.service';
 
 enableProdMode();
 
@@ -22,11 +23,13 @@ export class AddStorageComponent implements OnInit {
   goalstorage: string;
   namestorage: string;
   delete: string = '';
+  // Will contain the returned object after saving
+  savedStorage: any = null;
 
   @Input()
   required: boolean;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpService, private router: Router) { }
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
@@ -68,14 +71,24 @@ export class AddStorageComponent implements OnInit {
     return true;
   }
 
-  addstorage() {
-    // TODO URL should be dynamic and injected by the server
-    this.http.post('api/storage', {
-      name: this.namestorage,
-      invitations: this.em.value,
-    }).subscribe((result: any) => {
+  addStorage(stepIndex: number) {
+    if (stepIndex == 2 || (stepIndex == 1 && this.goalstorage == this.show)) {
+      this.http.post('api/storage', {
+        name: this.namestorage,
+        // this.em.value is Array<string>, but since the server expects Array<{userEmail: string}> (an array of objects, each with a single variable "userEmail"), we have to convert it before sending
+        invitations: this.em.value.map(userEmail => ({ userEmail })),
+      }).subscribe((result: any) => {
+        this.savedStorage = result;
+      });
+    }
+  }
+
+  openStoragePage() {
+    if (this.savedStorage != null && this.savedStorage.id != null) {
+      // In the future if we have a storage details page, we can redirect there instead of the storages' list page
+      //this.router.navigate(['storage-system', 'storage', this.savedStorage.id]);
       this.router.navigate(['storage-system', 'storage']);
-    });
+    }
   }
 }
 
