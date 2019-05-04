@@ -30,22 +30,11 @@ namespace StorageSystem.Controllers
         [HttpPost("authenticate")]
         public async Task<ActionResult<UserDTO>> Authenticate(CredentialsDTO credentials)
         {
-            try
-            {
-                var result = await userService.AuthenticateCredentialsAsync(credentials.Email, credentials.Password);
+            var result = await userService.AuthenticateCredentialsAsync(credentials.Email, credentials.Password);
 
-                var (user, token) = result.Value;
+            var (user, token) = result.Value;
 
-                return UserSessionDTO.FromModel(user, token.RawData);
-            }
-            catch (IncorrectEmailOrPasswordException e)
-            {
-                return Unauthorized(e.Message);
-            }
-            catch (EmailNotVerifiedException e)
-            {
-                return Unauthorized(e.Message);
-            }
+            return UserSessionDTO.FromModel(user, token.RawData);
         }
 
 
@@ -53,16 +42,9 @@ namespace StorageSystem.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDTO>> RegisterUser(UserRegistrationDTO user)
         {
-            try
-            {
-                var userModel = await userService.Register(user.Email, user.Name, user.Password);
+            var userModel = await userService.Register(user.Email, user.Name, user.Password);
 
-                return UserDTO.FromModel(userModel);
-            }
-            catch (ExistingEmailException e)
-            {
-                return BadRequest(e.Message);
-            }
+            return UserDTO.FromModel(userModel);
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

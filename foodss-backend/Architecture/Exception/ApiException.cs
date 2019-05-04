@@ -5,21 +5,50 @@ using System.Threading.Tasks;
 
 namespace StorageSystem.Architecture.Exception
 {
-    public class ApiException
+    public class ApiException : System.Exception
     {
+        public int StatusCode { get; set; }
+
+        public ApiException(int statusCode, string message) : base(message)
+        {
+            this.StatusCode = statusCode;
+        }
     }
 
-    public class ExistingEmailException : System.Exception
+    /* Generic API Exceptions */
+
+    public class BadRequestException : ApiException
+    {
+        public BadRequestException(string message) : base(400, message) { }
+    }
+
+    public class UnauthorizedException : ApiException
+    {
+        public UnauthorizedException(string message) : base(401, message) { }
+    }
+
+    public class NotFoundException : ApiException
+    {
+        public NotFoundException(string message) : base(404, message) { }
+    }
+
+    public class InternalErrorException : ApiException
+    {
+        public InternalErrorException(string message) : base(500, message) { }
+    }
+
+    /* Specific API Exceptions */
+    public class ExistingEmailException : BadRequestException
     {
         public ExistingEmailException() : base(ApiErrorCode.EMAIL_ALREADY_INFORMED.ToString()) { }
     }
 
-    public class EmailNotVerifiedException : System.Exception
+    public class EmailNotVerifiedException : BadRequestException
     {
         public EmailNotVerifiedException() : base(ApiErrorCode.EMAIL_NOT_VERIFIED.ToString()) { }
     }
 
-    public class IncorrectEmailOrPasswordException : System.Exception
+    public class IncorrectEmailOrPasswordException : BadRequestException
     {
         public IncorrectEmailOrPasswordException() : base(ApiErrorCode.INCORRECT_EMAIL_OR_PASSWORD.ToString()) { }
     }
