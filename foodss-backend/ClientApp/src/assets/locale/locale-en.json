@@ -8,7 +8,22 @@
     "product": "Product",
     "amount": "Amount",
     "expire_date": "Expiration",
-    "operation_performed_successfully": "Operation performed successfully!"
+    "operation_performed_successfully": "Operation performed successfully!",
+    "login":  "Login",
+    "user": "User"
+  },
+  "error": {
+    "FAILED_TO_CONNECT_TO_SERVER": "Failed to connect to server.",
+    "API_ENDPOINT_NOT_FOUND": "API endpoint not found.",
+    "SERVER_INTERNAL_ERROR": "Server internal error.",
+    "NOT_AUTHENTICATED": "User not authenticated.",
+    "INCORRECT_EMAIL_OR_PASSWORD": "Incorrect email or password.",
+    "EMAIL_NOT_VERIFIED": "Email confirmation not done.",
+    "EMAIL_ALREADY_INFORMED": "Email already informed."
+  },
+  "avatar": {
+    "edit_profile": "Edit profile",
+    "sign_out": "Sign out"
   },
   "confirm_removal": {
     "remove": "Remove",
@@ -34,20 +49,28 @@
     "actions": "Actions"
   },
   "form": {
-    "name": "Name",
-    "email": "Email",
-    "username": "Username",
-    "password": "Password",
-    "confirm_password": "Confirm Password",
-    "account_sign_up": "Sign Up",
-    "next": "Next",
-    "previous": "Previous",
-    "back": "Back",
-    "back_to_login_page": "Back to login page",
-    "back_to_storage_page": "Back to storage page",
-    "submit": "Submit",
-    "required_field": "Required field.",
-    "invalid_email": "Invalid email.",
-    "invalid_confirm_password": "Passwords doesn't match."
+    "field": {
+      "name": "Name",
+      "email": "Email",
+      "username": "Username",
+      "password": "Password",
+      "confirm_password": "Confirm Password"
+    },
+    "info": {
+      "account_sign_up": "Sign Up"
+    },
+    "button": {
+      "next": "Next",
+      "previous": "Previous",
+      "back": "Back",
+      "back_to_login_page": "Back to login page",
+      "back_to_storage_page": "Back to storage page",
+      "submit": "Submit"
+    },
+    "validation": {
+      "required_field": "Required field.",
+      "invalid_email": "Invalid email.",
+      "invalid_confirm_password": "Passwords doesn't match."
+    }
   }
 }

@@ -6,7 +6,7 @@ import { Product } from '../../../product/model/product.model';
 @Component({
   selector: 'app-expire-date-table',
   templateUrl: './expire-date-table.component.html'
- 
+
 })
 export class ExpireDateTableComponent extends DatatablePageContent<Array<Product>> implements OnInit {
 
@@ -119,7 +119,7 @@ export class ExpireDateTableComponent extends DatatablePageContent<Array<Product
 
     columns.push(new ColumnDatatable('name', 'general.product', true, true));
     columns.push(new ColumnDatatable('amount', 'general.amount', true));
-    columns.push(new ColumnDatatable('expireDate', 'general.expire_date', true));
+    columns.push(new ColumnDatatable('expireDate', 'general.expire_date', true, false, 'date'));
     columns.push(new ColumnDatatable('actions', 'datatable.actions', false));
 
     return columns;
@@ -131,11 +131,10 @@ export class ExpireDateTableComponent extends DatatablePageContent<Array<Product
 
     if (products) {
       products.forEach(product => {
-        //console.log(product.expireDate.toISOString());
         const row = {
           id: product.id,
           name: product.name,
-          expire_date: product.expireDate.toDateString(),//.toISOString();
+          expireDate: product.expireDate,
           nameRouterLink: 'product/' + product.id,
           amount: product.amount,
           actions: this.createDatatableActionButtons()

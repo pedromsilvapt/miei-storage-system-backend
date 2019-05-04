@@ -1,15 +1,15 @@
 <ng-template [ngIf]="validate && input.invalid">
 
-  <ng-template [ngIf]="input.errors.required">
-    <div class="input-error-feedback" translate>form.required_field</div>
+  <ng-template [ngIf]="input.errors['required']">
+    <div class="input-error-feedback" translate>form.validation.required_field</div>
   </ng-template>
 
-  <ng-template [ngIf]="input.errors.forbiddenEmail">
-    <div class="input-error-feedback" translate>form.invalid_email</div>
+  <ng-template [ngIf]="input.errors['forbiddenEmail']">
+    <div class="input-error-feedback" translate>form.validation.invalid_email</div>
   </ng-template>
 
-  <ng-template [ngIf]="input.errors.forbiddenConfirmPassword">
-    <div class="input-error-feedback" translate>form.invalid_confirm_password</div>
+  <ng-template [ngIf]="input.errors['forbiddenConfirmPassword']">
+    <div class="input-error-feedback" translate>form.validation.invalid_confirm_password</div>
   </ng-template>
 
 </ng-template>

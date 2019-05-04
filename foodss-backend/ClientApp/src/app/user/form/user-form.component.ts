@@ -1,7 +1,10 @@
-import {Component, HostListener, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {User} from '../model/user.model';
 import {StepperComponent} from '../components/stepper/stepper.component';
 import {Language} from 'angular-l10n';
+import {UserRegisterDTO} from '../model/user-register.dto.model';
+import {UserService} from '../user.service';
+import {MessageUtil} from '../../shared/util/message.util';
 
 @Component({
   selector: 'app-user-form',
@@ -18,8 +21,9 @@ export class UserFormComponent implements OnInit {
   public user: User = new User();
   public nextButtonClicked = false;
   public invalidEmail = false;
+  public existingEmails: Array<string> = [];
 
-  constructor() { }
+  constructor(private userService: UserService, private messageUtil: MessageUtil) { }
 
   ngOnInit() {
   }
@@ -49,12 +53,21 @@ export class UserFormComponent implements OnInit {
   }
 
   private submitForm(event: {stepper: StepperComponent, activeStep: number}): void {
-    // TODO Submit on backend
-    Promise.resolve(null).then(() => {
-      console.log(this.user);
+    const userRegisterDTO: UserRegisterDTO = new UserRegisterDTO(this.user.name, this.user.email, this.user.password);
+    this.userService.saveUser(userRegisterDTO).subscribe(() => {
       event.stepper.activateStep(event.activeStep + 1);
-    }).catch(() => {
-      // TODO show error on toastr lib
+    }, error => {
+      this.formSecondStep.resetForm();
+      if (error.message === 'error.EMAIL_ALREADY_INFORMED') {
+        event.stepper.activateStep(event.activeStep - 1);
+        const inputEmailValue = this.formFirstStep.controls.email.value;
+        if (this.existingEmails.indexOf(inputEmailValue) <= -1) {
+          this.existingEmails.push(this.formFirstStep.controls.email.value);
+        }
+        this.messageUtil.addErrorMessage('general.user', error.message);
+      } else {
+        this.messageUtil.addErrorMessage('general.user', error.message);
+      }
     });
   }
 

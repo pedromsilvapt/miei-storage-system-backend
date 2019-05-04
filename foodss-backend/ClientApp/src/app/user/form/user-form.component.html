@@ -6,7 +6,7 @@
 
           <div class="card-body">
             <div class="pull-left" translate>
-              <h2 translate>form.account_sign_up</h2>
+              <h2 translate>form.info.account_sign_up</h2>
             </div>
             <div class="pull-right">
               <app-language-selector></app-language-selector>
@@ -16,7 +16,7 @@
           <div class="card-body">
             <app-stepper (clickNextStepButton)="callBackOnClickNextStepButton($event)"
                          (clickSubmitButton)="callbackOnClickSubmitButton($event)"
-                         [titleLastStepButton]="'form.back_to_login_page'" [routerLinkLastStepButton]="'/login'">
+                         [titleLastStepButton]="'form.button.back_to_login_page'" [routerLinkLastStepButton]="'/login'">
 
               <app-step>
                 <form #formFirstStep="ngForm">
@@ -24,7 +24,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="label-required" translate>form.name</label>
+                        <label class="label-required" translate>form.field.name</label>
                         <input type="text" class="form-control" #inputName="ngModel"
                                [(ngModel)]="user.name" name="name" required>
                         <app-input-errors [input]="inputName" [validate]="nextButtonClicked"></app-input-errors>
@@ -35,10 +35,15 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="label-required" translate>form.email</label>
+                        <label class="label-required" translate>form.field.email</label>
                         <input type="text"  class="form-control" #inputEmail="ngModel" appValidateEmail
                                [(ngModel)]="user.email" name="email" required>
                         <app-input-errors [input]="inputEmail" [validate]="nextButtonClicked"></app-input-errors>
+                        <ng-container *ngFor="let existingEmail of existingEmails">
+                          <ng-template [ngIf]="existingEmail === inputEmail.value">
+                            <div class="input-error-feedback" translate>error.EMAIL_ALREADY_INFORMED</div>
+                          </ng-template>
+                        </ng-container>
                       </div>
                     </div>
                   </div>
@@ -52,7 +57,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="label-required" translate>form.password</label>
+                        <label class="label-required" translate>form.field.password</label>
                         <input type="password"  class="form-control" #inputPassword="ngModel"
                                [(ngModel)]="user.password" name="password" required>
                         <app-input-errors [input]="inputPassword" [validate]="nextButtonClicked"></app-input-errors>
@@ -63,7 +68,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
-                        <label class="label-required" translate>form.confirm_password</label>
+                        <label class="label-required" translate>form.field.confirm_password</label>
                         <input type="password" class="form-control" #inputConfirmPassword="ngModel"
                                [appValidateConfirmPassword]="inputPassword"
                                [(ngModel)]="user.confirmPassword" name="confirmPassword" required>

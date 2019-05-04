@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StorageSystem.Architecture.Exception;
 using StorageSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,6 @@ using System.Threading.Tasks;
 
 namespace StorageSystem.Services
 {
-    public class ExistingEmailException : Exception
-    {
-        public ExistingEmailException(string email) : base("Email is already registerd: " + email) { }
-    }
-
     public class UserService
     {
         private StorageSystemContext context;
@@ -58,7 +54,7 @@ namespace StorageSystem.Services
 
             if (existingUser != null)
             {
-                throw new ExistingEmailException(email);
+                throw new ExistingEmailException();
             }
 
             var (hashed, salt) = HashPassword(password);
@@ -74,19 +70,19 @@ namespace StorageSystem.Services
 
         public async Task<(User, JwtSecurityToken)?> AuthenticateCredentialsAsync(string email, string password)
         {
-            var user = await context.Users
-                .Where(u => u.Email == email)
-                .FirstOrDefaultAsync();
+            var user = await context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
 
-            if ((user == null) || (user.Verified == false))
+            if (user == null)
             {
-                return null;
+                throw new IncorrectEmailOrPasswordException();
             }
-
-            // Validate the password
-            if (HashPassword(password, user.Salt) != user.Password)
+            else if (HashPassword(password, user.Salt) != user.Password)
             {
-                return null;
+                throw new IncorrectEmailOrPasswordException();
+            }
+            else if (!user.Verified)
+            {
+                throw new EmailNotVerifiedException();
             }
 
             var secret = configuration.GetValue<string>("Security:JwtSecret");

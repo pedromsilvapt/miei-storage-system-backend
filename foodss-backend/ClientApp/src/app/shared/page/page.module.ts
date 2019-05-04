@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 
 import {
   AppAsideModule,
@@ -13,10 +12,7 @@ import {LeftSidebarComponent} from './left-sidebar/left-sidebar.component';
 import {PageFooterComponent} from './footer/page-footer.component';
 import {NavbarComponent} from './header/navbar/navbar.component';
 import {BreadcrumbComponent} from './header/breadcrumb/breadcrumb.component';
-import {RouterModule} from '@angular/router';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
-import {BsDropdownModule} from 'ngx-bootstrap';
-import {TranslationModule} from 'angular-l10n';
 import {RightSidebarComponent} from './right-sidebar/right-sidebar.component';
 import {SharedModule} from '../shared.module';
 

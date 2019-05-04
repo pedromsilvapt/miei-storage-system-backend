@@ -1,4 +1,4 @@
-import {Component, ContentChildren, ElementRef, EventEmitter, Input, OnInit, Output, QueryList} from '@angular/core';
+import {Component, ContentChildren, EventEmitter, Input, OnInit, Output, QueryList} from '@angular/core';
 import {StepComponent} from './step/step.component';
 
 @Component({
@@ -13,7 +13,7 @@ export class StepperComponent implements OnInit {
   activeStep: number;
 
   @Input() padding = 5;
-  @Input() titleLastStepButton = 'form.back';
+  @Input() titleLastStepButton = 'form.button.back';
   @Input() routerLinkLastStepButton: string;
   @Output() clickNextStepButton: EventEmitter<any> = new EventEmitter();
   @Output() clickSubmitButton: EventEmitter<any> = new EventEmitter();

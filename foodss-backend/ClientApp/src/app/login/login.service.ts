@@ -23,8 +23,7 @@ export class LoginService {
         this.router.navigateByUrl('/storage-system');
       }, error => {
         password = '';
-        console.log(error);
-        this.messageUtil.addErrorMessage('login', error.error.message);
+        this.messageUtil.addErrorMessage('general.login', error.message);
       });
   }
 

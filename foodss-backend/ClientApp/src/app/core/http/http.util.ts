@@ -1,6 +1,7 @@
 import {environment} from '../../../environments/environment';
 import {HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {throwError} from 'rxjs';
+import {HttpErrorModel} from './http-error.model';
 
 export class HttpUtil {
 
@@ -22,6 +23,19 @@ export class HttpUtil {
   }
 
   public static processError(error: HttpErrorResponse) {
-    return throwError(error);
+    let errorMessage: string;
+    console.log(error);
+    if (error.error instanceof ProgressEvent) {
+      errorMessage = 'error.FAILED_TO_CONNECT_TO_SERVER';
+      return throwError(new HttpErrorModel(error.status, errorMessage));
+    } else if (error.status === 404) {
+      errorMessage = 'error.API_ENDPOINT_NOT_FOUND';
+      return throwError(new HttpErrorModel(error.status, errorMessage));
+    } else if (error.status === 500) {
+      errorMessage = 'error.SERVER_INTERNAL_ERROR';
+      return throwError(new HttpErrorModel(error.status, errorMessage));
+    } else {
+      return throwError(new HttpErrorModel(error.status, 'error.' + error.error));
+    }
   }
 }

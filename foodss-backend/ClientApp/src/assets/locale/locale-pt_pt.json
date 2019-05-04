@@ -8,7 +8,22 @@
     "product": "Produto",
     "amount": "Quantidade",
     "expire_date": "Validade",
-    "operation_performed_successfully": "Operação realizada com sucesso!"
+    "operation_performed_successfully": "Operação realizada com sucesso!",
+    "login":  "Login",
+    "user": "Utilizador"
+  },
+  "error": {
+    "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",
+    "API_ENDPOINT_NOT_FOUND": "Endpoint não encontrado na API.",
+    "SERVER_INTERNAL_ERROR": "Erro interno no servidor.",
+    "NOT_AUTHENTICATED": "Utilizador não autenticado.",
+    "INCORRECT_EMAIL_OR_PASSWORD": "Email ou senha incorretos.",
+    "EMAIL_NOT_VERIFIED": "Confirmação de email não efectuada.",
+    "EMAIL_ALREADY_INFORMED": "Email já registado."
+  },
+  "avatar": {
+    "edit_profile": "Editar perfil",
+    "sign_out": "Sair"
   },
   "confirm_removal": {
     "remove": "Remover",
@@ -34,20 +49,28 @@
     "actions": "Ações"
   },
   "form": {
-    "name": "Nome",
-    "email": "Email",
-    "username": "Login",
-    "password": "Senha",
-    "confirm_password": "Confirmar senha",
-    "account_sign_up": "Registo de Conta",
-    "next": "Próximo",
-    "previous": "Anterior",
-    "back": "Voltar",
-    "back_to_login_page": "Voltar à página de login",
-    "back_to_storage_page": "Voltar à página de despensa",
-    "submit": "Submeter",
-    "required_field": "Campo obrigatório.",
-    "invalid_email": "Email inválido.",
-    "invalid_confirm_password": "Senhas não conferem."
+    "field": {
+      "name": "Nome",
+      "email": "Email",
+      "username": "Login",
+      "password": "Senha",
+      "confirm_password": "Confirmar senha"
+    },
+    "info": {
+      "account_sign_up": "Registo de Conta"
+    },
+    "button": {
+      "next": "Próximo",
+      "previous": "Anterior",
+      "back": "Voltar",
+      "back_to_login_page": "Voltar à página de login",
+      "back_to_storage_page": "Voltar à página de despensa",
+      "submit": "Submeter"
+    },
+    "validation": {
+      "required_field": "Campo obrigatório.",
+      "invalid_email": "Email inválido.",
+      "invalid_confirm_password": "Senhas não conferem."
+    }
   }
 }

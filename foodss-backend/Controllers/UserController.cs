@@ -6,38 +6,12 @@ using StorageSystem.Models;
 using StorageSystem.Services;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using StorageSystem.Controllers.DTO;
+using StorageSystem.Architecture;
+using StorageSystem.Architecture.Exception;
 
 namespace StorageSystem.Controllers
 {
-    public class CredentialsDTO
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class UserDTO
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-
-        public static UserDTO FromModel(User model) => new UserDTO() { Id = model.Id, Name = model.Name, Email = model.Email };
-    }
-
-    public class UserSessionDTO : UserDTO
-    {
-        public string Token { get; set; }
-
-        public static new UserSessionDTO FromModel(User model, string token = null) => new UserSessionDTO() { Id = model.Id, Name = model.Name, Email = model.Email, Token = token };
-    }
-
-    public class UserRegistrationDTO
-    {
-        public string Email { get; set; }
-        public string Name { get; set; }
-        public string Password { get; set; }
-    }
-
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : Controller
@@ -56,16 +30,22 @@ namespace StorageSystem.Controllers
         [HttpPost("authenticate")]
         public async Task<ActionResult<UserDTO>> Authenticate(CredentialsDTO credentials)
         {
-            var result = await userService.AuthenticateCredentialsAsync(credentials.Email, credentials.Password);
-
-            if (result == null)
+            try
             {
-                return Unauthorized(new { message = "Wrong email or password." });
+                var result = await userService.AuthenticateCredentialsAsync(credentials.Email, credentials.Password);
+
+                var (user, token) = result.Value;
+
+                return UserSessionDTO.FromModel(user, token.RawData);
             }
-
-            var (user, token) = result.Value;
-
-            return UserSessionDTO.FromModel(user, token.RawData);
+            catch (IncorrectEmailOrPasswordException e)
+            {
+                return Unauthorized(e.Message);
+            }
+            catch (EmailNotVerifiedException e)
+            {
+                return Unauthorized(e.Message);
+            }
         }
 
 
@@ -79,9 +59,9 @@ namespace StorageSystem.Controllers
 
                 return UserDTO.FromModel(userModel);
             }
-            catch (ExistingEmailException ex)
+            catch (ExistingEmailException e)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(e.Message);
             }
         }
 
