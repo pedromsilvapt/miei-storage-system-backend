@@ -35,7 +35,7 @@ export class HttpUtil {
       errorMessage = 'error.SERVER_INTERNAL_ERROR';
       return throwError(new HttpErrorModel(error.status, errorMessage));
     } else {
-      return throwError(new HttpErrorModel(error.status, 'error.' + error.error));
+      return throwError(new HttpErrorModel(error.status, 'error.' + error.error.error));
     }
   }
 }

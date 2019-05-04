@@ -82,6 +82,7 @@ namespace StorageSystem
 
                 var result = JsonConvert.SerializeObject(message);
                 context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)message.GetType().GetProperty("code").GetValue(message, null);
                 await context.Response.WriteAsync(result);
             }));
 
