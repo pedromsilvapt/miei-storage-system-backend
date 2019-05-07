@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StorageSystem.Architecture.Exception;
 using StorageSystem.Controllers.DTO;
 using StorageSystem.Models;
 using StorageSystem.Services;
@@ -78,20 +79,20 @@ namespace StorageSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<StorageInvitationDTO>>> ListInvitations(int storageId)
+        public async Task<ICollection<StorageInvitationDTO>> ListInvitations(int storageId)
         {
             Storage storage = await GetStorage(storageId);
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             User user = await userService.GetUserAsync(this.User);
 
             if (!CanUserSeeInvitations(user, storage, storage.Users))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             return storage.Invitations
@@ -100,20 +101,20 @@ namespace StorageSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<StorageInvitationDTO>> CreateInvitation(int storageId, StorageInvitationInputDTO input)
+        public async Task<StorageInvitationDTO> CreateInvitation(int storageId, StorageInvitationInputDTO input)
         {
             Storage storage = await GetStorage(storageId);
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             User user = await userService.GetUserAsync(this.User);
 
             if (!CanUserSeeInvitations(user, storage, storage.Users))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             // If we try to invite an email already associated with an account...
@@ -125,7 +126,7 @@ namespace StorageSystem.Controllers
             // If the user exist and is already a member of the storage, we cannot invite him/her
             if (emailOwner != null && storage.Users.Where(u => u.UserId == emailOwner.Id).Count() > 0)
             {
-                return BadRequest();
+                throw new InviteExistingStorageMemberException();
             }
 
             StorageInvitation invitation = storage.Invitations
@@ -140,7 +141,7 @@ namespace StorageSystem.Controllers
                 await context.StorageInvitations.AddAsync(invitation);
 
                 // Adding an invitation to a storage that was not marked as shared before always makes it shared
-                if ( storage.Shared == false )
+                if (storage.Shared == false)
                 {
                     storage.Shared = true;
 
@@ -154,22 +155,22 @@ namespace StorageSystem.Controllers
         }
 
         [HttpDelete("{email}")]
-        public async Task<ActionResult> RemoveInvitation(int storageId, string email)
+        public async Task RemoveInvitation(int storageId, string email)
         {
             Storage storage = await GetStorage(storageId);
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             User user = await userService.GetUserAsync(this.User);
 
             if (!CanUserSeeInvitations(user, storage, storage.Users))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
-            
+
             StorageInvitation invitation = storage.Invitations
                 .Where(i => i.UserEmail == email)
                 .FirstOrDefault();
@@ -191,8 +192,6 @@ namespace StorageSystem.Controllers
 
                 await context.SaveChangesAsync();
             }
-
-            return Ok();
         }
     }
 }

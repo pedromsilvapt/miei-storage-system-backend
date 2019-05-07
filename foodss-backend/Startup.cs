@@ -73,16 +73,19 @@ namespace StorageSystem
 
                 if (apiException != null)
                 {
+                    context.Response.StatusCode = apiException.StatusCode;
+
                     message = new { code = apiException.StatusCode, error = apiException.Message };
                 }
                 else
                 {
+                    context.Response.StatusCode = 500;
+
                     message = new { code = 500, error = exception.Message, stack = env.IsDevelopment() ? exception.StackTrace : null };
                 }
 
                 var result = JsonConvert.SerializeObject(message);
                 context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int)message.GetType().GetProperty("code").GetValue(message, null);
                 await context.Response.WriteAsync(result);
             }));
 

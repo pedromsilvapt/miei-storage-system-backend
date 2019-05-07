@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StorageSystem.Architecture.Exception;
 using StorageSystem.Models;
 using StorageSystem.Services;
 using static StorageSystem.Controllers.StorageInvitationController;
@@ -64,7 +65,7 @@ namespace StorageSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StorageDTO>> FindStorageById(int id)
+        public async Task<StorageDTO> FindStorageById(int id)
         {
             int userId = userService.GetUserId(this.User);
 
@@ -74,20 +75,20 @@ namespace StorageSystem.Controllers
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             // If the user is neither the owner of the storage, nor is he inside the user's collection, we return an error
             if ((storage.OwnerId != userId) && (storage.Users.FirstOrDefault(u => u.UserId == userId) == null))
             {
-                return this.Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             return StorageDTO.FromModel(storage);
         }
 
         [HttpPost]
-        public async Task<ActionResult<StorageDTO>> CreateStorage(StorageInputDTO storageInput)
+        public async Task<StorageDTO> CreateStorage(StorageInputDTO storageInput)
         {
             User user = await userService.GetUserAsync(this.User);
 
@@ -109,7 +110,7 @@ namespace StorageSystem.Controllers
                         {
                             transaction.Rollback();
 
-                            return BadRequest(new { message = "Can't create invitation for yourself." });
+                            throw new InviteSelfException();
                         }
 
                         StorageInvitation invitation = new StorageInvitation() { StorageId = storageModel.Id, UserEmail = invitationInput.UserEmail };
@@ -127,7 +128,7 @@ namespace StorageSystem.Controllers
         }
 
         [HttpPost("{id}")]
-        public async Task<ActionResult<StorageDTO>> UpdateStorage(int id, StorageInputDTO storageInput)
+        public async Task<StorageDTO> UpdateStorage(int id, StorageInputDTO storageInput)
         {
             int userId = userService.GetUserId(this.User);
 
@@ -135,13 +136,13 @@ namespace StorageSystem.Controllers
 
             if (storageModel == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             // TODO Decide if only the owner should be able to edit a storage, or any member of the storage can edit it as well
             if (storageModel.OwnerId != userId)
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             // TODO There should be further input validation, such as a minimum length for the name attribute
@@ -156,7 +157,7 @@ namespace StorageSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteStorageById(int id)
+        public async Task DeleteStorageById(int id)
         {
             int userId = userService.GetUserId(this.User);
 
@@ -164,20 +165,18 @@ namespace StorageSystem.Controllers
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             // Let's assume only the owner can delete a storage
             if (storage.OwnerId != userId)
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             context.Storages.Remove(storage);
 
             await context.SaveChangesAsync();
-
-            return Ok();
         }
     }
 }

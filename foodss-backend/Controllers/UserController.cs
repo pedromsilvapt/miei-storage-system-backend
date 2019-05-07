@@ -28,7 +28,7 @@ namespace StorageSystem.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<ActionResult<UserDTO>> Authenticate(CredentialsDTO credentials)
+        public async Task<UserDTO> Authenticate(CredentialsDTO credentials)
         {
             var result = await userService.AuthenticateCredentialsAsync(credentials.Email, credentials.Password);
 
@@ -40,7 +40,7 @@ namespace StorageSystem.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserDTO>> RegisterUser(UserRegistrationDTO user)
+        public async Task<UserDTO> RegisterUser(UserRegistrationDTO user)
         {
             var userModel = await userService.Register(user.Email, user.Name, user.Password);
 
@@ -49,7 +49,7 @@ namespace StorageSystem.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("session")]
-        public async Task<ActionResult<UserDTO>> GetCurrentSession()
+        public async Task<UserDTO> GetCurrentSession()
         {
             User user = await userService.GetUserAsync(this.User);
 
@@ -58,7 +58,7 @@ namespace StorageSystem.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}/verify/{code}")]
-        public async Task<ActionResult<UserDTO>> VerifyUser(int id, string code)
+        public async Task<UserDTO> VerifyUser(int id, string code)
         {
             User user = await context.Users
                 .Where(u => (u.Id == id) && (u.Verified == false) && (u.VerificationCode == code))
@@ -66,7 +66,7 @@ namespace StorageSystem.Controllers
 
             if (user == null)
             {
-                return BadRequest();
+                throw new UserNotFoundException();
             }
 
             user.VerificationCode = null;

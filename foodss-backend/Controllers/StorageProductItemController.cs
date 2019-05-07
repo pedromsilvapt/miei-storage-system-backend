@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StorageSystem.Architecture.Exception;
 using StorageSystem.Models;
 using StorageSystem.Services;
 
@@ -96,27 +97,27 @@ namespace StorageSystem.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<ProductItemDTO>>> ListProductItems(int storageId, int productId, [FromQuery]ListQuery query)
+        public async Task<ICollection<ProductItemDTO>> ListProductItems(int storageId, int productId, [FromQuery]ListQuery query)
         {
             Storage storage = await GetStorage(storageId);
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             User user = await userService.GetUserAsync(this.User);
 
             if (!CanUserSeeProducts(user, storage, storage.Users))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             Product product = await GetProduct(productId);
 
             if ((product == null) || (product.StorageId != storage.Id))
             {
-                return NotFound();
+                throw new ProductNotFoundException();
             }
 
             return await context.ProductItems
@@ -130,27 +131,27 @@ namespace StorageSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductItemDTO>> DetailsProductItem (int storageId, int productId, int id)
+        public async Task<ProductItemDTO> DetailsProductItem(int storageId, int productId, int id)
         {
             Storage storage = await GetStorage(storageId);
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             User user = await userService.GetUserAsync(this.User);
 
             if (!CanUserSeeProducts(user, storage, storage.Users))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             Product product = await GetProduct(productId);
 
             if ((product == null) || (product.StorageId != storage.Id))
             {
-                return NotFound();
+                throw new ProductNotFoundException();
             }
 
             ProductItem item = await context.ProductItems
@@ -159,39 +160,39 @@ namespace StorageSystem.Controllers
 
             if (item == null)
             {
-                return NotFound();
+                throw new ProductNotFoundException();
             }
 
             if (!CanUserSeeItem(user, item))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             return ProductItemDTO.FromModel(item);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ICollection<ProductItemDTO>>> CreateProductItem(int storageId, int productId, ProductItemInputDTO input)
+        public async Task<ICollection<ProductItemDTO>> CreateProductItem(int storageId, int productId, ProductItemInputDTO input)
         {
             Storage storage = await GetStorage(storageId);
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             User user = await userService.GetUserAsync(this.User);
 
             if (!CanUserSeeProducts(user, storage, storage.Users))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             Product product = await GetProduct(productId);
 
             if ((product == null) || (product.StorageId != storage.Id))
             {
-                return NotFound();
+                throw new ProductNotFoundException();
             }
 
             bool productHasExpiryDate = product.HasExpiryDate;
@@ -199,7 +200,7 @@ namespace StorageSystem.Controllers
 
             if (productHasExpiryDate != itemHasExpiryDate)
             {
-                return BadRequest(new { message = "Product and item expiry dates have to match." });
+                throw new ProductExpiryDateMismatchException();
             }
 
             var now = DateTime.Now;
@@ -207,7 +208,7 @@ namespace StorageSystem.Controllers
             // Do not accept expiry dates that are before now
             if ((input.ExpiryDate != null) && (DateTime.Compare(input.ExpiryDate.Value, now) <= 0))
             {
-                return BadRequest(new { message = "Expiry date cannot be before now." });
+                throw new ProductExpiryDateMismatchException();
             }
 
             ProductItem[] items = Enumerable.Range(0, input.Quantity ?? 1).Select(n => new ProductItem()
@@ -228,27 +229,28 @@ namespace StorageSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> RemoveProductItem(int storageId, int productId, int id)
+        public async Task RemoveProductItem(int storageId, int productId, int id)
         {
             Storage storage = await GetStorage(storageId);
 
             if (storage == null)
             {
-                return NotFound();
+                throw new StorageNotFoundException();
             }
 
             User user = await userService.GetUserAsync(this.User);
 
             if (!CanUserSeeProducts(user, storage, storage.Users))
             {
-                return Unauthorized();
+                // TODO Rename?
+                throw new UnauthorizedStorageAccessException();
             }
 
             Product product = await GetProduct(productId);
 
             if ((product == null) || (product.StorageId != storage.Id))
             {
-                return NotFound();
+                throw new ProductNotFoundException();
             }
 
             ProductItem item = await context.ProductItems
@@ -257,19 +259,17 @@ namespace StorageSystem.Controllers
 
             if (item == null)
             {
-                return NotFound();
+                throw new ProductNotFoundException();
             }
 
             if (!CanUserSeeItem(user, item))
             {
-                return Unauthorized();
+                throw new UnauthorizedStorageAccessException();
             }
 
             context.ProductItems.Remove(item);
 
             await context.SaveChangesAsync();
-
-            return Ok();
         }
     }
 }
