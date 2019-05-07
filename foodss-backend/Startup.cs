@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using StorageSystem.Services;
 
 namespace StorageSystem
 {
@@ -56,7 +57,11 @@ namespace StorageSystem
                 };
             });
 
-            services.AddScoped<Services.UserService, Services.UserService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<StorageService>();
+            services.AddScoped<StorageInvitationService>();
+            services.AddScoped<StorageProductService>();
+            services.AddScoped<StorageProductItemService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

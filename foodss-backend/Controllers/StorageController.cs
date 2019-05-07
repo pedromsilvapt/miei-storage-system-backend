@@ -5,33 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StorageSystem.Architecture.Exception;
+using StorageSystem.Controllers.DTO;
 using StorageSystem.Models;
 using StorageSystem.Services;
-using static StorageSystem.Controllers.StorageInvitationController;
 
 namespace StorageSystem.Controllers
 {
-    // Used when creating/updating a storage, sent from the client to the server
-    public class StorageInputDTO
-    {
-        public string Name { get; set; }
-
-        public ICollection<StorageInvitationInputDTO> Invitations;
-    }
-
-    // Used when viewing one/many storage(s), sent from the server to the client
-    public class StorageDTO
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int OwnerId { get; set; }
-        public bool Shared { get; set; }
-
-        public static StorageDTO FromModel(Storage model) => new StorageDTO() { Id = model.Id, Name = model.Name, OwnerId = model.OwnerId, Shared = model.Shared };
-    }
-
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
@@ -41,27 +20,25 @@ namespace StorageSystem.Controllers
 
         private readonly UserService userService;
 
-        public StorageController(StorageSystemContext context, UserService userService)
+        private readonly StorageService storageService;
+
+        public StorageController(StorageSystemContext context, UserService userService, StorageService storageService)
         {
             this.context = context;
             this.userService = userService;
+            this.storageService = storageService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<StorageDTO>> GetStorages()
+        public async Task<ICollection<StorageDTO>> GetStorages()
         {
             int userId = userService.GetUserId(this.User);
 
-            // We query the pivot table to get the storage id's associated with the user
-            ICollection<int> storageIds = await context.StorageUsers
-                    .Where(storage => storage.UserId == userId)
-                    .Select(storage => storage.StorageId)
-                    .ToListAsync();
+            ICollection<Storage> storages = await storageService.ListStoragesForUser(userId);
 
-            return await context.Storages
-                .Where(storage => storage.OwnerId == userId || storageIds.Contains(storage.Id))
-                .Select(storage => StorageDTO.FromModel(storage))
-                .ToListAsync();
+            return storages
+                .Select(StorageDTO.FromModel)
+                .ToList();
         }
 
         [HttpGet("{id}")]
@@ -69,20 +46,7 @@ namespace StorageSystem.Controllers
         {
             int userId = userService.GetUserId(this.User);
 
-            Storage storage = await context.Storages
-                .Include(s => s.Users)
-                .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (storage == null)
-            {
-                throw new StorageNotFoundException();
-            }
-
-            // If the user is neither the owner of the storage, nor is he inside the user's collection, we return an error
-            if ((storage.OwnerId != userId) && (storage.Users.FirstOrDefault(u => u.UserId == userId) == null))
-            {
-                throw new UnauthorizedStorageAccessException();
-            }
+            Storage storage = await storageService.GetStorage(userId, id);
 
             return StorageDTO.FromModel(storage);
         }
@@ -92,39 +56,13 @@ namespace StorageSystem.Controllers
         {
             User user = await userService.GetUserAsync(this.User);
 
-            using (var transaction = context.Database.BeginTransaction())
-            {
-                bool shared = storageInput.Invitations.Count > 0;
+            ICollection<string> invitations = storageInput.Invitations
+                ?.Select(invitation => invitation.UserEmail)
+                ?.ToList();
 
-                Storage storageModel = new Storage() { Name = storageInput.Name, Shared = shared, OwnerId = user.Id };
+            Storage storage = await storageService.CreateStorage(user, storageInput.Name, invitations);
 
-                await context.Storages.AddAsync(storageModel);
-
-                if (storageInput.Invitations != null)
-                {
-                    storageInput.Invitations = storageInput.Invitations.Distinct(new StorageInvitationInputDTOComparer()).ToList();
-
-                    foreach (StorageInvitationInputDTO invitationInput in storageInput.Invitations)
-                    {
-                        if (invitationInput.UserEmail == user.Email)
-                        {
-                            transaction.Rollback();
-
-                            throw new InviteSelfException();
-                        }
-
-                        StorageInvitation invitation = new StorageInvitation() { StorageId = storageModel.Id, UserEmail = invitationInput.UserEmail };
-
-                        await context.StorageInvitations.AddAsync(invitation);
-                    }
-                }
-
-                await context.SaveChangesAsync();
-
-                transaction.Commit();
-
-                return StorageDTO.FromModel(storageModel);
-            }
+            return StorageDTO.FromModel(storage);
         }
 
         [HttpPost("{id}")]
@@ -132,51 +70,17 @@ namespace StorageSystem.Controllers
         {
             int userId = userService.GetUserId(this.User);
 
-            Storage storageModel = await context.Storages.FindAsync(id);
+            Storage storage = await storageService.UpdateStorage(userId, id, storageInput.Name);
 
-            if (storageModel == null)
-            {
-                throw new StorageNotFoundException();
-            }
-
-            // TODO Decide if only the owner should be able to edit a storage, or any member of the storage can edit it as well
-            if (storageModel.OwnerId != userId)
-            {
-                throw new UnauthorizedStorageAccessException();
-            }
-
-            // TODO There should be further input validation, such as a minimum length for the name attribute
-            // in order to prevent empty storage names ""
-            storageModel.Name = storageInput.Name;
-
-            context.Storages.Update(storageModel);
-
-            await context.SaveChangesAsync();
-
-            return StorageDTO.FromModel(storageModel);
+            return StorageDTO.FromModel(storage);
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteStorageById(int id)
+        public async Task DeleteStorage(int id)
         {
             int userId = userService.GetUserId(this.User);
 
-            Storage storage = await context.Storages.FindAsync(id);
-
-            if (storage == null)
-            {
-                throw new StorageNotFoundException();
-            }
-
-            // Let's assume only the owner can delete a storage
-            if (storage.OwnerId != userId)
-            {
-                throw new UnauthorizedStorageAccessException();
-            }
-
-            context.Storages.Remove(storage);
-
-            await context.SaveChangesAsync();
+            await storageService.DeleteStorage(userId, id);
         }
     }
 }

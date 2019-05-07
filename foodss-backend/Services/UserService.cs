@@ -68,6 +68,27 @@ namespace StorageSystem.Services
             return newUser;
         }
 
+        public async Task<User> VerifyUser(int id, string code)
+        {
+            User user = await context.Users
+                .Where(u => (u.Id == id) && (u.Verified == false) && (u.VerificationCode == code))
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            user.VerificationCode = null;
+            user.Verified = true;
+
+            context.Update(user);
+
+            await context.SaveChangesAsync();
+
+            return user;
+        }
+
         public async Task<(User, JwtSecurityToken)?> AuthenticateCredentialsAsync(string email, string password)
         {
             var user = await context.Users.Where(u => u.Email == email).FirstOrDefaultAsync();

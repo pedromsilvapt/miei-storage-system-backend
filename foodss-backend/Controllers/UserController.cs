@@ -60,21 +60,7 @@ namespace StorageSystem.Controllers
         [HttpGet("{id}/verify/{code}")]
         public async Task<UserDTO> VerifyUser(int id, string code)
         {
-            User user = await context.Users
-                .Where(u => (u.Id == id) && (u.Verified == false) && (u.VerificationCode == code))
-                .FirstOrDefaultAsync();
-
-            if (user == null)
-            {
-                throw new UserNotFoundException();
-            }
-
-            user.VerificationCode = null;
-            user.Verified = true;
-
-            context.Update(user);
-
-            await context.SaveChangesAsync();
+            User user = await userService.VerifyUser( id, code );
 
             return UserDTO.FromModel(user);
         }
