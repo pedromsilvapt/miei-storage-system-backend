@@ -17,17 +17,8 @@ namespace StorageSystem.Models
         [InverseProperty("Invitations")]
         public Storage Storage { get; set; }
 
-        [InverseProperty("Invitations")]
-        public User User { get; set; }
-
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StorageInvitation>()
-                .HasOne<User>()
-                .WithMany(u => u.Invitations)
-                .HasPrincipalKey("Email")
-                .HasForeignKey("UserEmail");
-
             modelBuilder.Entity<StorageInvitation>()
                 .HasKey(invitation => new { invitation.StorageId, invitation.UserEmail });
         }

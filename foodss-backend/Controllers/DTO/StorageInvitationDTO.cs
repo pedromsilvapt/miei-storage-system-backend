@@ -28,7 +28,7 @@ namespace StorageSystem.Controllers.DTO
         public string UserEmail { get; set; }
         public UserDTO User { get; set; }
 
-        public static StorageInvitationDTO FromModel(StorageInvitation model)
-            => new StorageInvitationDTO() { StorageId = model.StorageId, UserEmail = model.UserEmail, User = model.User != null ? UserDTO.FromModel(model.User) : null };
+        public static StorageInvitationDTO FromModel(StorageInvitation model, User user = null)
+            => new StorageInvitationDTO() { StorageId = model.StorageId, UserEmail = model.UserEmail, User = user != null ? UserDTO.FromModel(user) : null };
     }
 }

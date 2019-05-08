@@ -37,7 +37,9 @@ namespace StorageSystem.Controllers
 
             ICollection<StorageInvitation> invitations = await invitationService.ListInvitations(user, storageId);
 
-            return invitations.Select(StorageInvitationDTO.FromModel).ToList();
+            Dictionary<string, User> users = await invitationService.ListInvitationsUsers(invitations);
+
+            return invitations.Select(i => StorageInvitationDTO.FromModel(i, users.GetValueOrDefault(i.UserEmail))).ToList();
         }
 
         [HttpPost]

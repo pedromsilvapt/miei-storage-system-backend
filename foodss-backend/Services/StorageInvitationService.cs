@@ -20,26 +20,31 @@ namespace StorageSystem.Services
             this.storageService = storageService;
         }
 
-        protected async Task<Storage> GetStorage (User user, int storageId)
+        protected async Task<Storage> GetStorage(User user, int storageId)
         {
             Storage storage = await storageService.GetStorage(user.Id, storageId);
 
             await Context.Entry(storage).Collection(s => s.Invitations).LoadAsync();
 
-            // TODO Ugly hack, will be replaced soon
-            foreach (StorageInvitation invitation in storage.Invitations)
-            {
-                await Context.Entry(invitation).Reference(i => i.User).LoadAsync();
-            }
-
             return storage;
         }
 
-        public async Task<ICollection<StorageInvitation>> ListInvitations (User user, int storageId)
+        public async Task<ICollection<StorageInvitation>> ListInvitations(User user, int storageId)
         {
             Storage storage = await GetStorage(user, storageId);
 
             return storage.Invitations.ToList();
+        }
+
+        public async Task<Dictionary<string, User>> ListInvitationsUsers(ICollection<StorageInvitation> invitations)
+        {
+            ICollection<string> emails = invitations.Select(i => i.UserEmail).ToList();
+
+            return await Context.Users
+                // We select only the users whose emails belong to the 
+                .Where(user => emails.Contains(user.Email))
+                // Transform the result into a dictionary grouped by the users' emails
+                .ToDictionaryAsync(u => u.Email);
         }
 
         public async Task<StorageInvitation> CreateInvitation(User user, int storageId, string email)
@@ -83,7 +88,7 @@ namespace StorageSystem.Services
             return invitation;
         }
 
-        public async Task RemoveInvitation (User user, int storageId, string email)
+        public async Task RemoveInvitation(User user, int storageId, string email)
         {
             Storage storage = await GetStorage(user, storageId);
 

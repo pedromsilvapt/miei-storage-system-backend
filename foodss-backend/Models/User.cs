@@ -26,8 +26,6 @@ namespace StorageSystem.Models
         public bool Verified { get; set; }
         public string VerificationCode { get; set; }
 
-        public ICollection<StorageInvitation> Invitations { get; set; }
-
         [InverseProperty("Owner")]
         public ICollection<ProductItem> Items { get; set; }
 
@@ -46,10 +44,6 @@ namespace StorageSystem.Models
             var entity = modelBuilder.Entity<User>();
 
             entity.HasAlternateKey("Email");
-            entity.HasMany<StorageInvitation>()
-                .WithOne(i => i.User)
-                .HasForeignKey("UserEmail")
-                .HasPrincipalKey("Email");
             entity.Property(u => u.Verified)
                 .HasDefaultValue(false);
             entity.Property(u => u.VerificationCode)

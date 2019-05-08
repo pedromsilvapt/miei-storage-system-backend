@@ -16,26 +16,7 @@ namespace StorageSystem.Services
         {
             this.Context = context;
         }
-
-        public async Task<Storage> GetStorageInvitations(int storageId)
-        {
-            return await Context.Storages
-                // Load users
-                .Include(s => s.Users)
-                // As well as invitations
-                .Include(s => s.Invitations)
-                // And while we're at it, load each invitation's users as well (if they exist)
-                .ThenInclude(i => i.User)
-                .Where(s => s.Id == storageId)
-                .FirstOrDefaultAsync();
-        }
-
-        public bool CanUserSeeStorage(User user, Storage storage, ICollection<StorageUser> members)
-        {
-            // Only allow the owner or other members of the storage to view the storage membership invitations
-            return (storage.OwnerId == user.Id) || members.Where(s => s.UserId == user.Id).Count() > 0;
-        }
-
+        
         public async Task<List<Storage>> ListStoragesForUser(int userId)
         {
             // We query the pivot table to get the storage id's associated with the user
