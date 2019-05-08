@@ -52,7 +52,7 @@ namespace StorageSystem.Services
 
         public async Task<Storage> CreateStorage(User owner, string name, ICollection<string> invitations = null)
         {
-            using (var transaction = Context.Database.BeginTransactionAsync())
+            using (var transaction = await Context.Database.BeginTransactionAsync())
             {
                 bool shared = invitations.Count > 0;
 
