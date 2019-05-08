@@ -85,8 +85,7 @@ namespace StorageSystem.Services
                 OwnerId = user.Id,
                 Shared = shared,
                 ExpiryDate = expiryDate,
-                AddedDate = now,
-                ConsumedDate = null
+                AddedDate = now
             }).ToList();
 
             await Context.ProductItems.AddRangeAsync(items);
@@ -94,6 +93,34 @@ namespace StorageSystem.Services
             await Context.SaveChangesAsync();
 
             return items.ToList();
+        }
+
+        public async Task<ConsumedProductItem> ConsumeProductItem(User user, int storageId, int productId, int id)
+        {
+            ProductItem item = await GetProductItem(user, storageId, productId, id);
+
+            ConsumedProductItem consumedItem = new ConsumedProductItem()
+            {
+                ProductId = item.ProductId,
+                OwnerId = item.OwnerId,
+                Shared = item.Shared,
+                ExpiryDate = item.ExpiryDate,
+                AddedDate = item.AddedDate,
+                ConsumedDate = DateTime.Now
+            };
+
+            using (var transaction = await Context.Database.BeginTransactionAsync())
+            {
+                Context.ProductItems.Remove(item);
+                
+                await Context.ConsumedProductItems.AddAsync(consumedItem);
+
+                await Context.SaveChangesAsync();
+
+                transaction.Commit();
+            }
+
+            return consumedItem;
         }
 
         public async Task RemoveProductItem(User user, int storageId, int productId, int id)

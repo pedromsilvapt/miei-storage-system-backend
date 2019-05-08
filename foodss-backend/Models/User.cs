@@ -29,6 +29,9 @@ namespace StorageSystem.Models
         [InverseProperty("Owner")]
         public ICollection<ProductItem> Items { get; set; }
 
+        [InverseProperty("Owner")]
+        public ICollection<ConsumedProductItem> ConsumedItems { get; set; }
+
         [InverseProperty("User")]
         public ICollection<StorageUser> Storages { get; set; }
 

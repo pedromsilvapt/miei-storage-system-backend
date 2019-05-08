@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StorageSystem.Models
 {
-    public class ProductItem
+    public class ConsumedProductItem
     {
         [Key]
         public int Id { get; set; }
@@ -18,12 +18,13 @@ namespace StorageSystem.Models
         public DateTime? ExpiryDate { get; set; }
         [Required]
         public DateTime AddedDate { get; set; }
+        public DateTime ConsumedDate { get; set; }
 
         // Relations
-        [InverseProperty("Items")]
+        [InverseProperty("ConsumedItems")]
         public User Owner { get; set; }
 
-        [InverseProperty("Items")]
+        [InverseProperty("ConsumedItems")]
         public Product Product { get; set; }
     }
 }

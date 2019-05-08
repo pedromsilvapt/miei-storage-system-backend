@@ -76,6 +76,16 @@ namespace StorageSystem.Controllers
             return items.Select(ProductItemDTO.FromModel).ToList();
         }
 
+        [HttpPost("{id}/consume")]
+        public async Task<ProductItemDTO> ConsumeProductItem (int storageId, int productId, int id)
+        {
+            User user = await userService.GetUserAsync(this.User);
+
+            ConsumedProductItem item = await itemService.ConsumeProductItem(user, storageId, productId, id);
+
+            return ProductItemDTO.FromModel(item);
+        }
+
         [HttpDelete("{id}")]
         public async Task RemoveProductItem(int storageId, int productId, int id)
         {

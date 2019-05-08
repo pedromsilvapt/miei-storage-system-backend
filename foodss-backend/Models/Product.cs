@@ -28,6 +28,9 @@ namespace StorageSystem.Models
         public ICollection<ProductItem> Items { get; set; }
 
         [InverseProperty("Product")]
+        public ICollection<ConsumedProductItem> ConsumedItems { get; set; }
+
+        [InverseProperty("Product")]
         public ICollection<ShoppingListItem> ShoppingListItems { get; set; }
 
         [InverseProperty("Product")]

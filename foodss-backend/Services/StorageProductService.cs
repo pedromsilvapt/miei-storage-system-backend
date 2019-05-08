@@ -25,8 +25,6 @@ namespace StorageSystem.Services
             return items.Where(item => (item.Shared == true) || (item.OwnerId == user.Id)).ToList();
         }
 
-
-
         public async Task<ICollection<Product>> ListProducts(User user, int storageId, int skip = 0, int take = 20)
         {
             Storage storage = await storageService.GetStorage(user.Id, storageId);
@@ -135,7 +133,7 @@ namespace StorageSystem.Services
                 throw new ProductNotFoundException();
             }
 
-            if (product.Items.Where(i => i.ConsumedDate != null).Count() > 0)
+            if (product.Items.Count() > 0)
             {
                 throw new ProductRemovalException();
             }

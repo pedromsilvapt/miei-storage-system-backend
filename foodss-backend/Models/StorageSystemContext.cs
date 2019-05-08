@@ -11,6 +11,7 @@ namespace StorageSystem.Models
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductItem> ProductItems { get; set; }
+        public DbSet<ConsumedProductItem> ConsumedProductItems { get; set; }
         public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
         public DbSet<Storage> Storages { get; set; }
         public DbSet<StorageInvitation> StorageInvitations { get; set; }

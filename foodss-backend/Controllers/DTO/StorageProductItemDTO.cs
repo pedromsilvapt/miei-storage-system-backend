@@ -32,6 +32,18 @@ namespace StorageSystem.Controllers.DTO
                 Shared = model.Shared,
                 ExpiryDate = model.ExpiryDate,
                 AddedDate = model.AddedDate,
+                ConsumedDate = null
+            };
+
+        public static ProductItemDTO FromModel(ConsumedProductItem model)
+            => new ProductItemDTO()
+            {
+                Id = model.Id,
+                ProductId = model.ProductId,
+                OwnerId = model.OwnerId,
+                Shared = model.Shared,
+                ExpiryDate = model.ExpiryDate,
+                AddedDate = model.AddedDate,
                 ConsumedDate = model.ConsumedDate
             };
     }
