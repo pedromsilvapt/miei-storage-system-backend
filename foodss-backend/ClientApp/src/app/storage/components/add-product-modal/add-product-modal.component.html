@@ -1,0 +1,118 @@
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title">Adicionar Produtos</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #modelForm="ngForm">
+      <tabset #tabset [justified]="true">
+        <tab heading="1. Produto" [active]="tabProductActive" (select)="tabProductActive = true" (deselect)="tabProductActive = false">
+          <section class="">
+            <small class="section-title">Opções Globais do Produto</small>
+            <div class="form-group row">
+              <div class="col-md-12">
+                <div class="input-group">
+                  <span class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-barcode"></i></span>
+                  </span>
+                  <input type="text" id="barcode" name="barcode"
+                         class="form-control" placeholder="Código de barras..."
+                         [ngModel]="product.barcode" (ngModelChange)="changeBarcode($event)" #modelBarcode="ngModel"
+                         required [disabled]="product.id != null"
+                                [class.is-invalid]="!modelBarcode.valid && !modelBarcode.disabled && modelBarcode.dirty"/>
+                  <div class="invalid-feedback" *ngIf="!modelBarcode.valid && !modelBarcode.disabled && modelBarcode.dirty">
+                    O código de barras é obrigatório
+                  </div>
+                  <span class="input-group-append">
+                    <button type="button" class="btn btn-primary" tooltip="Ler Código de Barras com a Câmara">
+                      <i class="fa fa-camera"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div><!--/.form-group.row-->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="name">Nome do Produto</label>
+                  <input type="text" id="name" name="name"
+                         class="form-control" placeholder="Nome do produto..."
+                         [ngModel]="product.name" (ngModelChange)="changeProductName($event)" #modelName="ngModel"
+                         required [disabled]="product.id != null"
+                         [class.is-invalid]="!modelName.valid && !modelName.disabled && modelName.dirty"/>
+                  <div class="invalid-feedback" *ngIf="!modelName.valid && !modelName.disabled && modelName.dirty">
+                    O nome do produto é obrigatório
+                  </div>
+                </div>
+              </div>
+            </div><!--/.row-->
+            <section class="idented" *ngIf="product.id == null">
+              <small class="section-title">Produtos Existentes</small>
+              <div class="product-suggestions-list">
+                <div class="product-suggestion" *ngFor="let prod of productSuggestions" (click)="selectProduct(prod)">
+                  {{prod.name}} <small class="product-suggestion-barcode">{{prod.barcode}}</small>
+                </div>
+              </div>
+            </section>
+            <div class="text-center" *ngIf="product.id != null">
+              <button type="button" class="btn btn-secondary" (click)="product.id = null">Escolher Outro Produto</button>
+            </div>
+          </section>
+        </tab>
+        <tab heading="2. Quantidades" [disabled]="product.id == null && ( !modelName.valid || !modelBarcode.valid )" [active]="tabQuantityActive" (select)="tabQuantityActive = true" (deselect)="tabQuantityActive = false">
+          <section>
+            <small class="section-title">Opções de Quantidade do Produto</small>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="quantity">Quantidade</label>
+                  <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantidade..."
+                         [(ngModel)]="productItem.quantity" #modelQuantity="ngModel"
+                         required [min]="0"
+                         [class.is-invalid]="!modelQuantity.valid && modelQuantity.dirty"/>
+                  <div class="invalid-feedback" *ngIf="!modelQuantity.valid && modelQuantity.dirty">
+                    A quantidade é obrigatória e tem de ser maior ou igual a zero.
+                  </div>
+                </div>
+              </div>
+            </div><!--/.row-->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="expiryDate">Data de Validade</label>
+                  <!--<input type="text" class="form-control" id="expiryDate" placeholder="Quantidade...">-->
+                  <input class="form-control" id="date-input" type="date" name="expiryDate" placeholder="date"
+                         [(ngModel)]="productItem.expiryDate" #modelExpiryDate="ngModel"
+                         required [minDate]="today"
+                         [class.is-invalid]="!modelExpiryDate.valid && modelExpiryDate.dirty"/>
+                  <div class="invalid-feedback" *ngIf="!modelExpiryDate.valid && modelExpiryDate.dirty">
+                    A data de validade é obrigatória e tem de ser maior ou igual a hoje.
+                  </div>
+                </div>
+              </div>
+            </div><!--/.row-->
+            <div class="form-group row">
+              <label class="col-md-9 col-form-label">Partilhado</label>
+              <div class="col-md-3 col-form-label">
+                <div class="form-check">
+                  <label class="switch switch-pill switch-primary">
+                    <input class="form-check-input switch-input" type="checkbox" name="shared" id="shared" [(ngModel)]="productItem.shared" />
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div><!--/.form-group.row-->
+          </section>
+        </tab>
+      </tabset>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Cancelar</button>
+    <button type="button" class="btn btn-primary" *ngIf="tabProductActive" [disabled]="product.id == null && ( !modelName.valid || !modelBarcode.valid )" (click)="openQuantityTab()">Seguinte</button>
+    <button type="button" class="btn btn-primary" *ngIf="tabQuantityActive && product.id != null" [disabled]="!modelExpiryDate.valid || !modelQuantity.valid">Inserir Quantidade</button>
+    <button type="button" class="btn btn-primary" *ngIf="tabQuantityActive && product.id == null" [disabled]="!modelExpiryDate.valid || !modelQuantity.valid">Criar Produto & Inserir Quantidade</button>
+  </div>
+</ng-template>

@@ -28,10 +28,10 @@ export class HttpService {
     });
   }
 
-  public get(url: string): Observable<any> {
+  public get(url: string, options ?: any): Observable<any> {
     return Observable.create((observer: Subject<any>) => {
       this.initializeSlimLoadingBar();
-      this.httpClient.get(HttpUtil.url(url), HttpUtil.headers())
+      this.httpClient.get(HttpUtil.url(url), { ...options, ...HttpUtil.headers() })
         .pipe(catchError(HttpUtil.processError))
         .subscribe(data => {
             this.executeOnResponseSuccess(observer, data);

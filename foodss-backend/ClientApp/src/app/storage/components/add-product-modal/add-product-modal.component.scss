@@ -1,0 +1,34 @@
+form section {
+  &.bottom-separator {
+    border-bottom: 1px solid #DDDDDD;
+    margin-bottom: 1rem;
+  }
+
+  &.idented {
+    margin: 1rem;
+  }
+
+  small.section-title {
+    color: #808080;
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
+
+.product-suggestions-list {
+  margin-bottom: 1rem;
+
+  .product-suggestion {
+    padding: 5px 15px;
+    cursor: pointer;
+
+    .product-suggestion-barcode {
+      color: #808080;
+    }
+
+    &:hover {
+      background-color: #EEEEEE;
+    }
+  }
+}
+

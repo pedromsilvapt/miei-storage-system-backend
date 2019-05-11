@@ -13,7 +13,7 @@ import {StorageSystemComponent} from './storage-system/storage-system.component'
 import {L10nLoader, TranslationModule} from 'angular-l10n';
 import {l10nConfig} from '../assets/locale/l10n-config';
 import {HttpClientModule} from '@angular/common/http';
-import {ModalModule, TabsModule} from 'ngx-bootstrap';
+import {ModalModule, TabsModule, TooltipModule} from 'ngx-bootstrap';
 import {StorageSystemModule} from './storage-system/storage-system.module';
 import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
 import {ToastrModule} from 'ngx-toastr';
@@ -29,6 +29,7 @@ import {ToastrModule} from 'ngx-toastr';
     ModalModule.forRoot(),
     SlimLoadingBarModule.forRoot(),
     TabsModule.forRoot(),
+    TooltipModule.forRoot(),
     ToastrModule.forRoot({
       preventDuplicates: true,
     }),

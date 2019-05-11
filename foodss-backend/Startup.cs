@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using StorageSystem.Architecture.Exception;
 using StorageSystem.Services;
 
 namespace StorageSystem
@@ -54,6 +55,21 @@ namespace StorageSystem
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false
+                };
+                x.Events = new JwtBearerEvents();
+                x.Events.OnChallenge = context =>
+                {
+                    // Skip the default logic.
+                    context.HandleResponse();
+
+                    var ex = new UnauthorizedException("UNAUTHORIZED");
+
+                    var message = new { code = ex.StatusCode, error = ex.Message };
+
+                    var result = JsonConvert.SerializeObject(message);
+                    context.Response.StatusCode = message.code;
+                    context.Response.ContentType = "application/json";
+                    return context.Response.WriteAsync(result);
                 };
             });
 
