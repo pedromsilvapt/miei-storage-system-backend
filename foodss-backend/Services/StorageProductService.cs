@@ -105,7 +105,7 @@ namespace StorageSystem.Services
                     .ToListAsync();
         }
 
-        public async Task<Product> CreateProduct(User user, int storageId, string name, string barcode, bool hasExpiryDate, double? maxTemperature)
+        public async Task<Product> CreateProduct(User user, int storageId, string name, string barcode, double? maxTemperature)
         {
             Storage storage = await storageService.GetStorage(user.Id, storageId);
 
@@ -125,7 +125,6 @@ namespace StorageSystem.Services
                 StorageId = storage.Id,
                 Name = name,
                 Barcode = barcode,
-                HasExpiryDate = hasExpiryDate,
                 MaxTemperature = maxTemperature
             };
 

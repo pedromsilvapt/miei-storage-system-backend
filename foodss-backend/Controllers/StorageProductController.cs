@@ -100,7 +100,6 @@ namespace StorageSystem.Controllers
                 storageId,
                 input.Name,
                 input.Barcode,
-                input.HasExpiryDate,
                 input.MaxTemperature
             );
 

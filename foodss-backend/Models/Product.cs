@@ -14,8 +14,6 @@ namespace StorageSystem.Models
         [MaxLength(200)]
         public string Barcode { get; set; }
         [Required]
-        public bool HasExpiryDate { get; set; }
-        [Required]
         public int StorageId { get; set; }
         public double? MaxTemperature { get; set; }
 

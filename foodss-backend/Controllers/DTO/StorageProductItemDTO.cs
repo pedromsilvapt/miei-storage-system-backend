@@ -8,7 +8,7 @@ namespace StorageSystem.Controllers.DTO
     {
         public bool Shared { get; set; }
 
-        public DateTime? ExpiryDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
         [Range(1, int.MaxValue)]
         public int? Quantity { get; set; }
     }
@@ -19,7 +19,7 @@ namespace StorageSystem.Controllers.DTO
         public int ProductId { get; set; }
         public int OwnerId { get; set; }
         public bool Shared { get; set; }
-        public DateTime? ExpiryDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
         public DateTime AddedDate { get; set; }
         public DateTime? ConsumedDate { get; set; }
 

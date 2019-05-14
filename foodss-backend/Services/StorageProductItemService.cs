@@ -59,22 +59,16 @@ namespace StorageSystem.Services
             return item;
         }
 
-        public async Task<ICollection<ProductItem>> CreateProductItem(User user, int storageId, int productId, bool shared, DateTime? expiryDate, int quantity)
+        public async Task<ICollection<ProductItem>> CreateProductItem(User user, int storageId, int productId, bool shared, DateTime expiryDate, int quantity)
         {
             Product product = await productService.GetProduct(user, storageId, productId);
 
-            bool productHasExpiryDate = product.HasExpiryDate;
             bool itemHasExpiryDate = expiryDate != null;
-
-            if (productHasExpiryDate != itemHasExpiryDate)
-            {
-                throw new ProductExpiryDateMismatchException();
-            }
 
             var now = DateTime.Now;
 
             // Do not accept expiry dates that are before now
-            if ((expiryDate != null) && (DateTime.Compare(expiryDate.Value, now) <= 0))
+            if ((expiryDate != null) && (DateTime.Compare(expiryDate, now) <= 0))
             {
                 throw new ProductExpiryDateMismatchException();
             }

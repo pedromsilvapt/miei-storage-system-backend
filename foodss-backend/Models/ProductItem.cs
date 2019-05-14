@@ -15,7 +15,7 @@ namespace StorageSystem.Models
         public int OwnerId { get; set; }
         [Required]
         public bool Shared { get; set; }
-        public DateTime? ExpiryDate { get; set; }
+        public DateTime ExpiryDate { get; set; }
         [Required]
         public DateTime AddedDate { get; set; }
 
