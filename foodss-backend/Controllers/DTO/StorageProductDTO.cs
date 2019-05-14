@@ -7,7 +7,6 @@ namespace StorageSystem.Controllers.DTO
 {
     public class ProductInputDTO
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Barcode { get; set; }
         public double? MaxTemperature { get; set; }

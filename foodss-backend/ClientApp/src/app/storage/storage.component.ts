@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {StorageModel} from './model/storage.model';
+import { Component, OnInit } from '@angular/core';
+import { StorageModel } from './model/storage.model';
 import * as _ from 'lodash';
+import { BsModalService } from 'ngx-bootstrap';
+import { AddProductModalComponent } from './components/add-product-modal/add-product-modal.component';
 
 @Component({
   selector: 'app-storage',
@@ -315,7 +317,7 @@ export class StorageComponent implements OnInit {
     },
   ];
 
-  constructor() { }
+  constructor(private modalService: BsModalService) { }
 
   ngOnInit() {
   }
@@ -328,4 +330,7 @@ export class StorageComponent implements OnInit {
     return _.groupBy(storage.products, 'userOwner.name');
   }
 
+  openAddProduct(storage: Storage) {
+    this.modalService.show(AddProductModalComponent, { initialState: { storage }});
+  }
 }

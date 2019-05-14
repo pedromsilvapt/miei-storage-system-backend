@@ -8,7 +8,8 @@ import { AddProductModalComponent } from './components/add-product-modal/add-pro
 import { MinDateValidatorDirective } from './components/add-product-modal/min-date.directive';
 
 @NgModule({
-  declarations: [StorageComponent, StorageDatatableComponent, AddProductModalComponent, MinDateValidatorDirective],
+  declarations: [StorageComponent, StorageDatatableComponent, MinDateValidatorDirective, AddProductModalComponent],
+  entryComponents: [AddProductModalComponent],
   imports: [
     CommonModule,
     SharedModule,

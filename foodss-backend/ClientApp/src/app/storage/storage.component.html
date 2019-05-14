@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<add-product-modal #addProductModal></add-product-modal>
+<!--<add-product-modal #addProductModal></add-product-modal>-->
 
 <div class="row">
   <ng-container *ngFor="let storage of storages; let index = index">
@@ -19,7 +19,7 @@
               <i class="fas fa-cog"></i>
             </button>
             <div *dropdownMenu  class="dropdown-menu">
-              <a class="dropdown-item" href="javascript:;" (click)="addProductModal.open(storage)">Inserir Produto</a>
+              <a class="dropdown-item" href="javascript:;" (click)="openAddProduct(storage)">Inserir Produto</a>
               <a class="dropdown-item" href="javascript:;">Editar Despensa</a>
               <a class="dropdown-item" href="javascript:;">Remover Despensa</a>
             </div>
