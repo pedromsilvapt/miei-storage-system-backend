@@ -16,8 +16,8 @@ namespace StorageSystem.Services
         {
             this.Context = context;
         }
-        
-        public async Task<List<Storage>> ListStoragesForUser(int userId)
+
+        public async Task<List<Storage>> ListStorages(int userId)
         {
             // We query the pivot table to get the storage id's associated with the user
             ICollection<int> storageIds = await Context.StorageUsers
@@ -113,7 +113,7 @@ namespace StorageSystem.Services
             return storage;
         }
 
-        public async Task DeleteStorage (int userId, int id)
+        public async Task DeleteStorage(int userId, int id)
         {
             Storage storage = await Context.Storages.FindAsync(id);
 

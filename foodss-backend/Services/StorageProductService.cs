@@ -25,10 +25,8 @@ namespace StorageSystem.Services
             return items.Where(item => (item.Shared == true) || (item.OwnerId == user.Id)).ToList();
         }
 
-        public async Task<ICollection<Product>> ListProducts(User user, int storageId, int skip = 0, int take = 20)
+        public async Task<ICollection<Product>> ListProducts(User user, Storage storage, int skip = 0, int take = 0)
         {
-            Storage storage = await storageService.GetStorage(user.Id, storageId);
-
             return await Context.Products
                 // Only retrieve the products that belong to this storage
                 .Where(p => p.StorageId == storage.Id)
@@ -41,6 +39,13 @@ namespace StorageSystem.Services
                 // Join for each product it's items as well
                 .Include(p => p.Items)
                 .ToListAsync();
+        }
+
+        public async Task<ICollection<Product>> ListProducts(User user, int storageId, int skip = 0, int take = 20)
+        {
+            Storage storage = await storageService.GetStorage(user.Id, storageId);
+
+            return await ListProducts(user, storage, skip, take);
         }
 
         public async Task<Product> GetProduct(User user, int storageId, int id)
@@ -66,6 +71,12 @@ namespace StorageSystem.Services
         {
             Storage storage = await storageService.GetStorage(user.Id, storageId);
 
+            // When the string is null or empty, we don't need to query the database and can simply return an empty list
+            if (barcode == null || barcode == "")
+            {
+                return new List<Product>();
+            }
+
             return await Context.Products
                     .Where(p => (p.StorageId == storage.Id) && (p.Barcode == barcode))
                     .Include(p => p.Items)
@@ -77,6 +88,12 @@ namespace StorageSystem.Services
         public async Task<ICollection<Product>> SearchProductsByName(User user, int storageId, string name, int skip = 0, int take = 20)
         {
             Storage storage = await storageService.GetStorage(user.Id, storageId);
+
+            // When the string is null or empty, we don't need to query the database and can simply return an empty list
+            if (name == null || name == "")
+            {
+                return new List<Product>();
+            }
 
             return await Context.Products
                     .Where(p => (p.StorageId == storage.Id) && p.Name.ToLower().Contains(name.ToLower()))

@@ -96,11 +96,11 @@ namespace StorageSystem.Controllers
             User user = await userService.GetUserAsync(this.User);
 
             Product product = await productService.CreateProduct(
-                user, 
-                storageId, 
-                input.Name, 
-                input.Barcode, 
-                input.HasExpiryDate, 
+                user,
+                storageId,
+                input.Name,
+                input.Barcode,
+                input.HasExpiryDate,
                 input.MaxTemperature
             );
 

@@ -22,19 +22,40 @@ namespace StorageSystem.Controllers
 
         private readonly StorageService storageService;
 
-        public StorageController(StorageSystemContext context, UserService userService, StorageService storageService)
+        private readonly StorageProductService productService;
+
+        public StorageController(StorageSystemContext context, UserService userService, StorageService storageService, StorageProductService productService)
         {
             this.context = context;
             this.userService = userService;
             this.storageService = storageService;
+            this.productService = productService;
+        }
+
+        public class ListQuery
+        {
+            public int? SkipProducts { get; set; }
+            public int? TakeProducts { get; set; }
+            public bool? IncludeProducts { get; set; }
         }
 
         [HttpGet]
-        public async Task<ICollection<StorageDTO>> GetStorages()
+        public async Task<ICollection<StorageDTO>> ListStorages([FromQuery] ListQuery query)
         {
-            int userId = userService.GetUserId(this.User);
+            User user = await userService.GetUserAsync(this.User);
 
-            ICollection<Storage> storages = await storageService.ListStoragesForUser(userId);
+            ICollection<Storage> storages = await storageService.ListStorages(user.Id);
+
+            if (query.IncludeProducts ?? false)
+            {
+                // This will execute N + 1 queries. The implications of such thing are understood, and a conscious decision to
+                // make it this way was made. This because we want to select only N products for each storage, and doing so would
+                // be hard, and non-idiomatic in the context of the ORM used throughout the application (EF Core)
+                foreach (Storage storage in storages)
+                {
+                    storage.Products = await productService.ListProducts(user, storage, query.SkipProducts ?? 0, query.TakeProducts ?? 20);
+                }
+            }
 
             return storages
                 .Select(StorageDTO.FromModel)
