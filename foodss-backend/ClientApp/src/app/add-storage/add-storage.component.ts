@@ -72,7 +72,7 @@ export class AddStorageComponent implements OnInit {
   }
 
   addStorage(stepIndex: number) {
-    if (stepIndex == 2 || (stepIndex == 1 && this.goalstorage == this.show)) {
+    if (stepIndex == 2 || (stepIndex == 1 && this.goalstorage != this.show)) {
       this.http.post('storage', {
         name: this.namestorage,
         // this.em.value is Array<string>, but since the server expects Array<{userEmail: string}> (an array of objects, each with a single variable "userEmail"), we have to convert it before sending
