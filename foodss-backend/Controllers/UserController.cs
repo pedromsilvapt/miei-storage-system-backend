@@ -47,6 +47,8 @@ namespace StorageSystem.Controllers
             return UserDTO.FromModel(userModel);
         }
 
+
+
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("session")]
         public async Task<UserDTO> GetCurrentSession()
@@ -58,11 +60,13 @@ namespace StorageSystem.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}/verify/{code}")]
-        public async Task<UserDTO> VerifyUser(int id, string code)
+        public async Task<ActionResult> VerifyUser(int id, string code)
         {
-            User user = await userService.VerifyUser( id, code );
+            User user = await userService.VerifyUser(id, code);
 
-            return UserDTO.FromModel(user);
+
+            return View("ConfirmEmail");
+
         }
     }
 }

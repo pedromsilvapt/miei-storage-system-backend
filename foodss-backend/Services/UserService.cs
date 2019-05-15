@@ -58,15 +58,17 @@ namespace StorageSystem.Services
             }
 
             var (hashed, salt) = HashPassword(password);
-
-            var newUser = new User() { Name = name, Email = email, Password = hashed, Salt = salt };
+            string code = EmailService.GenerateCode();
+            var newUser = new User() { Name = name, Email = email, Password = hashed, Salt = salt, VerificationCode=code };
 
             await context.AddAsync(newUser);
             
             await context.SaveChangesAsync();
+            EmailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : http://localhost:60947/api/User/"+ newUser.Id+ "/verify/"+code);
 
             return newUser;
         }
+
 
         public async Task<User> VerifyUser(int id, string code)
         {

@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "AtivarConta";
+}
+
+<head>
+    <style>
+        h1 {
+            background-color: #FF7F50;
+        }
+
+        a.button {
+            background-color: #008CBA;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+     
+    </style>
+</head>
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <br />
+
+    <h1 align="center" style="color:maroon">Ativação de Conta</h1>
+
+    <hr style="border-color:#8b9dc3;background-color:#8b9dc3;height:2px;" />
+    <br />
+    <h2 align="center" style="color:mediumseagreen">A sua conta fui ativada com sucesso.</h2>
+    <div align="center"><a href=" http://localhost:60947/#/login" class="button">Continuar para Iniciar sessão</a></div>
+
+
+
+}
