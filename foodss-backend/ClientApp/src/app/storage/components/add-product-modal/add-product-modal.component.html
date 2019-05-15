@@ -8,7 +8,9 @@
   <form #modelForm="ngForm" [hidden]="creating || created || creatingError">
     <tabset #tabset [justified]="true">
       <tab heading="1. Produto" [active]="tabProductActive" (select)="tabProductActive = true" (deselect)="tabProductActive = false">
-        <section class="">
+        <section>
+          <barcode-scanner *ngIf="barcodeScannerActive == true" (detect)="detectBarcode($event)"></barcode-scanner>
+
           <small class="section-title">Opções Globais do Produto</small>
           <div class="form-group row">
             <div class="col-md-12">
@@ -17,18 +19,18 @@
                   <span class="input-group-text"><i class="fa fa-barcode"></i></span>
                 </span>
                 <input type="text" id="barcode" name="barcode"
-                        class="form-control" placeholder="Código de barras..."
-                        [ngModel]="product.barcode" (ngModelChange)="changeBarcode($event)" #modelBarcode="ngModel"
-                        required [disabled]="product.id != null"
-                        [class.is-invalid]="!modelBarcode.valid && !modelBarcode.disabled && modelBarcode.dirty" />
-                <div class="invalid-feedback" *ngIf="!modelBarcode.valid && !modelBarcode.disabled && modelBarcode.dirty">
-                  O código de barras é obrigatório
-                </div>
+                       class="form-control" placeholder="Código de barras..."
+                       [ngModel]="product.barcode" (ngModelChange)="changeBarcode($event)" #modelBarcode="ngModel"
+                       required [disabled]="product.id != null"
+                       [class.is-invalid]="!modelBarcode.valid && !modelBarcode.disabled && modelBarcode.dirty" />
                 <span class="input-group-append">
-                  <button type="button" class="btn btn-primary" tooltip="Ler Código de Barras com a Câmara">
+                  <button type="button" class="btn btn-primary" tooltip="Ler Código de Barras com a Câmara" (click)="toggleBarcodeScanner()">
                     <i class="fa fa-camera"></i>
                   </button>
                 </span>
+                <div class="invalid-feedback" *ngIf="!modelBarcode.valid && !modelBarcode.disabled && modelBarcode.dirty">
+                  O código de barras é obrigatório
+                </div>
               </div>
             </div>
           </div><!--/.form-group.row-->
@@ -37,10 +39,10 @@
               <div class="form-group">
                 <label for="name">Nome do Produto</label>
                 <input type="text" id="name" name="name"
-                        class="form-control" placeholder="Nome do produto..."
-                        [ngModel]="product.name" (ngModelChange)="changeProductName($event)" #modelName="ngModel"
-                        required [disabled]="product.id != null"
-                        [class.is-invalid]="!modelName.valid && !modelName.disabled && modelName.dirty" />
+                       class="form-control" placeholder="Nome do produto..."
+                       [ngModel]="product.name" (ngModelChange)="changeProductName($event)" #modelName="ngModel"
+                       required [disabled]="product.id != null"
+                       [class.is-invalid]="!modelName.valid && !modelName.disabled && modelName.dirty" />
                 <div class="invalid-feedback" *ngIf="!modelName.valid && !modelName.disabled && modelName.dirty">
                   O nome do produto é obrigatório
                 </div>

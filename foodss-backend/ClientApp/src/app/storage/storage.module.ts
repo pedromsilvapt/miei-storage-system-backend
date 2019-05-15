@@ -6,9 +6,10 @@ import {StorageFormModule} from './form/storage-form.module';
 import { StorageDatatableComponent } from './components/storage-datatable/storage-datatable.component';
 import { AddProductModalComponent } from './components/add-product-modal/add-product-modal.component'
 import { MinDateValidatorDirective } from './components/add-product-modal/min-date.directive';
+import { BarcodeScannerComponent } from './components/add-product-modal/barcode-scanner.component';
 
 @NgModule({
-  declarations: [StorageComponent, StorageDatatableComponent, MinDateValidatorDirective, AddProductModalComponent],
+  declarations: [StorageComponent, StorageDatatableComponent, MinDateValidatorDirective, AddProductModalComponent, BarcodeScannerComponent],
   entryComponents: [AddProductModalComponent],
   imports: [
     CommonModule,
