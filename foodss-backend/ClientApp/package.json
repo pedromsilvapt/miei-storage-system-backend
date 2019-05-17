@@ -36,6 +36,7 @@
     "ngx-bootstrap": "^3.3.0",
     "ngx-perfect-scrollbar": "^7.2.1",
     "ngx-toastr": "^9.2.0",
+    "quagga": "^1.0.0-beta.2",
     "rxjs": "~6.3.3",
     "rxjs-compat": "^6.5.2",
     "simple-line-icons": "^2.4.1",

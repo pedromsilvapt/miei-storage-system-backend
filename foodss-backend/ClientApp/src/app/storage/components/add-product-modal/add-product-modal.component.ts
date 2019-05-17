@@ -36,6 +36,10 @@ export class AddProductModalComponent {
 
   public tabQuantityActive: boolean = false;
 
+  public barcodeScannerActive: boolean = false;
+
+  public barcodesCache: Map<string, Promise<Product[]>> = new Map();
+
   public today: Date;
 
   public creating: boolean = false;
@@ -56,7 +60,15 @@ export class AddProductModalComponent {
   }
 
   public searchByBarcode(barcode: string): Promise<Product[]> {
-    return this.http.get('storage/' + this.storage.id + '/product/search', { params: { barcode: barcode } }).toPromise();
+    if (this.barcodesCache.has(barcode)) {
+      return this.barcodesCache.get(barcode);
+    }
+
+    const promise = this.http.get('storage/' + this.storage.id + '/product/search', { params: { barcode: barcode } }).toPromise();
+
+    this.barcodesCache.set(barcode, promise);
+
+    return promise;
   }
 
   public searchByName(name: string): Promise<Product[]> {
@@ -127,6 +139,23 @@ export class AddProductModalComponent {
     this.productItem.expiryDate = null;
 
     this.productSuggestions = [];
+  }
+
+  public async toggleBarcodeScanner() {
+    this.barcodeScannerActive = !this.barcodeScannerActive;
+  }
+
+  public async detectBarcode(barcode: string) {
+    this.product.barcode = barcode;
+
+    const products = await this.searchByBarcode(barcode);
+
+    if (products.length > 0) {
+      this.product.id = products[0].id;
+      this.product.name = products[0].name;
+
+      this.barcodeScannerActive = false;
+    }
   }
 
   public async create() {
