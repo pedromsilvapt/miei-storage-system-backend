@@ -78,6 +78,7 @@ namespace StorageSystem
             services.AddScoped<StorageInvitationService>();
             services.AddScoped<StorageProductService>();
             services.AddScoped<StorageProductItemService>();
+            services.AddScoped<ShoppingListService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
