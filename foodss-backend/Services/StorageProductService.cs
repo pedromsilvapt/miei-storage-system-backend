@@ -26,7 +26,7 @@ namespace StorageSystem.Services
             return items.Where(item => (item.Shared == true) || (item.OwnerId == user.Id)).ToList();
         }
 
-        public async Task<ICollection<Product>> ListProducts(User user, Storage storage, int skip = 0, int take = 0)
+        public async Task<ICollection<Product>> ListProducts(User user, Storage storage, int skip = 0, int take = 0, bool includeItems = true)
         {
             return await Context.Products
                 // Only retrieve the products that belong to this storage
@@ -38,7 +38,7 @@ namespace StorageSystem.Services
                 // Sort by name
                 .OrderBy(product => product.Name)
                 // Join for each product it's items as well
-                .Include(p => p.Items)
+                .ConditionalInclude(p => p.Items, includeItems)
                 .ToListAsync();
         }
 

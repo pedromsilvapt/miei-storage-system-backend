@@ -46,7 +46,9 @@ namespace StorageSystem.Controllers
 
             ICollection<Storage> storages = await storageService.ListStorages(user.Id);
 
-            if (query.IncludeProducts ?? false)
+            bool includeProducts = query.IncludeProducts ?? false;
+
+            if (includeProducts)
             {
                 // This will execute N + 1 queries. The implications of such thing are understood, and a conscious decision to
                 // make it this way was made. This because we want to select only N products for each storage, and doing so would
@@ -58,7 +60,12 @@ namespace StorageSystem.Controllers
             }
 
             return storages
-                .Select(StorageDTO.FromModel)
+                .Select(storage => StorageDTO.FromModel(
+                    storage, 
+                    includeProducts 
+                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items)))?.ToList() 
+                        : null
+                ))
                 .ToList();
         }
 

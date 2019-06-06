@@ -1,5 +1,6 @@
 ﻿using StorageSystem.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StorageSystem.Controllers.DTO
 {
@@ -19,6 +20,14 @@ namespace StorageSystem.Controllers.DTO
         public int OwnerId { get; set; }
         public bool Shared { get; set; }
 
-        public static StorageDTO FromModel(Storage model) => new StorageDTO() { Id = model.Id, Name = model.Name, OwnerId = model.OwnerId, Shared = model.Shared };
+        public List<ProductDTO> Products;
+
+        public static StorageDTO FromModel(Storage model, List<ProductDTO> products = null) => new StorageDTO() {
+            Id = model.Id,
+            Name = model.Name,
+            OwnerId = model.OwnerId,
+            Shared = model.Shared,
+            Products = products
+        };
     }
 }

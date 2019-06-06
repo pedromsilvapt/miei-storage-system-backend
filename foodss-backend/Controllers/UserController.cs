@@ -64,9 +64,7 @@ namespace StorageSystem.Controllers
         {
             User user = await userService.VerifyUser(id, code);
 
-
             return View("ConfirmEmail");
-
         }
     }
 }
