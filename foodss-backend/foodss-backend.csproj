@@ -29,8 +29,12 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\home\graph\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\home\graph\**" />
+    <EmbeddedResource Remove="ClientApp\src\app\home\graph\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\src\app\home\graph\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -45,6 +49,10 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\add-storage\Elementos.ts" />
+    <None Remove="ClientApp\src\app\home\graph\graph.component.html" />
+    <None Remove="ClientApp\src\app\home\graph\graph.component.sass" />
+    <None Remove="ClientApp\src\app\home\graph\graph.component.spec.ts" />
+    <None Remove="ClientApp\src\app\home\graph\graph.component.ts" />
     <None Remove="ClientApp\src\NewStyle.css" />
   </ItemGroup>
 

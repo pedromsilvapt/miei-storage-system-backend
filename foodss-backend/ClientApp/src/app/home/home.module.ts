@@ -4,13 +4,17 @@ import {HomeComponent} from './home.component';
 import {ListaComprasComponent} from './components/lista-compras/lista-compras.component';
 import {InfoCardComponent} from './components/info-card/info-card.component';
 import {SharedModule} from '../shared/shared.module';
-import {ExpireDateTableComponent} from './components/expire-date-table/expire-date-table.component'
+import {ExpireDateTableComponent} from './components/expire-date-table/expire-date-table.component';
+import { GraphComponent } from './components/graph/graph.component';
+import { PieChartComponent } from './components/pie-chart/pie-chart.component'
 @NgModule({
   declarations: [
     HomeComponent,
     ListaComprasComponent,
     InfoCardComponent,
     ExpireDateTableComponent,
+    GraphComponent,
+    PieChartComponent,
   ],
   imports: [
     CommonModule,

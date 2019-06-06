@@ -16,7 +16,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {ModalModule, TabsModule, TooltipModule} from 'ngx-bootstrap';
 import {StorageSystemModule} from './storage-system/storage-system.module';
 import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
-import {ToastrModule} from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
+import { Chart } from 'chart.js';
 //import { ExpireDateTableComponent } from './home/components/expire-date-table/expire-date-table.component';
 @NgModule({
   imports: [
