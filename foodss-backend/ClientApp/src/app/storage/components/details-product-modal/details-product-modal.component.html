@@ -1,0 +1,152 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{product.name}}</h4>
+  <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="shopping-list">
+    <section>
+      <small class="section-title">Details</small>
+      <table class="table table-borderless">
+        <tr>
+          <th>Barcode</th>
+          <td>{{product.barcode}}</td>
+        </tr>
+        <tr>
+          <th>Next Expiry Date</th>
+          <td>{{product.closestExpiryDateLabel}}</td>
+        </tr>
+        <tr>
+          <th>Stock</th>
+          <td>{{product.count}}</td>
+        </tr>
+      </table>
+
+      <div class="text-right">
+        <button type="button" class="btn btn-outline-dark mr-2" [class.active]="page == 'consumed'" (click)="togglePage('consumed')"><i class="fa fa-history"></i> Histórico de Consumo</button>
+        <button type="button" class="btn btn-outline-primary" [class.active]="page == 'shopping-list'" (click)="togglePage('shopping-list')"><i class="fa fa-cart-plus"></i> Lista de Compras</button>
+      </div>
+    </section>
+
+    <section *ngIf="page == 'items'">
+      <small class="section-title"><i class="fa fa-list"></i> Items</small>
+      <table class="table table-middle">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Validade</th>
+            <th class="text-center">Quantidade</th>
+            <th style="width: 110px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of items">
+            <tr>
+              <td class="text-center" [ngClass]="expiryLevelClasses[item.expiryLevel] || 'text-secondary'">
+                <i class="fa fa-lock" tooltip="Privado" [hidden]="item.shared"></i>
+                <i class="fa fa-globe" tooltip="Partilhado" [hidden]="!item.shared"></i>
+              </td>
+              <td [ngClass]="expiryLevelClasses[item.expiryLevel]">
+                {{item.expiryDateLabel}}
+                <span [hidden]="item.remainingDays >= 0" class="text-secondary ml-2">
+                  expirou há {{-item.remainingDays}} dias
+                </span>
+                <span [hidden]="item.remainingDays < 0" class="text-secondary ml-2">
+                  faltam {{item.remainingDays}} dias
+                </span>
+              </td>
+              <td class="text-center">
+                <span [hidden]="editingItem != item || item.count - item.originalCount <= 0" class="text-success">
+                  (+{{item.count - item.originalCount}})
+                </span>
+                <span [hidden]="editingItem != item || item.count - item.originalCount >= 0" class="text-danger">
+                  (-{{item.originalCount - item.count}})
+                </span>
+                {{item.count}}
+              </td>
+              <td class="text-right">
+                <button [hidden]="editingItem != null || item.expiryLevel != 'expired'" type="button" class="btn btn-ghost-danger" (click)="discardItem(item)"><i class="fa fa-trash"></i></button>
+                <button [hidden]="editingItem != null || item.expiryLevel == 'expired'" type="button" class="btn btn-ghost-primary" (click)="editItem(item)"><i class="fa fa-pencil"></i></button>
+                <button [hidden]="editingItem != item" type="button" class="btn btn-primary mr-2" (click)="decreaseStock(item)"><i class="fa fa-minus"></i></button>
+                <button [hidden]="editingItem != item" type="button" class="btn btn-primary" (click)="increaseStock(item)"><i class="fa fa-plus"></i></button>
+              </td>
+            </tr>
+            <tr *ngIf="editingItem == item">
+              <td colspan="4">
+                <button type="button" class="btn btn-outline-secondary float-left" (click)="cancelEditItem()">Cancelar</button>
+                <button type="button" class="btn btn-success float-right" (click)="saveEditItem()"><i class="fa fa-save"></i> Gravar</button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </section>
+
+    <section *ngIf="page == 'consumed'">
+      <small class="section-title"><i class="fa fa-history"></i> Items History</small>
+      <table class="table table-middle">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Validade</th>
+            <th class="text-center">Consumido em</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of consumedItems">
+            <td class="text-center" [ngClass]="'text-secondary'">
+              <i class="fa fa-lock" tooltip="Privado" [hidden]="item.shared"></i>
+              <i class="fa fa-globe" tooltip="Partilhado" [hidden]="!item.shared"></i>
+            </td>
+            <td>
+              {{item.expiryDateLabel}}
+              <span [hidden]="item.remainingDays >= 0" class="text-secondary ml-2">
+                expirou há {{-item.remainingDays}} dias
+              </span>
+              <span [hidden]="item.remainingDays < 0" class="text-secondary ml-2">
+                faltam {{item.remainingDays}} dias
+              </span>
+            </td>
+            <td class="text-center">
+              {{item.consumedDateLabel}}
+              <span class="text-secondary ml-2">
+                há {{-item.consumedDateDays}} dias
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section *ngIf="page == 'shopping-list'">
+      <small class="section-title"><i class="fa fa-cart-plus"></i> Shopping List</small>
+      <table class="table table-middle">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Lista</th>
+            <th class="text-center">Quantidade</th>
+            <th style="width: 110px;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-center text-secondary">
+              <i class="fa fa-lock" tooltip="Privado"></i>
+            </td>
+            <td>Mine</td>
+            <td class="text-center">{{shoppingList.count}}</td>
+            <td>
+              <button [hidden]="editingItem != item" type="button" class="btn btn-primary mr-2" (click)="decreaseShoppingList()"><i class="fa fa-minus"></i></button>
+              <button [hidden]="editingItem != item" type="button" class="btn btn-primary" (click)="increaseShoppingList()"><i class="fa fa-plus"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Fechar</button>
+</div>

@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 // Downloaded from
 // https://github.com/aspnet/EntityFrameworkCore/issues/6482#issuecomment-399061388
@@ -39,6 +41,43 @@ namespace StorageSystem
             var modelVisitor = (RelationalQueryModelVisitor)queryCompilationContext.CreateQueryModelVisitor();
             modelVisitor.CreateQueryExecutor<TEntity>(queryModel);
             return modelVisitor.Queries.Join(Environment.NewLine + Environment.NewLine);
+        }
+
+        //
+        // Summary:
+        //     Specifies related entities to include in the query results. The navigation property
+        //     to be included is specified starting with the type of entity being queried (TEntity).
+        //     If you wish to include additional types based on the navigation properties of
+        //     the type being included, then chain a call to Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ThenInclude``3(Microsoft.EntityFrameworkCore.Query.IIncludableQueryable{``0,System.Collections.Generic.IEnumerable{``1}},System.Linq.Expressions.Expression{System.Func{``1,``2}})
+        //     after this call.
+        //
+        // Parameters:
+        //   source:
+        //     The source query.
+        //
+        //   navigationPropertyPath:
+        //     A lambda expression representing the navigation property to be included (t =>
+        //     t.Property1).
+        //
+        // Type parameters:
+        //   TEntity:
+        //     The type of entity being queried.
+        //
+        //   TProperty:
+        //     The type of the related entity to be included.
+        //
+        // Returns:
+        //     A new query with the related data included.
+        //public static IIncludableQueryable<TEntity, TProperty> Include<TEntity, TProperty>([NotNullAttribute] this IQueryable<TEntity> source, [NotNullAttribute] Expression<Func<TEntity, TProperty>> navigationPropertyPath) where TEntity : class;
+        public static IQueryable<TEntity> ConditionalInclude<TEntity, TProperty>(this IQueryable<TEntity> source, Expression<Func<TEntity, TProperty>> navigationPropertyPath, bool include) where TEntity : class
+        {
+
+            if (include)
+            {
+                return source.Include(navigationPropertyPath);
+            }
+
+            return source;
         }
     }
 }

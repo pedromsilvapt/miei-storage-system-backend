@@ -14,7 +14,7 @@ export class HttpService {
   constructor(private httpClient: HttpClient, private router: Router, private slimLoadingBarService: SlimLoadingBarService) {
   }
 
-  public post(url: string, parameters: any): Observable<any> {
+  public post(url: string, parameters: any = {}): Observable<any> {
     return Observable.create((observer: Subject<any>) => {
       this.initializeSlimLoadingBar();
       this.httpClient.post(HttpUtil.url(url), parameters, HttpUtil.headers())

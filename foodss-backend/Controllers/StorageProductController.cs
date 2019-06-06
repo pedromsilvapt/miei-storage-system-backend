@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StorageSystem.Controllers.DTO;
 using StorageSystem.Models;
 using StorageSystem.Services;
@@ -112,6 +113,31 @@ namespace StorageSystem.Controllers
             User user = await userService.GetUserAsync(this.User);
 
             await productService.RemoveProduct(user, storageId, id);
+        }
+
+        [HttpGet("{id}/shopping-list")]
+        public async Task<ShoppingListDTO> GetShoppingList(int storageId, int id)
+        {
+            User user = await userService.GetUserAsync(this.User);
+            
+            ShoppingListItem shopping = await this.productService.GetShoopingListItem(user, storageId, id);
+
+            return ShoppingListDTO.FromModel(shopping);
+        }
+
+        public class ShoppingItemInput
+        {
+            public int Count { get; set; }
+        }
+
+        [HttpPost("{id}/shopping-list")]
+        public async Task<ShoppingListDTO> SetShoppingList(int storageId, int id, [FromBody]ShoppingItemInput input)
+        {
+            User user = await userService.GetUserAsync(this.User);
+
+            ShoppingListItem shopping = await this.productService.SetShoopingListItem(user, storageId, id, input.Count);
+
+            return ShoppingListDTO.FromModel(shopping);
         }
     }
 }

@@ -78,6 +78,7 @@ namespace StorageSystem
             services.AddScoped<StorageInvitationService>();
             services.AddScoped<StorageProductService>();
             services.AddScoped<StorageProductItemService>();
+            services.AddScoped<StorageConsumedProductItemService>();
             services.AddScoped<ShoppingListService>();
         }
 

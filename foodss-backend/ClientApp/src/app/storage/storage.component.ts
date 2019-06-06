@@ -3,6 +3,9 @@ import { StorageModel } from './model/storage.model';
 import * as _ from 'lodash';
 import { BsModalService } from 'ngx-bootstrap';
 import { AddProductModalComponent } from './components/add-product-modal/add-product-modal.component';
+import { HttpService } from '../core/http/http.service';
+import { Product } from '../product/model/product.model';
+import { DetailsProductModalComponent } from './components/details-product-modal/details-product-modal.component';
 
 @Component({
   selector: 'app-storage',
@@ -317,10 +320,9 @@ export class StorageComponent implements OnInit {
     },
   ];
 
-  constructor(private modalService: BsModalService) { }
+  constructor(private modalService: BsModalService, protected httpService : HttpService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   public getSharedStoragePeople(storage: StorageModel): Array<string> {
     return Object.keys(this.groupSharedStorageProductsByUsers(storage));
@@ -332,5 +334,16 @@ export class StorageComponent implements OnInit {
 
   openAddProduct(storage: Storage) {
     this.modalService.show(AddProductModalComponent, { initialState: { storage }});
+  }
+
+  openDetailsProduct(storage: Storage, product: Product) {
+    this.modalService.show(DetailsProductModalComponent, { initialState: { storage, product } });
+  }
+
+  async openDetailsProductTest() {
+    const storage = await this.httpService.get('storage/1').toPromise();
+    const product = await this.httpService.get('storage/1/product/2').toPromise();
+
+    this.openDetailsProduct(storage, product);
   }
 }

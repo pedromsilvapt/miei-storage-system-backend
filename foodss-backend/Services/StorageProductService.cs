@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StorageSystem.Architecture.Exception;
+using StorageSystem.Controllers;
 using StorageSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -47,16 +48,13 @@ namespace StorageSystem.Services
 
             return await ListProducts(user, storage, skip, take);
         }
-
-        public async Task<Product> GetProduct(User user, int storageId, int id)
+        public async Task<Product> GetProduct(User user, Storage storage, int id, bool includeItems = true)
         {
-            Storage storage = await storageService.GetStorage(user.Id, storageId);
-
             Product product = await Context.Products
                // Only retrieve the products that belong to this storage
                .Where(p => (p.StorageId == storage.Id) && (p.Id == id))
                // Join for each product it's items as well
-               .Include(p => p.Items)
+               .ConditionalInclude(p => p.Items, includeItems)
                .FirstOrDefaultAsync();
 
             if ((product == null) || (product.StorageId != storage.Id))
@@ -65,6 +63,13 @@ namespace StorageSystem.Services
             }
 
             return product;
+        }
+
+        public async Task<Product> GetProduct(User user, int storageId, int id, bool includeItems = true)
+        {
+            Storage storage = await storageService.GetStorage(user.Id, storageId);
+
+            return await GetProduct(user, storage, id, includeItems);
         }
 
         public async Task<ICollection<Product>> SearchProductsByBarcode(User user, int storageId, string barcode)
@@ -133,6 +138,66 @@ namespace StorageSystem.Services
             await Context.SaveChangesAsync();
 
             return product;
+        }
+
+        public async Task<ShoppingListItem> SetShoopingListItem(User user, int storageId, int id, int count)
+        {
+            ShoppingListItem item = await GetShoopingListItem(user, storageId, id);
+
+            if (count <= 0)
+            {
+                if (item.Id > 0)
+                {
+                    Context.ShoppingListItems.Remove(item);
+                }
+            } else
+            {
+                item.Count = count;
+
+                if (item.Id > 0)
+                {
+                    Context.Update(item);
+                }
+                else
+                {
+                    await Context.AddAsync(item);
+                }
+            }
+
+            await Context.SaveChangesAsync();
+
+            return item;
+        }
+
+        public async Task<ShoppingListItem> GetShoopingListItem(User user, int storageId, int id)
+        {
+            Storage storage = await storageService.GetStorage(user.Id, storageId);
+
+            Product product = await GetProduct(user, storage, id, false);
+
+            ShoppingListItem item = await Context.ShoppingListItems
+                .Where(s => s.ProductId == id && s.OwnerId == user.Id)
+                .FirstOrDefaultAsync();
+
+            if (item == null)
+            {
+                // When the item is not on the database's shopping list, we create a fake object with count zero
+                return new ShoppingListItem
+                {
+                    Count = 0,
+
+                    StorageId = storage.Id,
+                    Storage = storage,
+
+                    ProductId = product.Id,
+                    Product = product,
+
+                    OwnerId = user.Id,
+                    User = user
+                };
+            }
+
+            return item;
         }
 
         public async Task RemoveProduct(User user, int storageId, int id)

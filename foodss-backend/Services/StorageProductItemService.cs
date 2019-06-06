@@ -27,7 +27,7 @@ namespace StorageSystem.Services
 
         public async Task<ICollection<ProductItem>> ListProductItems(User user, int storageId, int productId, int skip = 0, int take = 0)
         {
-            Product product = await productService.GetProduct(user, storageId, productId);
+            Product product = await productService.GetProduct(user, storageId, productId, false);
 
             return await Context.ProductItems
                 .Where(p => (p.ProductId == product.Id) && CanUserSeeItem(user, p))
@@ -40,7 +40,7 @@ namespace StorageSystem.Services
 
         public async Task<ProductItem> GetProductItem(User user, int storageId, int productId, int id)
         {
-            Product product = await productService.GetProduct(user, storageId, productId);
+            Product product = await productService.GetProduct(user, storageId, productId, false);
 
             ProductItem item = await Context.ProductItems
                 .Where(i => (i.Id == id) && (i.ProductId == product.Id))
@@ -61,9 +61,16 @@ namespace StorageSystem.Services
 
         public async Task<ICollection<ProductItem>> CreateProductItem(User user, int storageId, int productId, bool shared, DateTime expiryDate, int quantity)
         {
-            Product product = await productService.GetProduct(user, storageId, productId);
+            expiryDate = expiryDate
+                // Get only the "date" part of the DateTime (so hours, minutes and seconds are all zero)
+                .Date
+                // Then go to (the start of) the next day
+                .AddDays(1)
+                // And finally go back one tick (the smallest time unite represented in a DateTime) to and up with
+                // The very end of the day of the expiry date
+                .AddTicks(-1);
 
-            bool itemHasExpiryDate = expiryDate != null;
+            Product product = await productService.GetProduct(user, storageId, productId);
 
             var now = DateTime.Now;
 
@@ -106,7 +113,7 @@ namespace StorageSystem.Services
             using (var transaction = await Context.Database.BeginTransactionAsync())
             {
                 Context.ProductItems.Remove(item);
-                
+
                 await Context.ConsumedProductItems.AddAsync(consumedItem);
 
                 await Context.SaveChangesAsync();

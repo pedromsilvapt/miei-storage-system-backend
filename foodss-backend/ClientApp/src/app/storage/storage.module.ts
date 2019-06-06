@@ -7,10 +7,11 @@ import { StorageDatatableComponent } from './components/storage-datatable/storag
 import { AddProductModalComponent } from './components/add-product-modal/add-product-modal.component'
 import { MinDateValidatorDirective } from './components/add-product-modal/min-date.directive';
 import { BarcodeScannerComponent } from './components/add-product-modal/barcode-scanner.component';
+import { DetailsProductModalComponent } from './components/details-product-modal/details-product-modal.component';
 
 @NgModule({
-  declarations: [StorageComponent, StorageDatatableComponent, MinDateValidatorDirective, AddProductModalComponent, BarcodeScannerComponent],
-  entryComponents: [AddProductModalComponent],
+  declarations: [StorageComponent, StorageDatatableComponent, MinDateValidatorDirective, AddProductModalComponent, BarcodeScannerComponent, DetailsProductModalComponent],
+  entryComponents: [AddProductModalComponent, DetailsProductModalComponent],
   imports: [
     CommonModule,
     SharedModule,
