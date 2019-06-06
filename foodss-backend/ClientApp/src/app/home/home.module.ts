@@ -7,6 +7,7 @@ import {SharedModule} from '../shared/shared.module';
 import {ExpireDateTableComponent} from './components/expire-date-table/expire-date-table.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { PieChartComponent } from './components/pie-chart/pie-chart.component'
+import {ChartsModule} from 'ng2-charts';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -18,6 +19,7 @@ import { PieChartComponent } from './components/pie-chart/pie-chart.component'
   ],
   imports: [
     CommonModule,
+    ChartsModule,
     SharedModule
   ]
 })

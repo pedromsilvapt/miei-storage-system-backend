@@ -1,4 +1,12 @@
-<canvas id="okCanvas2" width="400" height="100">
-  <p>Hello Fallback World</p>
-</canvas>
-Pie Tester
+<div class="row">
+  <div class="col-6">
+    <div style="display: block">
+      <canvas baseChart
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [chartType]="pieChartType">
+      </canvas>
+    </div>
+  </div>
+</div>
+

@@ -8,6 +8,10 @@ import { Chart } from 'chart.js';
 export class PieChartComponent implements OnInit {
   constructor() { }
 
+  public pieChartLabels = ['Sales Q1', 'Sales Q2', 'Sales Q3', 'Sales Q4'];
+  public pieChartData = [120, 150, 180, 90];
+  public pieChartType = 'pie';
+
   ngOnInit() {
     var canvas = <HTMLCanvasElement>document.getElementById("okCanvas2");
     var ctx = canvas.getContext("2d");
