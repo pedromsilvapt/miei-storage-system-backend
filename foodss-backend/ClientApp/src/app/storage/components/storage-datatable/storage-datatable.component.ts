@@ -42,7 +42,7 @@ export class StorageDatatableComponent extends DatatablePageContent<Array<Produc
         const row = {
           id: product.id,
           name: product.name,
-          nameRouterLink: [{ storage: 1, product: product.id } ],
+          nameRouterLink: [{ storage: product.storageId, product: product.id } ],
           expireDate: product.closestExpiryDate,
           amount: product.count,
           actions: this.createDatatableActionButtons()

@@ -8,6 +8,7 @@ export class Product {
   barcode: string;
   // TODO analisar necessidade de atributo abaixo
   // storage: StorageModel;
+  storageId: number;
   userOwner: User;
   shared: boolean;
   closestExpiryDate: Date;
