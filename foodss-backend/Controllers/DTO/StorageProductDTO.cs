@@ -22,19 +22,82 @@ namespace StorageSystem.Controllers.DTO
         public int? Count { get; set; }
         public DateTime? ClosestExpiryDate { get; set; }
 
+        public int? SharedCount { get; set; }
+        public DateTime? SharedClosestExpiryDate { get; set; }
+
+        public int? PrivateCount { get; set; }
+        public DateTime? PrivateClosestExpiryDate { get; set; }
+
         public ICollection<ProductItemDTO> Items { get; set; }
 
         public static ProductDTO FromModel(Product model, ICollection<ProductItem> items = null, bool includeItems = false)
-            => new ProductDTO()
+        {
+            int? count = null;
+            int? sharedCount = null;
+            int? privateCount = null;
+            DateTime? closestExpiryDate = null;
+            DateTime? sharedClosestExpiryDate = null;
+            DateTime? privateClosestExpiryDate = null;
+            
+            if (items != null)
+            {
+                sharedCount = 0;
+                privateCount = 0;
+
+                foreach (ProductItem item in items)
+                {
+                    if (item.Shared)
+                    {
+                        sharedCount++;
+
+                        if (sharedClosestExpiryDate == null || item.ExpiryDate < sharedClosestExpiryDate.Value)
+                        {
+                            sharedClosestExpiryDate = item.ExpiryDate;
+                        }
+                    }
+                    else
+                    {
+                        privateCount++;
+
+                        if (privateClosestExpiryDate == null || item.ExpiryDate < privateClosestExpiryDate.Value)
+                        {
+                            privateClosestExpiryDate = item.ExpiryDate;
+                        }
+                    }
+                }
+
+                count = sharedCount + privateCount;
+                
+                if (privateClosestExpiryDate != null && (closestExpiryDate == null || privateClosestExpiryDate.Value < closestExpiryDate.Value))
+                {
+                    closestExpiryDate = privateClosestExpiryDate;
+                }
+
+                if (sharedClosestExpiryDate != null)
+                {
+                    closestExpiryDate = sharedClosestExpiryDate;
+                }
+            }
+
+            return new ProductDTO()
             {
                 Id = model.Id,
                 Name = model.Name,
                 Barcode = model.Barcode,
                 StorageId = model.StorageId,
                 MaxTemperature = model.MaxTemperature,
-                Count = items?.Count(),
-                ClosestExpiryDate = items?.Count > 0 ? items?.DefaultIfEmpty()?.Min(s => s.ExpiryDate) : null,
+
+                Count = count,
+                ClosestExpiryDate = closestExpiryDate,
+
+                SharedCount = sharedCount,
+                SharedClosestExpiryDate = sharedClosestExpiryDate,
+
+                PrivateCount = privateCount,
+                PrivateClosestExpiryDate = privateClosestExpiryDate,
+
                 Items = includeItems ? items?.Select(i => ProductItemDTO.FromModel(i))?.ToList() : null
             };
+        }
     }
 }

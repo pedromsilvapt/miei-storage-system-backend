@@ -4,14 +4,18 @@ export class Product {
 
   id: number;
   name: string;
-  count: number;
   barcode: string;
   // TODO analisar necessidade de atributo abaixo
   // storage: StorageModel;
   storageId: number;
   userOwner: User;
-  shared: boolean;
-  closestExpiryDate: Date;
+
+  count?: number;
+  closestExpiryDate?: Date;
+  sharedCount?: number;
+  sharedClosestExpiryDate?: Date;
+  privateCount?: number;
+  privateClosestExpiryDate?: Date;
   addedDate: Date;
   consumedDate?: Date;
 }

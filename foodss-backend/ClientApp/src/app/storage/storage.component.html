@@ -23,15 +23,20 @@
             </div>
           </div>
         </div>
-        <ng-container *ngIf="storage.isShared" panel-body>
+        <ng-container *ngIf="storage.shared" panel-body>
           <tabset>
-            <tab *ngFor="let person of getSharedStoragePeople(storage)"
-                 [heading]="person">
-              <app-storage-datatable [products]="groupSharedStorageProductsByUsers(storage)[person]"></app-storage-datatable>
+            <tab heading="Private">
+              <app-storage-datatable [products]="storage.privateProducts"></app-storage-datatable>
+            </tab>
+            <tab heading="Shared">
+              <app-storage-datatable [products]="storage.sharedProducts"></app-storage-datatable>
+            </tab>
+            <tab heading="Empty ({{storage.missingProducts.length}})">
+              <app-storage-datatable [products]="storage.missingProducts"></app-storage-datatable>
             </tab>
           </tabset>
         </ng-container>
-        <ng-container *ngIf="!storage.isShared" panel-body>
+        <ng-container *ngIf="!storage.shared" panel-body>
           <app-storage-datatable [products]="storage.products"></app-storage-datatable>
         </ng-container>
       </app-panel>

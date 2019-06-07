@@ -9,12 +9,18 @@ import { DetailsProductModalComponent } from './components/details-product-modal
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+export interface TabbedStorageModel extends StorageModel {
+  privateProducts?: Product[];
+  sharedProducts?: Product[];
+  missingProducts?: Product[];
+}
+
 @Component({
   selector: 'app-storage',
   templateUrl: './storage.component.html'
 })
 export class StorageComponent implements OnInit, OnDestroy {
-  public storages: Array<StorageModel> = [];
+  public storages: Array<TabbedStorageModel> = [];
 
   protected subscriptions: Subscription[] = [];
 
@@ -33,8 +39,36 @@ export class StorageComponent implements OnInit, OnDestroy {
     this.storages = await this.httpService.get('storage?includeProducts=true').toPromise();
 
     for (let storage of this.storages) {
+      if (storage.shared) {
+        storage.sharedProducts = [];
+        storage.privateProducts = [];
+        storage.missingProducts = [];
+      }
+
       for (let product of storage.products) {
         product.closestExpiryDate = new Date(product.closestExpiryDate);
+
+        if (storage.shared) {
+          if (product.sharedCount > 0) {
+            storage.sharedProducts.push({
+              ...product,
+              count: product.sharedCount,
+              closestExpiryDate: product.sharedClosestExpiryDate
+            });
+          }
+
+          if (product.privateCount > 0) {
+            storage.sharedProducts.push({
+              ...product,
+              count: product.privateCount,
+              closestExpiryDate: product.privateClosestExpiryDate
+            });
+          }
+
+          if (product.privateCount == 0 && product.sharedCount == 0) {
+            storage.missingProducts.push(product);
+          }
+        }
       }
     }
 
