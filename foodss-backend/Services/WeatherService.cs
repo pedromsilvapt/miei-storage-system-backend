@@ -21,7 +21,7 @@ namespace StorageSystem.Services
         public WeatherService(StorageSystemContext context, IConfiguration configuration)
         {
             Context = context;
-            client = new RestClient("https://openweathermap.org");
+            client = new RestClient("https://api.openweathermap.org");
             key = configuration.GetValue<string>("Security:OpenWeatherMapKey");
         }
 
