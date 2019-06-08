@@ -61,9 +61,9 @@ namespace StorageSystem.Controllers
 
             return storages
                 .Select(storage => StorageDTO.FromModel(
-                    storage, 
-                    includeProducts 
-                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items)))?.ToList() 
+                    storage,
+                    includeProducts
+                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items)))?.ToList()
                         : null
                 ))
                 .ToList();
@@ -77,6 +77,18 @@ namespace StorageSystem.Controllers
             Storage storage = await storageService.GetStorage(userId, id);
 
             return StorageDTO.FromModel(storage);
+        }
+
+        [HttpGet("{id}/weather")]
+        public async Task<StorageDTO> FindStorageWeatherReport(int id)
+        {
+            int userId = userService.GetUserId(this.User);
+
+            Storage storage = await storageService.GetStorage(userId, id);
+
+            List<Product> products = await storageService.GetStorageWeatherReport(storage);
+
+            return StorageDTO.FromModel(storage, products.Select(p => ProductDTO.FromModel(p)).ToList());
         }
 
         [HttpPost]

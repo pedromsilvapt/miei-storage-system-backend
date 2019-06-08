@@ -19,6 +19,7 @@ namespace StorageSystem.Controllers.DTO
         public string Name { get; set; }
         public int OwnerId { get; set; }
         public bool Shared { get; set; }
+        public float? CityTemperature { get; set; }
 
         public List<ProductDTO> Products;
 
@@ -27,7 +28,8 @@ namespace StorageSystem.Controllers.DTO
             Name = model.Name,
             OwnerId = model.OwnerId,
             Shared = model.Shared,
-            Products = products
+            Products = products,
+            CityTemperature = model.LastWeatherForecastTemperature
         };
     }
 }

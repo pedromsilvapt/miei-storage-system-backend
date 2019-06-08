@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StorageSystem.Architecture.Exception;
+using StorageSystem.Controllers.DTO;
 using StorageSystem.Models;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,12 @@ namespace StorageSystem.Services
     {
         public StorageSystemContext Context { get; protected set; }
 
-        public StorageService(StorageSystemContext context)
+        private readonly WeatherService weatherService;
+
+        public StorageService(StorageSystemContext context, WeatherService weatherService)
         {
             this.Context = context;
+            this.weatherService = weatherService;
         }
 
         public async Task<List<Storage>> ListStorages(int userId)
@@ -111,6 +115,33 @@ namespace StorageSystem.Services
             await Context.SaveChangesAsync();
 
             return storage;
+        }
+
+        public async Task<List<Product>> GetStorageWeatherReport(int userId, int id) {
+            return await GetStorageWeatherReport(await GetStorage(userId, id));
+        }
+
+        public async Task<List<Product>> GetStorageWeatherReport(Storage storage)
+        {
+            if (storage.CityId == null)
+            {
+                return new List<Product>();
+            }
+
+            if ((storage.LastWeatherForecastTemperature == null)
+             || (storage.LastWeatherForecast == null)
+             || (storage.LastWeatherForecast.Value.Date != DateTime.Today))
+            {
+                storage.LastWeatherForecastTemperature = await weatherService.GetNextDaysMaxTemperatureForecast(storage.CityId.Value, 3);
+                storage.LastWeatherForecast = DateTime.Now;
+
+                Context.Storages.Update(storage);
+                await Context.SaveChangesAsync();
+            }
+
+            return await Context.Products
+                .Where(prod => prod.StorageId == storage.Id && prod.MaxTemperature != null && prod.MaxTemperature < storage.LastWeatherForecastTemperature)
+                .ToListAsync();
         }
 
         public async Task DeleteStorage(int userId, int id)

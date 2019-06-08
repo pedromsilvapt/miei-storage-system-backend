@@ -96,4 +96,9 @@ namespace StorageSystem.Architecture.Exception
     {
         public InviteSelfException() : base(ApiErrorCode.INVITE_SELF.ToString()) { }
     }
+
+    public class CityNotFoundException : NotFoundException
+    {
+        public CityNotFoundException() : base(ApiErrorCode.CITY_NOT_FOUND.ToString()) { }
+    }
 }

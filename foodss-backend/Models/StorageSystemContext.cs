@@ -18,6 +18,7 @@ namespace StorageSystem.Models
         public DbSet<StorageUser> StorageUsers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserProductPreference> UserProductPreferences { get; set; }
+        public DbSet<City> Cities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

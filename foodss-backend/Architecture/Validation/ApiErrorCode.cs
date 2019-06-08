@@ -19,6 +19,7 @@ namespace StorageSystem.Architecture
         PRODUCT_REMOVAL,
         DUPLICATED_BARCODE,
         INVITE_EXISTING_STORAGE_MEMBER,
-        INVITE_SELF
+        INVITE_SELF,
+        CITY_NOT_FOUND
     }
 }
