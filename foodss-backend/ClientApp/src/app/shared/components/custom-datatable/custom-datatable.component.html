@@ -42,22 +42,12 @@
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <ng-template [ngIf]="column.hasLink" [ngIfElse]="notColumnWithLink">
         <a [routerLink]="row[column.name + 'RouterLink']">
-          <ng-template [ngIf]="column.type == 'date'" [ngIfElse]="notDateTypeColumnWithLink">
-            {{value | date: 'dd/MM/yyyy'}}
-          </ng-template>
-          <ng-template #notDateTypeColumnWithLink>
-            {{value}}
-          </ng-template>
+          <ng-container [ngTemplateOutlet]="handleColumnType" [ngTemplateOutletContext]="{column: column, value: value}"></ng-container>
         </a>
       </ng-template>
 
       <ng-template #notColumnWithLink>
-        <ng-template [ngIf]="column.type == 'date'" [ngIfElse]="notDateTypeColumnWithoutLink">
-          {{value | date: 'dd/MM/yyyy'}}
-        </ng-template>
-        <ng-template #notDateTypeColumnWithoutLink>
-          {{value}}
-        </ng-template>
+        <ng-container [ngTemplateOutlet]="handleColumnType" [ngTemplateOutletContext]="{column: column, value: value}"></ng-container>
       </ng-template>
     </ng-template>
   </ngx-datatable-column>
@@ -84,3 +74,15 @@
 
 </ng-container>
 </ngx-datatable>
+
+<ng-template #handleColumnType let-column="column" let-value="value">
+  <ng-container *ngIf="column.type === 'date'">
+    <span appExpireDate>{{value}}</span>
+  </ng-container>
+  <ng-container *ngIf="column.type === 'expire-date'">
+    <span appExpireDate [colorfy]="true">{{value}}</span>
+  </ng-container>
+  <ng-container *ngIf="(column.type !== 'date') && (column.type !== 'expire-date')">
+    {{value}}
+  </ng-container>
+</ng-template>

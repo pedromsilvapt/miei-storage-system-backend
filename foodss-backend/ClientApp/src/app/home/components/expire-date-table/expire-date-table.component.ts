@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatatablePageContent } from '../../../shared/page/content/datatable-page.content';
 import { ColumnDatatable } from '../../../shared/components/custom-datatable/model/column.datatable';
 import { Product } from '../../../product/model/product.model';
+import {ColumnType} from '../../../shared/components/custom-datatable/model/column-type.enum';
 
 @Component({
   selector: 'app-expire-date-table',
@@ -119,7 +120,7 @@ export class ExpireDateTableComponent extends DatatablePageContent<Array<Product
 
     columns.push(new ColumnDatatable('name', 'general.product', true, true));
     columns.push(new ColumnDatatable('amount', 'general.amount', true));
-    columns.push(new ColumnDatatable('expireDate', 'general.expire_date', true, false, 'date'));
+    columns.push(new ColumnDatatable('expireDate', 'general.expire_date', true, false, ColumnType.ExpireDate));
     columns.push(new ColumnDatatable('actions', 'datatable.actions', false));
 
     return columns;
