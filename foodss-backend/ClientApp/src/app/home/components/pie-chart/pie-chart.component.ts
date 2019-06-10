@@ -13,25 +13,25 @@ export class PieChartComponent implements OnInit {
   public pieChartType = 'pie';
 
   ngOnInit() {
-    var canvas = <HTMLCanvasElement>document.getElementById("okCanvas2");
-    var ctx = canvas.getContext("2d");
-    var myChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        datasets: [{
-          data: [10, 20, 30]
-        }],
-
-        // These labels appear in the legend and in the tooltips when hovering different arcs
-        labels: [
-          'Red',
-          'Yellow',
-          'Blue'
-        ]
-      },
-      options: {
-      }
-    });
+    // var canvas = <HTMLCanvasElement>document.getElementById("okCanvas2");
+    // var ctx = canvas.getContext("2d");
+    // var myChart = new Chart(ctx, {
+    //   type: 'pie',
+    //   data: {
+    //     datasets: [{
+    //       data: [10, 20, 30]
+    //     }],
+    //
+    //     // These labels appear in the legend and in the tooltips when hovering different arcs
+    //     labels: [
+    //       'Red',
+    //       'Yellow',
+    //       'Blue'
+    //     ]
+    //   },
+    //   options: {
+    //   }
+    // });
   }
 
 }

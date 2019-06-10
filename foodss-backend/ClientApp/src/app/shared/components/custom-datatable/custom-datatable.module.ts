@@ -5,6 +5,7 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {SelectModule} from 'ng2-select';
 import {TranslationModule} from 'angular-l10n';
 import {RouterModule} from '@angular/router';
+import {SharedDirectivesModule} from '../../directives/shared-directives.module';
 
 @NgModule({
   declarations: [CustomDatatableComponent],
@@ -13,7 +14,8 @@ import {RouterModule} from '@angular/router';
     NgxDatatableModule,
     SelectModule,
     TranslationModule,
-    RouterModule
+    RouterModule,
+    SharedDirectivesModule
   ],
   exports: [CustomDatatableComponent]
 })

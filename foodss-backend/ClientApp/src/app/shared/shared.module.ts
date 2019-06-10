@@ -12,18 +12,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [],
-  imports: [
-    BrowserAnimationsModule,
-    BsDropdownModule,
-    CommonModule,
-    FormsModule,
-    HttpClientModule,
-    RouterModule,
-    TabsModule,
-    TranslationModule,
-    SharedComponentsModule,
-    SharedDirectivesModule,
-  ],
+  imports: [],
   providers: [MessageUtil],
   exports: [
     BrowserAnimationsModule,

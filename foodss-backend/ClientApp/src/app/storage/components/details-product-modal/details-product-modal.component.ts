@@ -1,8 +1,15 @@
-import { Component, ViewChild, EventEmitter, Output, Input } from '@angular/core';
-import { Product } from '../../../product/model/product.model';
-import { HttpService } from 'src/app/core/http/http.service';
-import { StorageModel } from '../../model/storage.model';
-import { BsModalRef } from 'ngx-bootstrap';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {HttpService} from 'src/app/core/http/http.service';
+import {StorageModel} from '../../model/storage.model';
+import {BsModalRef} from 'ngx-bootstrap';
+import {DateUtil} from '../../../shared/util/date-util';
+import {
+  ConsumedProductItem,
+  DetailsProductPage,
+  EditingProductItemAggregate,
+  ProductItem,
+  ProductItemAggregate
+} from './enums-interfaces/enums-interfaces.util';
 
 @Component({
   selector: 'details-product-modal',
@@ -24,7 +31,7 @@ export class DetailsProductModalComponent {
 
   public consumedItems: ConsumedProductItem[] = [];
 
-  public shoppingList : any = {};
+  public shoppingList: any = {};
 
   public editingItem: EditingProductItemAggregate = null;
 
@@ -38,60 +45,9 @@ export class DetailsProductModalComponent {
     [DetailsProductPage.ShoppingList]: false
   };
 
-  public expiryLevelClasses = {
-    [ProductExpiryLevel.Expired]: 'text-danger',
-    [ProductExpiryLevel.Close]: 'text-warning',
-    [ProductExpiryLevel.Distant]: ''
-  };
-
   constructor(modalRef: BsModalRef, http: HttpService) {
     this.modalRef = modalRef;
     this.http = http;
-  }
-
-  protected formatExpiryDate(date: Date) : string {
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-
-    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year.toString().padStart(4, '0')}`;
-  }
-
-  protected getExpiryDateInt(date : Date) : number {
-    const minDate = new Date(0);
-
-    const diffTime = Math.abs(date.getTime() - minDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    return diffDays;
-  }
-
-  /**
-   * Returns how many days remain from today until the date
-   * 
-   * @param date
-   */
-  protected getRemainingDays(date: Date): number {
-    const today = new Date(Date.now());
-
-    const todayInt = this.getExpiryDateInt(today);
-    const dateInt = this.getExpiryDateInt(date);
-
-    return dateInt - todayInt;
-  }
-
-  protected getRemainingDaysLevel(days: number): ProductExpiryLevel {
-    if (days < 0) {
-      return ProductExpiryLevel.Expired;
-    } else if (days <= 3) {
-      return ProductExpiryLevel.Close;
-    } else {
-      return ProductExpiryLevel.Distant;
-    }
-  }
-
-  protected getExpiryDateLevel(date: Date): ProductExpiryLevel {
-    return this.getRemainingDaysLevel(this.getRemainingDays(date));
   }
 
   public togglePage(page: DetailsProductPage) : void {
@@ -110,7 +66,7 @@ export class DetailsProductModalComponent {
     }
   }
 
-  public loadPage(page : DetailsProductPage) {
+  public loadPage(page: DetailsProductPage) {
     this.loadedPages[page] = true;
     switch (page) {
       case DetailsProductPage.Items:
@@ -136,7 +92,7 @@ export class DetailsProductModalComponent {
   }
 
   ngOnInit() {
-    this.product.closestExpiryDateLabel = this.formatExpiryDate(new Date(this.product.closestExpiryDate));
+    this.product.closestExpiryDateLabel = DateUtil.formatExpiryDate(new Date(this.product.closestExpiryDate));
 
     this.openPage(DetailsProductPage.Items);
   }
@@ -162,9 +118,9 @@ export class DetailsProductModalComponent {
           count: 1,
           shared: item.shared,
           expiryDate: item.expiryDate,
-          expiryDateLabel: this.formatExpiryDate(item.expiryDate),
-          expiryLevel: this.getExpiryDateLevel(item.expiryDate),
-          remainingDays: this.getRemainingDays(item.expiryDate),
+          expiryDateLabel: DateUtil.formatExpiryDate(item.expiryDate),
+          expiryLevel: DateUtil.getExpiryDateLevel(item.expiryDate),
+          remainingDays: DateUtil.getRemainingDays(item.expiryDate),
           ids: [item.id]
         };
 
@@ -218,7 +174,7 @@ export class DetailsProductModalComponent {
 
       if (this.editingItem.count == 0) {
         await this.remoteConsumeItems(this.editingItem.ids);
-        
+
         this.items = this.items.filter(each => each != this.editingItem);
 
         this.unloadPage(DetailsProductPage.Consumed);
@@ -283,12 +239,12 @@ export class DetailsProductModalComponent {
 
     for (let item of this.consumedItems) {
       item.expiryDate = new Date(item.expiryDate);
-      item.expiryDateLabel = this.formatExpiryDate(item.expiryDate);
-      item.remainingDays = this.getRemainingDays(item.expiryDate);
+      item.expiryDateLabel = DateUtil.formatExpiryDate(item.expiryDate);
+      item.remainingDays = DateUtil.getRemainingDays(item.expiryDate);
 
       item.consumedDate = new Date(item.consumedDate);
-      item.consumedDateLabel = this.formatExpiryDate(item.consumedDate);
-      item.consumedDateDays = this.getRemainingDays(item.consumedDate);
+      item.consumedDateLabel = DateUtil.formatExpiryDate(item.consumedDate);
+      item.consumedDateDays = DateUtil.getRemainingDays(item.consumedDate);
     }
   }
 
@@ -320,49 +276,5 @@ export class DetailsProductModalComponent {
     await this.http.post(`storage/${this.storage.id}/product/${this.product.id}/shopping-list`, { count: this.shoppingList.count }).toPromise();
   }
   /* </Shopping List> */
-}
-
-export enum DetailsProductPage {
-  Items = 'items',
-  ShoppingList = 'shopping-list',
-  Consumed = 'consumed'
-}
-
-export enum ProductExpiryLevel {
-  Expired = 'expired',
-  Close = 'close',
-  Distant = 'distant'
-}
-
-export interface ProductItem {
-  id: number;
-  productId: number;
-  ownerId: number;
-  shared: boolean;
-  expiryDate: Date;
-  addedDate: Date;
-}
-
-export interface ProductItemAggregate {
-  count: number;
-  shared: boolean;
-  expiryDate: Date;
-  expiryDateLabel: string;
-  expiryLevel: ProductExpiryLevel;
-  remainingDays: number;
-  ids: number[];
-}
-
-export interface EditingProductItemAggregate extends ProductItemAggregate {
-  originalCount?: number;
-}
-
-export interface ConsumedProductItem extends ProductItem {
-  remainingDays?: number;
-  expiryDateLabel?: string;
-
-  consumedDate: Date;
-  consumedDateLabel?: string;
-  consumedDateDays?: number;
 }
 
