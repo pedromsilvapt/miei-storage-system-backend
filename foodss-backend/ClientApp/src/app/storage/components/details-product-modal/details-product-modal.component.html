@@ -47,11 +47,11 @@
         <tbody>
           <ng-container *ngFor="let item of items">
             <tr>
-              <td class="text-center" appExpireDate [date]="item.expiryDate" [colorfy]="true" [distantColorGray]="true">
+              <td class="text-center" appExpireDate [date]="item.expiryDate" [display]="false" [colorfy]="true" [distantColorGray]="true">
                 <i class="fa fa-lock" tooltip="Privado" [hidden]="item.shared"></i>
                 <i class="fa fa-globe" tooltip="Partilhado" [hidden]="!item.shared"></i>
               </td>
-              <td appExpireDate [date]="item.expiryDate" [colorfy]="true">
+              <td appExpireDate [date]="item.expiryDate" [display]="false" [colorfy]="true">
                 {{item.expiryDateLabel}}
                 <span [hidden]="item.remainingDays >= 0" class="text-secondary ml-2">
                   expirou há {{-item.remainingDays}} dias

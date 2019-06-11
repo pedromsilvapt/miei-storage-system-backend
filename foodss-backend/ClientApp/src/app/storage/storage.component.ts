@@ -46,7 +46,9 @@ export class StorageComponent implements OnInit, OnDestroy {
       }
 
       for (let product of storage.products) {
-        product.closestExpiryDate = new Date(product.closestExpiryDate);
+        if (product.closestExpiryDate) product.closestExpiryDate = new Date(product.closestExpiryDate);
+        if (product.sharedClosestExpiryDate) product.sharedClosestExpiryDate = new Date(product.sharedClosestExpiryDate);
+        if (product.privateClosestExpiryDate) product.privateClosestExpiryDate = new Date(product.privateClosestExpiryDate);
 
         if (storage.shared) {
           if (product.sharedCount > 0) {
@@ -58,7 +60,7 @@ export class StorageComponent implements OnInit, OnDestroy {
           }
 
           if (product.privateCount > 0) {
-            storage.sharedProducts.push({
+            storage.privateProducts.push({
               ...product,
               count: product.privateCount,
               closestExpiryDate: product.privateClosestExpiryDate

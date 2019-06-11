@@ -10,6 +10,8 @@ export class ExpireDateDirective implements OnInit {
   @Input() colorfy = false;
   @Input() distantColorGray = false;
   @Input() date: Date;
+  @Input() display: boolean = true;
+
 
   constructor(public elementRef: ElementRef) {
   }
@@ -25,12 +27,18 @@ export class ExpireDateDirective implements OnInit {
   }
 
   formatDate(): void {
-    if (!isNaN(new Date(this.elementRef.nativeElement.textContent).valueOf())) {
-      const date = new Date(this.elementRef.nativeElement.textContent);
+    var date = new Date(this.date);
+
+    if (this.date && !isNaN(date.valueOf())) {
       this.colorfyDate(date);
-      this.elementRef.nativeElement.textContent = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-    } else if (this.date) {
-      this.colorfyDate(this.date);
+      if (this.display) {
+        // Add zero paddings
+        var day = date.getDate().toString().padStart(2, '0');
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var year = date.getFullYear();
+
+        this.elementRef.nativeElement.textContent = day + '/' + month + '/' + year;
+      }
     }
   }
 
