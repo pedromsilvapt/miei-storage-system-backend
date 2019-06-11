@@ -21,6 +21,10 @@
           <th>Stock</th>
           <td>{{product.count}}</td>
         </tr>
+        <tr>
+          <th>Max. Temperature</th>
+          <td>{{product.maxTemperature == null ? 'N/A' : ( '' + product.maxTemperature + 'ºC')}}</td>
+        </tr>
       </table>
 
       <div class="text-right">

@@ -21,6 +21,8 @@ export class AddProductModalComponent {
   @ViewChild('modelExpiryDate') modelExpiryDate: AbstractControl;
   @ViewChild('modelName') modelName: AbstractControl;
   @ViewChild('modelBarcode') modelBarcode: AbstractControl;
+  @ViewChild('modelTemperature') modelTemperature: AbstractControl;
+
 
   public modalRef: BsModalRef;
 
@@ -28,7 +30,7 @@ export class AddProductModalComponent {
 
   public productSuggestions: Product[];
 
-  public product: Partial<Product & { barcode: string }> = {};
+  public product: Partial<Product> = {};
 
   public productItem: ProductItemInputModel = {} as any;
 
@@ -129,9 +131,11 @@ export class AddProductModalComponent {
       this.product.id = null;
       this.product.name = null;
       this.product.barcode = null;
+      this.product.maxTemperature = null;
 
       this.modelBarcode.reset();
       this.modelName.reset();
+      this.modelTemperature.reset();
     }
 
     this.productItem.shared = true;
@@ -153,6 +157,7 @@ export class AddProductModalComponent {
     if (products.length > 0) {
       this.product.id = products[0].id;
       this.product.name = products[0].name;
+      this.product.maxTemperature = products[0].maxTemperature;
 
       this.barcodeScannerActive = false;
     }
@@ -167,7 +172,8 @@ export class AddProductModalComponent {
       if (this.product.id == null) {
         const saved = await this.http.post(`storage/${this.storage.id}/product`, {
           name: this.product.name,
-          barcode: this.product.barcode
+          barcode: this.product.barcode,
+          maxTemperature: this.product.maxTemperature
         }).toPromise();
 
         this.product.id = saved.id;

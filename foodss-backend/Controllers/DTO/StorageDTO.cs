@@ -9,7 +9,14 @@ namespace StorageSystem.Controllers.DTO
     {
         public string Name { get; set; }
 
-        public ICollection<StorageInvitationInputDTO> Invitations;
+        public ICollection<StorageInvitationInputDTO> Invitations { get; set; }
+
+        public StorageCityInputDTO City { get; set; }
+    }
+
+    public class StorageCityInputDTO
+    {
+        public int Id { get; set; }
     }
 
     // Used when viewing one/many storage(s), sent from the server to the client
@@ -19,6 +26,7 @@ namespace StorageSystem.Controllers.DTO
         public string Name { get; set; }
         public int OwnerId { get; set; }
         public bool Shared { get; set; }
+        public int? CityId { get; set; }
         public float? CityTemperature { get; set; }
 
         public List<ProductDTO> Products;
@@ -29,6 +37,7 @@ namespace StorageSystem.Controllers.DTO
             OwnerId = model.OwnerId,
             Shared = model.Shared,
             Products = products,
+            CityId = model.CityId,
             CityTemperature = model.LastWeatherForecastTemperature
         };
     }

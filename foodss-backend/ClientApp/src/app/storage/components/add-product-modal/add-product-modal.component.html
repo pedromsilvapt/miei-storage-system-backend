@@ -49,6 +49,21 @@
               </div>
             </div>
           </div><!--/.row-->
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="maxTemperature">Temperatura Máxima (ºC) (Opcional)</label>
+                <input type="text" id="maxTemperature" name="maxTemperature"
+                       class="form-control" placeholder="Temperatura Máxima do produto..."
+                       [(ngModel)]="product.maxTemperature" #modelTemperature="ngModel"
+                       [disabled]="product.id != null"
+                       [class.is-invalid]="!modelTemperature.valid && !modelTemperature.disabled && modelTemperature.dirty" />
+                <div class="invalid-feedback" *ngIf="!modelTemperature.valid && !modelTemperature.disabled && modelTemperature.dirty">
+                  Temperatura inválida.
+                </div>
+              </div>
+            </div>
+          </div><!--/.row-->
           <section class="idented" *ngIf="product.id == null">
             <small class="section-title">Produtos Existentes</small>
             <div class="product-suggestions-list">
