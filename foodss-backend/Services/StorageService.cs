@@ -54,13 +54,13 @@ namespace StorageSystem.Services
             return storage;
         }
 
-        public async Task<Storage> CreateStorage(User owner, string name, ICollection<string> invitations = null)
+        public async Task<Storage> CreateStorage(User owner, string name, ICollection<string> invitations = null, int? city = null)
         {
             using (var transaction = await Context.Database.BeginTransactionAsync())
             {
                 bool shared = invitations.Count > 0;
 
-                Storage storageModel = new Storage() { Name = name, Shared = shared, OwnerId = owner.Id };
+                Storage storageModel = new Storage() { Name = name, Shared = shared, OwnerId = owner.Id, CityId = city };
 
                 await Context.Storages.AddAsync(storageModel);
 
@@ -91,7 +91,7 @@ namespace StorageSystem.Services
             }
         }
 
-        public async Task<Storage> UpdateStorage(int userId, int id, string name)
+        public async Task<Storage> UpdateStorage(int userId, int id, string name, int? city = null)
         {
             Storage storage = await Context.Storages.FindAsync(id);
 
@@ -109,6 +109,8 @@ namespace StorageSystem.Services
             // TODO There should be further input validation, such as a minimum length for the name attribute
             // in order to prevent empty storage names ""
             storage.Name = name;
+
+            storage.CityId = city;
 
             Context.Storages.Update(storage);
 

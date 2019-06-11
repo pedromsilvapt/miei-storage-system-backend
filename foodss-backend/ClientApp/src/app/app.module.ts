@@ -19,6 +19,7 @@ import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
 import { ToastrModule } from 'ngx-toastr';
 import { Chart } from 'chart.js';
 //import { ExpireDateTableComponent } from './home/components/expire-date-table/expire-date-table.component';
+console.log(11);
 @NgModule({
   imports: [
     AppRoutingModule,

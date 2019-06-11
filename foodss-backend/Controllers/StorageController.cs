@@ -100,7 +100,7 @@ namespace StorageSystem.Controllers
                 ?.Select(invitation => invitation.UserEmail)
                 ?.ToList();
 
-            Storage storage = await storageService.CreateStorage(user, storageInput.Name, invitations);
+            Storage storage = await storageService.CreateStorage(user, storageInput.Name, invitations, storageInput.City?.Id);
 
             return StorageDTO.FromModel(storage);
         }
@@ -110,7 +110,7 @@ namespace StorageSystem.Controllers
         {
             int userId = userService.GetUserId(this.User);
 
-            Storage storage = await storageService.UpdateStorage(userId, id, storageInput.Name);
+            Storage storage = await storageService.UpdateStorage(userId, id, storageInput.Name, storageInput.City?.Id);
 
             return StorageDTO.FromModel(storage);
         }

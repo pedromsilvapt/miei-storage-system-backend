@@ -6,8 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatStepperModule, MatInputModule, MatButtonModule, MatAutocompleteModule, MatIconModule, MatRadioModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
-
-
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 @NgModule({
   declarations: [AddStorageComponent],
@@ -23,9 +22,8 @@ import { BrowserModule } from '@angular/platform-browser';
     FormsModule,
     MatIconModule,
     MatRadioModule,
-    BrowserModule
-  
-    
+    BrowserModule,
+    TypeaheadModule.forRoot()
   ]
 })
 export class AddStorageModule { }

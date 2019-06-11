@@ -4,6 +4,8 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { HttpService } from '../core/http/http.service';
+import { Observable } from 'rxjs/Observable';
+import { mergeMap } from 'rxjs/operators';
 
 enableProdMode();
 
@@ -15,6 +17,8 @@ enableProdMode();
   }]
 })
 export class AddStorageComponent implements OnInit {
+  citiesSource: Observable<any>;
+  selected: string;
 
   formGroup: FormGroup;
 
@@ -22,6 +26,8 @@ export class AddStorageComponent implements OnInit {
   show: string = 'Partilhada';
   goalstorage: string;
   namestorage: string;
+  citynamestorage: any;
+  citystorage: any;
   delete: string = '';
   // Will contain the returned object after saving
   savedStorage: any = null;
@@ -29,16 +35,27 @@ export class AddStorageComponent implements OnInit {
   @Input()
   required: boolean;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private http: HttpService, private router: Router) {
+    this.citiesSource = Observable
+      .create((observer: any) => observer.next(this.citynamestorage))
+      .pipe(mergeMap((name: string) => this.searchCities(name)));
+  }
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       nameCtrl: this.formBuilder.control('', [Validators.required]),
+      cityCtrl: this.formBuilder.control('', []),
       typeCtrl: this.formBuilder.control('', [Validators.required]),
       emails: this.formBuilder.array([])
     });
 
     this.addEmail();
+  }
+
+  searchCities(city: string) {
+    return this.http.get('city/search', {
+      params: { name: city }
+    });
   }
 
   get em() {
@@ -54,7 +71,7 @@ export class AddStorageComponent implements OnInit {
   }
 
   firstStepValid() {
-    return !(this.formGroup.get('nameCtrl').errors != null || this.formGroup.get('typeCtrl').errors != null);
+    return !(this.formGroup.get('nameCtrl').errors != null || this.formGroup.get('typeCtrl').errors != null || this.formGroup.get('cityCtrl').errors != null);
   }
 
   allEmailsValid() {
@@ -77,6 +94,7 @@ export class AddStorageComponent implements OnInit {
         name: this.namestorage,
         // this.em.value is Array<string>, but since the server expects Array<{userEmail: string}> (an array of objects, each with a single variable "userEmail"), we have to convert it before sending
         invitations: this.em.value.map(userEmail => ({ userEmail })),
+        city: this.citystorage != null ? { id: this.citystorage.id } : null
       }).subscribe((result: any) => {
         this.savedStorage = result;
       });

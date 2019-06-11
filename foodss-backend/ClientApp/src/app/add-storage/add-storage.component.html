@@ -22,9 +22,31 @@
       </div>
       <br />
       <div style="text-align:center">
-        <mat-form-field>
-          <input matInput placeholder="Nome da dispensa" [(ngModel)]="namestorage" formControlName="nameCtrl" required>
-        </mat-form-field>
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Nome da dispensa" [(ngModel)]="namestorage" formControlName="nameCtrl" required>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <ng-template #cityItemTemplate let-model="item">
+            {{model.name}}, {{model.country}}
+          </ng-template>
+          <mat-form-field>
+            <input [(ngModel)]="citynamestorage"
+                   formControlName="cityCtrl"
+                   matInput
+                   placeholder="Localização da Despensa (Opcional)"
+                   [typeaheadAsync]="true"
+                   [typeahead]="citiesSource"
+                   [typeaheadScrollable]="true"
+                   typeaheadOptionField="name"
+                   (typeaheadOnSelect)="citystorage = $event.item"
+                   (typeaheadNoResults)="citystorage = null"
+                   [typeaheadItemTemplate]="cityItemTemplate"
+                   [typeaheadOptionsInScrollableView]="5">
+          </mat-form-field>
+        </div>
       </div>
       <div style="text-align:right">
         <button mat-raised-button color="accent" matStepperNext (click)="addStorage( 1 )">Próximo</button>
