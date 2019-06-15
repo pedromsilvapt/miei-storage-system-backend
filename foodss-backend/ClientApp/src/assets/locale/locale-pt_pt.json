@@ -72,5 +72,28 @@
       "invalid_email": "Email inválido.",
       "invalid_confirm_password": "Senhas não conferem."
     }
+  },
+  "product": {
+    "details": "Detalhes",
+    "barcode": "Código de Barras",
+    "next_expiry_date": "Próxima Data de Validade",
+    "stock": "Stock",
+    "max_temperature": "Temperatura Máxima",
+    "consumption_history": "Histórico de Consumo",
+    "shopping_list": "Lista de Compras",
+    "items": "Items",
+    "expiry_date": "Validade",
+    "quantity": "Quantidade",
+    "expired": "expirou há",
+    "days_ago": "dias",
+    "expires_in": "expira em",
+    "days": "dias",
+    "consumed":  "Consumido",
+    "consumed_when": "há",
+    "list":  "Lista",
+    "mine": "Minha",
+    "close": "Fechar",
+    "cancel": "Cancelar",
+    "save": "Gravar"
   }
 }

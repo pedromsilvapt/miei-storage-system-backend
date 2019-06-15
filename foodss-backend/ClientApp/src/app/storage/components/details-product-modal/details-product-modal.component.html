@@ -7,40 +7,40 @@
 <div class="modal-body">
   <div class="shopping-list">
     <section>
-      <small class="section-title">Details</small>
+      <small class="section-title" translate>product.details</small>
       <table class="table table-borderless">
         <tr>
-          <th>Barcode</th>
+          <th translate>product.barcode</th>
           <td>{{product.barcode}}</td>
         </tr>
         <tr>
-          <th>Next Expiry Date</th>
+          <th translate>product.next_expiry_date</th>
           <td>{{product.closestExpiryDateLabel}}</td>
         </tr>
         <tr>
-          <th>Stock</th>
+          <th translate>product.stock</th>
           <td>{{product.count}}</td>
         </tr>
         <tr>
-          <th>Max. Temperature</th>
+          <th translate>product.max_temperature</th>
           <td>{{product.maxTemperature == null ? 'N/A' : ( '' + product.maxTemperature + 'ºC')}}</td>
         </tr>
       </table>
 
       <div class="text-right">
-        <button type="button" class="btn btn-outline-dark mr-2" [class.active]="page == 'consumed'" (click)="togglePage('consumed')"><i class="fa fa-history"></i> Histórico de Consumo</button>
-        <button type="button" class="btn btn-outline-primary" [class.active]="page == 'shopping-list'" (click)="togglePage('shopping-list')"><i class="fa fa-cart-plus"></i> Lista de Compras</button>
+        <button type="button" class="btn btn-outline-dark mr-2" [class.active]="page == 'consumed'" (click)="togglePage('consumed')"><i class="fa fa-history"></i>&nbsp;<span translate>product.consumption_history</span></button>
+        <button type="button" class="btn btn-outline-primary" [class.active]="page == 'shopping-list'" (click)="togglePage('shopping-list')"><i class="fa fa-cart-plus"></i>&nbsp;<span translate>product.shopping_list</span></button>
       </div>
     </section>
 
     <section *ngIf="page == 'items'">
-      <small class="section-title"><i class="fa fa-list"></i> Items</small>
+      <small class="section-title"><i class="fa fa-list"></i>&nbsp;<span translate>product.items</span></small>
       <table class="table table-middle">
         <thead>
           <tr>
             <th></th>
-            <th>Validade</th>
-            <th class="text-center">Quantidade</th>
+            <th translate>product.expiry_date</th>
+            <th class="text-center" translate>product.quantity</th>
             <th style="width: 110px;"></th>
           </tr>
         </thead>
@@ -54,10 +54,10 @@
               <td appExpireDate [date]="item.expiryDate" [display]="false" [colorfy]="true">
                 {{item.expiryDateLabel}}
                 <span [hidden]="item.remainingDays >= 0" class="text-secondary ml-2">
-                  expirou há {{-item.remainingDays}} dias
+                  <span translate>product.expired</span> {{-item.remainingDays}} <span translate>product.days_ago</span>
                 </span>
                 <span [hidden]="item.remainingDays < 0" class="text-secondary ml-2">
-                  faltam {{item.remainingDays}} dias
+                  <span translate>product.expires_in</span>{{item.remainingDays}} <span translate>product.days</span>
                 </span>
               </td>
               <td class="text-center">
@@ -78,8 +78,8 @@
             </tr>
             <tr *ngIf="editingItem == item">
               <td colspan="4">
-                <button type="button" class="btn btn-outline-secondary float-left" (click)="cancelEditItem()">Cancelar</button>
-                <button type="button" class="btn btn-success float-right" (click)="saveEditItem()"><i class="fa fa-save"></i> Gravar</button>
+                <button type="button" class="btn btn-outline-secondary float-left" (click)="cancelEditItem()" translate>product.cancel</button>
+                <button type="button" class="btn btn-success float-right" (click)="saveEditItem()"><i class="fa fa-save"></i>&nbsp;<span translate>product.save</span></button>
               </td>
             </tr>
           </ng-container>
@@ -88,13 +88,13 @@
     </section>
 
     <section *ngIf="page == 'consumed'">
-      <small class="section-title"><i class="fa fa-history"></i> Items History</small>
+      <small class="section-title"><i class="fa fa-history"></i>&nbsp; <span translate>product.consumption_history</span></small>
       <table class="table table-middle">
         <thead>
           <tr>
             <th></th>
-            <th>Validade</th>
-            <th class="text-center">Consumido em</th>
+            <th translate>product.expiry_date</th>
+            <th class="text-center" translate>product.consumed</th>
           </tr>
         </thead>
         <tbody>
@@ -106,16 +106,16 @@
             <td>
               {{item.expiryDateLabel}}
               <span [hidden]="item.remainingDays >= 0" class="text-secondary ml-2">
-                expirou há {{-item.remainingDays}} dias
+                <span translate>product.expired</span> {{-item.remainingDays}} <span translate>product.days_ago</span>
               </span>
               <span [hidden]="item.remainingDays < 0" class="text-secondary ml-2">
-                faltam {{item.remainingDays}} dias
+                <span translate>product.expires_in</span> {{item.remainingDays}} <span translate>product.days</span>
               </span>
             </td>
             <td class="text-center">
               {{item.consumedDateLabel}}
               <span class="text-secondary ml-2">
-                há {{-item.consumedDateDays}} dias
+                <span translate>product.consumed_when</span> {{-item.consumedDateDays}} <span translate>product.days_ago</span>
               </span>
             </td>
           </tr>
@@ -124,13 +124,13 @@
     </section>
 
     <section *ngIf="page == 'shopping-list'">
-      <small class="section-title"><i class="fa fa-cart-plus"></i> Shopping List</small>
+      <small class="section-title"><i class="fa fa-cart-plus"></i>&nbsp;<span translate>product.shopping_list</span></small>
       <table class="table table-middle">
         <thead>
           <tr>
             <th></th>
-            <th>Lista</th>
-            <th class="text-center">Quantidade</th>
+            <th translate>product.list</th>
+            <th class="text-center" translate>product.quantity</th>
             <th style="width: 110px;"></th>
           </tr>
         </thead>
@@ -139,7 +139,7 @@
             <td class="text-center text-secondary">
               <i class="fa fa-lock" tooltip="Privado"></i>
             </td>
-            <td>Mine</td>
+            <td translate>product.mine</td>
             <td class="text-center">{{shoppingList.count}}</td>
             <td>
               <button [hidden]="editingItem != item" type="button" class="btn btn-primary mr-2" (click)="decreaseShoppingList()"><i class="fa fa-minus"></i></button>
@@ -152,5 +152,5 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Fechar</button>
+  <button type="button" class="btn btn-secondary" (click)="modalRef.hide()" translate>product.close</button>
 </div>

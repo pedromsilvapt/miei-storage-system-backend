@@ -72,5 +72,28 @@
       "invalid_email": "Invalid email.",
       "invalid_confirm_password": "Passwords doesn't match."
     }
+  },
+  "product": {
+    "details": "Details",
+    "barcode": "Barcode",
+    "next_expiry_date": "Next Expiry Date",
+    "stock": "Stock",
+    "max_temperature": "Max Temperature",
+    "consumption_history": "Comsumption History",
+    "shopping_list": "Shopping List",
+    "items": "Items",
+    "expiry_date": "Expiry Date",
+    "quantity": "Quantity",
+    "expired": "expired",
+    "days_ago": "days ago",
+    "expires_in": "expires in",
+    "days": "days",
+    "consumed": "Consumed",
+    "consumed_when": " ",
+    "list": "List",
+    "mine": "Mine",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save"
   }
 }
