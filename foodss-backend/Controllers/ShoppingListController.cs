@@ -49,7 +49,17 @@ namespace StorageSystem.Controllers
             byte[] abytes = productreport.PrepareReport(await ShoppingLists());
             return File(abytes, "application/pdf");
         }
-        
+
+        [HttpGet("Task")]
+        public async Task<int> GoogleTask()
+        {
+            int userId = userService.GetUserId(this.User);
+            GoogleTaskService storageTask = new GoogleTaskService();
+            return storageTask.TransferTask(userId,await ShoppingLists());
+            
+            
+        }
+
 
     }
 }

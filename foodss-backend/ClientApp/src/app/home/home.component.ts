@@ -3,20 +3,25 @@ import {InfoCard} from './components/info-card/model/info-card.model';
 import {InfoCardService} from './components/info-card/info-card.service';
 import { HttpService } from '../core/http/http.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MessageUtil } from '../shared/util/message.util';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-  
+
+
   fileUrl;
-  constructor(private infoCardService: InfoCardService, private httpService: HttpService, private sanitizer: DomSanitizer) { }
+  constructor(private infoCardService: InfoCardService, private httpService: HttpService, private sanitizer: DomSanitizer, private messageUtil: MessageUtil) { }
 
   public infoCardBlue;
   public infoCardGreen;
   public infoCardYellow;
   public infoCardRed;
+  public googletask;
+  ShowSpinner = false;
 
   ngOnInit() {
     this.infoCardBlue = this.buildInfoCardBlue();
@@ -24,6 +29,7 @@ export class HomeComponent implements OnInit {
     this.infoCardYellow = this.buildInfoCardYellow();
     this.infoCardGreen = this.buildInfoCardGreen();
   }
+
 
   buildInfoCardBlue(): InfoCard {
     return new InfoCard(this.infoCardService.getProductsOnStock(),
@@ -56,6 +62,20 @@ export class HomeComponent implements OnInit {
 
   }
 
+  async openTask() {
+    this.ShowSpinner = true;
+    this.googletask = await this.httpService.get('shoppinglist/Task', { responseType: 'int' }).toPromise();
+    if (this.googletask == 1) {
+      this.messageUtil.addSuccessMessage('general.add_shopping_list', 'general.googleTask');
+      this.ShowSpinner = false;
+    }
+    else {
+      this.messageUtil.addErrorMessage('error.ERROR_ADD_GOOGLETASK', 'error.GOOGLETASK_ERROR');
+      this.ShowSpinner = false;
+    }
+  }
+
+  
   /**
    * Method is use to download file.
    * @param data - Array Buffer data

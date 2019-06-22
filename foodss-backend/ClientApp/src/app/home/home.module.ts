@@ -7,7 +7,9 @@ import {SharedModule} from '../shared/shared.module';
 import {ExpireDateTableComponent} from './components/expire-date-table/expire-date-table.component';
 import { GraphComponent } from './components/graph/graph.component';
 import { PieChartComponent } from './components/pie-chart/pie-chart.component'
-import {ChartsModule} from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @NgModule({
   declarations: [
     HomeComponent,
@@ -20,7 +22,8 @@ import {ChartsModule} from 'ng2-charts';
   imports: [
     CommonModule,
     ChartsModule,
-    SharedModule
+    SharedModule,
+    MatProgressSpinnerModule
   ]
 })
 export class HomeModule { }

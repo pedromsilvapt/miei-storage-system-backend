@@ -3,14 +3,16 @@
     "home": "Home",
     "storages": "Storages",
     "shopping_list_suggestion": "Shopping List Suggestion",
-    "in_expire_date_limit":  "In Expire Date Limit",
+    "in_expire_date_limit": "In Expire Date Limit",
     "of": "of",
     "product": "Product",
     "amount": "Amount",
     "expire_date": "Expiration",
     "operation_performed_successfully": "Operation performed successfully!",
-    "login":  "Login",
-    "user": "User"
+    "login": "Login",
+    "user": "User",
+    "googleTask": "Add Shopping List with sucess in GoogleTask",
+    "add_shopping_list": "Add Shopping List"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Failed to connect to server.",
@@ -19,7 +21,9 @@
     "NOT_AUTHENTICATED": "User not authenticated.",
     "INCORRECT_EMAIL_OR_PASSWORD": "Incorrect email or password.",
     "EMAIL_NOT_VERIFIED": "Email confirmation not done.",
-    "EMAIL_ALREADY_INFORMED": "Email already informed."
+    "EMAIL_ALREADY_INFORMED": "Email already informed.",
+    "GOOGLETASK_ERROR": "Failed to add shopping list in GoogleTask",
+    "ERROR_ADD_GOOGLETASK": "Error adding list in GoogleTask."
   },
   "avatar": {
     "edit_profile": "Edit profile",

@@ -30,7 +30,13 @@
         </button>&nbsp;
         <button class="btn p-0" (click)="openPDF()">
           <i class="fa fa-file-pdf-o" style="font-size:24px; color:red"></i>
-        </button>
+        </button>&nbsp;
+        <button class="btn p-0" (click)="openTask()">
+          <img src="../../assets/img/icons/googletask.png" width="25" height="25" alt="Icon" />
+        </button>&nbsp;
+        <div class="btn p-0">
+          <mat-spinner *ngIf="ShowSpinner" class="example-margin" color="accent" mode="indeterminate" diameter="25" strokeWidth="5"></mat-spinner>
+        </div>
       </div>
       <div panel-body>
         <app-lista-compras></app-lista-compras>

@@ -10,7 +10,9 @@
     "expire_date": "Validade",
     "operation_performed_successfully": "Operação realizada com sucesso!",
     "login":  "Login",
-    "user": "Utilizador"
+    "user": "Utilizador",
+    "googleTask": "Adição da lista de Compras com Sucesso no GoogleTask!",
+    "add_shopping_list":  "Adição da lista de compras"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",
@@ -19,7 +21,9 @@
     "NOT_AUTHENTICATED": "Utilizador não autenticado.",
     "INCORRECT_EMAIL_OR_PASSWORD": "Email ou senha incorretos.",
     "EMAIL_NOT_VERIFIED": "Confirmação de email não efectuada.",
-    "EMAIL_ALREADY_INFORMED": "Email já registado."
+    "EMAIL_ALREADY_INFORMED": "Email já registado.",
+    "GOOGLETASK_ERROR": "Falha ao adicionar a lista de compras no GoogleTask.",
+    "ERROR_ADD_GOOGLETASK": "Erro da adição da lista no GoogleTask!"
   },
   "avatar": {
     "edit_profile": "Editar perfil",
