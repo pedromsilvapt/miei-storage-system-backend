@@ -8,7 +8,8 @@ import {
   DetailsProductPage,
   EditingProductItemAggregate,
   ProductItem,
-  ProductItemAggregate
+  ProductItemAggregate,
+  ConsumedProductItemAggregate
 } from './enums-interfaces/enums-interfaces.util';
 
 @Component({
@@ -29,7 +30,7 @@ export class DetailsProductModalComponent {
 
   public items: ProductItemAggregate[] = [];
 
-  public consumedItems: ConsumedProductItem[] = [];
+  public consumedItems: ConsumedProductItemAggregate[] = [];
 
   public shoppingList: any = {};
 
@@ -235,17 +236,39 @@ export class DetailsProductModalComponent {
 
   /* <Consumed Items> */
   public async loadConsumedPage() {
-    this.consumedItems = await this.http.get(`storage/${this.storage.id}/product/${this.product.id}/consumed`).toPromise();
+    const rawItems : ConsumedProductItem[] = await this.http.get(`storage/${this.storage.id}/product/${this.product.id}/consumed`).toPromise();
 
-    for (let item of this.consumedItems) {
+    const indexedItems: { [key: string]: ConsumedProductItemAggregate } = {};
+
+    const items: ConsumedProductItemAggregate[] = [];
+
+    for (let item of rawItems) {
       item.expiryDate = new Date(item.expiryDate);
-      item.expiryDateLabel = DateUtil.formatExpiryDate(item.expiryDate);
-      item.remainingDays = DateUtil.getRemainingDays(item.expiryDate);
 
       item.consumedDate = new Date(item.consumedDate);
-      item.consumedDateLabel = DateUtil.formatExpiryDate(item.consumedDate);
-      item.consumedDateDays = DateUtil.getRemainingDays(item.consumedDate);
+
+      const dateLabel = DateUtil.formatExpiryDate(item.consumedDate);
+
+      const key = item.shared + '-' + dateLabel;
+
+      if (key in indexedItems) {
+        indexedItems[key].count++;
+      } else {
+        indexedItems[key] = {
+          count: 1,
+          shared: item.shared,
+          consumedDate: item.consumedDate,
+          consumedDateDays: DateUtil.getRemainingDays(item.consumedDate),
+          consumedDateLabel: dateLabel
+        };
+
+        items.push(indexedItems[key]);
+      }
     }
+
+    items.sort((a, b) => b.consumedDate.getTime() - a.consumedDate.getTime());
+
+    this.consumedItems = items;
   }
 
   public unloadConsumedPage() {

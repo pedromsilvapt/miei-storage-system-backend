@@ -27,7 +27,7 @@
         </tr>
       </table>
     </section>
-
+    
     <section>
       <tabset [justified]="false">
         <tab (select)="openPage('items')">
@@ -95,8 +95,8 @@
             <thead>
               <tr>
                 <th></th>
-                <th translate>product.expiry_date</th>
-                <th class="text-center" translate>product.consumed</th>
+                <th translate>product.consumed</th>
+                <th class="text-center" translate>product.quantity</th>
               </tr>
             </thead>
             <tbody>
@@ -106,19 +106,13 @@
                   <i class="fa fa-globe" tooltip="Partilhado" [hidden]="!item.shared"></i>
                 </td>
                 <td>
-                  {{item.expiryDateLabel}}
-                  <span [hidden]="item.remainingDays >= 0" class="text-secondary ml-2">
-                    <span translate>product.expired</span> {{-item.remainingDays}} <span translate>product.days_ago</span>
-                  </span>
-                  <span [hidden]="item.remainingDays < 0" class="text-secondary ml-2">
-                    <span translate>product.expires_in</span> {{item.remainingDays}} <span translate>product.days</span>
-                  </span>
-                </td>
-                <td class="text-center">
                   {{item.consumedDateLabel}}
                   <span class="text-secondary ml-2">
                     <span translate>product.consumed_when</span> {{-item.consumedDateDays}} <span translate>product.days_ago</span>
                   </span>
+                </td>
+                <td class="text-center">
+                  {{item.count}}
                 </td>
               </tr>
             </tbody>

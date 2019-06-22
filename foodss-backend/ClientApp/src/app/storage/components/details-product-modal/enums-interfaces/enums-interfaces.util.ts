@@ -34,10 +34,15 @@ export interface EditingProductItemAggregate extends ProductItemAggregate {
 }
 
 export interface ConsumedProductItem extends ProductItem {
-  remainingDays?: number;
-  expiryDateLabel?: string;
+  consumedDate: Date;
+}
+
+export interface ConsumedProductItemAggregate {
+  shared: boolean;
 
   consumedDate: Date;
-  consumedDateLabel?: string;
-  consumedDateDays?: number;
+  consumedDateLabel: string;
+  consumedDateDays: number;
+
+  count: number;
 }
