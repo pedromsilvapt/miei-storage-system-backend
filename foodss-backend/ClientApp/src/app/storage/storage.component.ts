@@ -28,6 +28,8 @@ export class StorageComponent implements OnInit, OnDestroy {
 
   protected lastParams: any = {};
 
+  protected lastStorageChanged: StorageModel = null;
+
   constructor(
     private modalService: BsModalService,
     protected httpService: HttpService,
@@ -39,39 +41,7 @@ export class StorageComponent implements OnInit, OnDestroy {
     this.storages = await this.httpService.get('storage?includeProducts=true').toPromise();
 
     for (let storage of this.storages) {
-      if (storage.shared) {
-        storage.sharedProducts = [];
-        storage.privateProducts = [];
-        storage.missingProducts = [];
-      }
-
-      for (let product of storage.products) {
-        if (product.closestExpiryDate) product.closestExpiryDate = new Date(product.closestExpiryDate);
-        if (product.sharedClosestExpiryDate) product.sharedClosestExpiryDate = new Date(product.sharedClosestExpiryDate);
-        if (product.privateClosestExpiryDate) product.privateClosestExpiryDate = new Date(product.privateClosestExpiryDate);
-
-        if (storage.shared) {
-          if (product.sharedCount > 0) {
-            storage.sharedProducts.push({
-              ...product,
-              count: product.sharedCount,
-              closestExpiryDate: product.sharedClosestExpiryDate
-            });
-          }
-
-          if (product.privateCount > 0) {
-            storage.privateProducts.push({
-              ...product,
-              count: product.privateCount,
-              closestExpiryDate: product.privateClosestExpiryDate
-            });
-          }
-
-          if (product.privateCount == 0 && product.sharedCount == 0) {
-            storage.missingProducts.push(product);
-          }
-        }
-      }
+      this.prepareStorage(storage);
     }
 
     this.subscriptions.push(this.route.params.subscribe(params => {
@@ -91,6 +61,12 @@ export class StorageComponent implements OnInit, OnDestroy {
     }));
 
     this.subscriptions.push(this.modalService.onHide.subscribe(modal => {
+      if (this.lastStorageChanged != null) {
+        this.refreshStorage(this.lastStorageChanged.id);
+
+        this.lastStorageChanged = null;
+      }
+
       if (this.isDetailsOpen) {
         this.isDetailsOpen = false;
 
@@ -110,11 +86,70 @@ export class StorageComponent implements OnInit, OnDestroy {
     }
   }
 
-  openAddProduct(storage: Storage) {
+  public trackByStorage(storage: StorageModel) {
+    return storage.id;
+  }
+
+  public async refreshStorage(id: number) {
+    const storage = await this.httpService.get('storage/' + id + '?includeProducts=true').toPromise();
+
+    this.prepareStorage(storage);
+
+    const index = this.storages.findIndex(st => st.id == id);
+
+    if (index >= 0) {
+      // Clone the array
+      this.storages = this.storages.slice();
+
+      this.storages[index] = storage;
+    }
+  }
+
+  public prepareStorage(storage: TabbedStorageModel) {
+    if (storage.shared) {
+      storage.sharedProducts = [];
+      storage.privateProducts = [];
+      storage.missingProducts = [];
+    }
+
+    for (let product of storage.products) {
+      if (product.closestExpiryDate) product.closestExpiryDate = new Date(product.closestExpiryDate);
+      if (product.sharedClosestExpiryDate) product.sharedClosestExpiryDate = new Date(product.sharedClosestExpiryDate);
+      if (product.privateClosestExpiryDate) product.privateClosestExpiryDate = new Date(product.privateClosestExpiryDate);
+
+      if (storage.shared) {
+        if (product.sharedCount > 0) {
+          storage.sharedProducts.push({
+            ...product,
+            count: product.sharedCount,
+            closestExpiryDate: product.sharedClosestExpiryDate
+          });
+        }
+
+        if (product.privateCount > 0) {
+          storage.privateProducts.push({
+            ...product,
+            count: product.privateCount,
+            closestExpiryDate: product.privateClosestExpiryDate
+          });
+        }
+
+        if (product.privateCount == 0 && product.sharedCount == 0) {
+          storage.missingProducts.push(product);
+        }
+      }
+    }
+  }
+
+  openAddProduct(storage: StorageModel) {
+    this.lastStorageChanged = storage;
+
     this.modalService.show(AddProductModalComponent, { initialState: { storage }});
   }
 
   openDetailsProduct(storage: StorageModel, product: Product) {
+    this.lastStorageChanged = storage;
+
     this.isDetailsOpen = true;
 
     this.modalService.show(DetailsProductModalComponent, { initialState: { storage, product } });

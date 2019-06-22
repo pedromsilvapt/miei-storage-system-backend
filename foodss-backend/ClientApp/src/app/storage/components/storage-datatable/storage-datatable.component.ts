@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnChanges} from '@angular/core';
 import {DatatablePageContent} from '../../../shared/page/content/datatable-page.content';
 import {Product} from '../../../product/model/product.model';
 import {ColumnDatatable} from '../../../shared/components/custom-datatable/model/column.datatable';
@@ -8,7 +8,7 @@ import {ColumnType} from '../../../shared/components/custom-datatable/model/colu
   selector: 'app-storage-datatable',
   templateUrl: './storage-datatable.component.html'
 })
-export class StorageDatatableComponent extends DatatablePageContent<Array<Product>> implements OnInit {
+export class StorageDatatableComponent extends DatatablePageContent<Array<Product>> implements OnInit, OnChanges {
 
   constructor() {
     super();
@@ -19,9 +19,17 @@ export class StorageDatatableComponent extends DatatablePageContent<Array<Produc
 
   @Input() products: Array<Product>;
 
+  protected lastProducts: Array<Product> = null;
+
   ngOnInit() {
     this.rows = this.createDatatableRows(this.products);
     this.columns = this.createDatatableColumns();
+  }
+
+  ngOnChanges() {
+    if (this.products != this.lastProducts) {
+      this.rows = this.createDatatableRows(this.products);
+    }
   }
 
   public createDatatableColumns(): Array<ColumnDatatable> {
@@ -36,6 +44,8 @@ export class StorageDatatableComponent extends DatatablePageContent<Array<Produc
   }
 
   public createDatatableRows(products: Array<Product>): Array<any> {
+    this.lastProducts = products;
+
     const rows: Array<any> = [];
 
     if (products) {

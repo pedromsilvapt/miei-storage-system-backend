@@ -55,7 +55,7 @@ namespace StorageSystem.Controllers
                 // be hard, and non-idiomatic in the context of the ORM used throughout the application (EF Core)
                 foreach (Storage storage in storages)
                 {
-                    storage.Products = await productService.ListProducts(user, storage, query.SkipProducts ?? 0, query.TakeProducts ?? 20);
+                    storage.Products = await productService.ListProducts(user, storage, query.SkipProducts ?? 0, query.TakeProducts ?? int.MaxValue);
                 }
             }
 
@@ -69,14 +69,31 @@ namespace StorageSystem.Controllers
                 .ToList();
         }
 
-        [HttpGet("{id}")]
-        public async Task<StorageDTO> FindStorageById(int id)
+        public class DetailsQuery
         {
-            int userId = userService.GetUserId(this.User);
+            public bool? IncludeProducts { get; set; }
+        }
 
-            Storage storage = await storageService.GetStorage(userId, id);
+        [HttpGet("{id}")]
+        public async Task<StorageDTO> FindStorageById(int id, [FromQuery] DetailsQuery query)
+        {
+            User user = await userService.GetUserAsync(this.User);
 
-            return StorageDTO.FromModel(storage);
+            Storage storage = await storageService.GetStorage(user.Id, id);
+
+            bool includeProducts = query.IncludeProducts ?? false;
+
+            if (includeProducts)
+            {
+                storage.Products = await productService.ListProducts(user, storage, 0, int.MaxValue);
+            }
+
+            return StorageDTO.FromModel(
+                storage, 
+                includeProducts
+                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items)))?.ToList()
+                        : null
+            );
         }
 
         [HttpGet("{id}/weather")]
