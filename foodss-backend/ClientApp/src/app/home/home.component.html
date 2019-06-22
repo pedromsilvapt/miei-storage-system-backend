@@ -25,13 +25,13 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <app-panel [title]="'general.shopping_list_suggestion'">
       <div panel-right-header>
-        <button class="btn p-0">
+        <button class="btn p-0" mat-raised-button matTooltip="{{'tooltip.home.buttondetailsShoppingList' | translate:lang}}">
           <i class="fas fa-cog"></i>
         </button>&nbsp;
-        <button class="btn p-0" (click)="openPDF()">
+        <button class="btn p-0" (click)="openPDF()" mat-raised-button matTooltip="{{'tooltip.home.downloadpdf' | translate:lang}}" aria-label="Button that displays a tooltip when focused or hovered over">
           <i class="fa fa-file-pdf-o" style="font-size:24px; color:red"></i>
         </button>&nbsp;
-        <button class="btn p-0" (click)="openTask()">
+        <button class="btn p-0" (click)="openTask()" mat-raised-button matTooltip="{{'tooltip.home.buttonGoogleTask' | translate:lang}}" aria-label="Button that displays a tooltip when focused or hovered over">
           <img src="../../assets/img/icons/googletask.png" width="25" height="25" alt="Icon" />
         </button>&nbsp;
         <div class="btn p-0">
@@ -46,7 +46,7 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <app-panel [title]="'general.in_expire_date_limit'">
       <div panel-right-header>
-        <button class="btn p-0">
+        <button class="btn p-0" mat-raised-button matTooltip="{{'tooltip.home.buttondetailsExpiredDate' | translate:lang}}">
           <i class="fas fa-cog"></i>
         </button>
       </div>

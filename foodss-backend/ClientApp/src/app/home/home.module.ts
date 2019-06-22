@@ -9,6 +9,7 @@ import { GraphComponent } from './components/graph/graph.component';
 import { PieChartComponent } from './components/pie-chart/pie-chart.component'
 import { ChartsModule } from 'ng2-charts';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule, MatTooltip } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     ChartsModule,
     SharedModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTooltipModule
   ]
 })
 export class HomeModule { }

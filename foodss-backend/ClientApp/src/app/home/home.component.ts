@@ -4,15 +4,15 @@ import {InfoCardService} from './components/info-card/info-card.service';
 import { HttpService } from '../core/http/http.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MessageUtil } from '../shared/util/message.util';
-
+import { Language } from 'angular-l10n';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
+
 export class HomeComponent implements OnInit {
-
-
+  @Language() lang: string;
   fileUrl;
   constructor(private infoCardService: InfoCardService, private httpService: HttpService, private sanitizer: DomSanitizer, private messageUtil: MessageUtil) { }
 

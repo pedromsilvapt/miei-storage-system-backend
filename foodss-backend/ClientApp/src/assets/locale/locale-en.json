@@ -99,5 +99,14 @@
     "close": "Close",
     "cancel": "Cancel",
     "save": "Save"
+  },
+  "tooltip": {
+    "home": {
+      "buttondetailsShoppingList": "Shopping List Definitions",
+      "downloadpdf": "Download Pdf Shopping List",
+      "buttonGoogleTask": "Add Shopping List to GoogleTask",
+      "buttondetailsExpiredDate": "Product with expiration date Definitions",
+      "Notifications": "Notifications"
+    }
   }
 }

@@ -92,12 +92,22 @@
     "days_ago": "dias",
     "expires_in": "expira em",
     "days": "dias",
-    "consumed":  "Consumido",
+    "consumed": "Consumido",
     "consumed_when": "há",
-    "list":  "Lista",
+    "list": "Lista",
     "mine": "Minha",
     "close": "Fechar",
     "cancel": "Cancelar",
     "save": "Gravar"
+  },
+  "tooltip": {
+    "home": {
+      "buttondetailsShoppingList": "Definições da lista de Compras",
+      "downloadpdf": "Download Pdf Lista de Compras",
+      "buttonGoogleTask": "Adicionar a lista de Compras ao GoogleTask",
+      "buttondetailsExpiredDate":  "Definições dos produtos com data de validade próxima",
+      "Notifications": "Notificações"
+    }
   }
+
 }
