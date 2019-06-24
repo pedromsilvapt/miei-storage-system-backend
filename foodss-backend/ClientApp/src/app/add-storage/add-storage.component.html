@@ -6,12 +6,12 @@
   <mat-horizontal-stepper linear #stepper>
     <mat-step [completed]="firstStepValid()" errorMessage="Name is required.">
 
-      <ng-template matStepLabel>Dispensa</ng-template>
+      <ng-template matStepLabel ><div style="color:grey" translate>{{'addstorage.title'}}</div></ng-template>
       <br />
       <br />
 
       <div style="text-align:center">
-        <h5 style="color:darkblue"><b>Finalidade da dispensa:</b></h5>
+        <h5 style="color:darkblue"><b translate>{{'addstorage.purposeof'}}</b></h5>
         <div>
           <mat-radio-group class="example-radio-group" [(ngModel)]="goalstorage" #radioGroup="matRadioGroup" name="typeCtrl" formControlName="typeCtrl" required>
             <mat-radio-button class="example-radio-button" *ngFor="let option of options" [value]="option">
@@ -24,7 +24,7 @@
       <div style="text-align:center">
         <div>
           <mat-form-field>
-            <input matInput placeholder="Nome da dispensa" [(ngModel)]="namestorage" formControlName="nameCtrl" required>
+            <input matInput placeholder="{{translationService.translate('addstorage.name')}}" [(ngModel)]="namestorage" formControlName="nameCtrl" required>
           </mat-form-field>
         </div>
 
@@ -36,7 +36,7 @@
             <input [(ngModel)]="citynamestorage"
                    formControlName="cityCtrl"
                    matInput
-                   placeholder="Localização da Despensa (Opcional)"
+                   placeholder="{{translationService.translate('addstorage.location')}}"
                    [typeaheadAsync]="true"
                    [typeahead]="citiesSource"
                    [typeaheadScrollable]="true"
@@ -49,18 +49,18 @@
         </div>
       </div>
       <div style="text-align:right">
-        <button mat-raised-button color="accent" matStepperNext (click)="addStorage( 1 )">Próximo</button>
+        <button mat-raised-button color="accent" matStepperNext (click)="addStorage( 1 )"><div translate>{{'form.button.next'}}</div></button>
       </div>
     </mat-step>
 
     <ng-container *ngIf="show == goalstorage">
-      <mat-step [completed]="allEmailsValid()" errorMessage="Necessário adicionar um email.">
+      <mat-step [completed]="allEmailsValid()" errorMessage="{{translationService.translate('addstorage.erroremail')}}">
         <!--<form [formGroup]="secondFormGroup">-->
         <br />
-        <h5 style="color:darkblue"><b style="margin-left:100px">Dispensa Partilhada</b></h5>
+        <h5 style="color:darkblue"><b style="margin-left:100px" translate>{{'addstorage.optionshared'}}</b></h5>
         <br />
-        <h6 style="margin-left:160px"><b>Adicionar elementos para partilhar a dispensa:</b></h6>
-        <ng-template matStepLabel>Adicionar elementos</ng-template>
+        <h6 style="margin-left:160px"><b translate>{{'addstorage.addshare'}}</b></h6>
+        <ng-template matStepLabel><div style="color:grey" translate>{{'addstorage.addpeople'}}</div></ng-template>
         <div>
           <div formArrayName="emails">
             <div style="text-align:center">
@@ -84,19 +84,19 @@
           </div>
         </div>
         <div style="text-align:right">
-          <button mat-raised-button color="basic" matStepperPrevious>Voltar</button>
-          <button mat-raised-button color="accent" matStepperNext (click)="addStorage( 2 )">Próximo</button>
+          <button mat-raised-button color="basic" matStepperPrevious><div translate>{{'form.button.previous'}}</div></button>
+          <button mat-raised-button color="accent" matStepperNext (click)="addStorage( 2 )"><div translate>{{'form.button.next'}}</div></button>
         </div>
         <!--</form>-->
       </mat-step>
     </ng-container>
     <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <div style="text-align:center"><h3 style="color:grey" *ngIf="savedStorage == null">A guardar pedido...</h3></div>
-      <div style="text-align:center"><h3 style="color:green" *ngIf="savedStorage != null">Dispensa Criada com Sucesso!</h3></div>
+      <ng-template matStepLabel><div style="color:grey">Done</div></ng-template>
+      <div style="text-align:center"><h3 style="color:grey" *ngIf="savedStorage == null"><div translate>{{'addstorage.request'}}</div></h3></div>
+      <div style="text-align:center"><h3 style="color:green" *ngIf="savedStorage != null"><div translate>{{'addstorage.sucess'}}</div></h3></div>
       <div style="text-align:center" *ngIf="savedStorage != null">
         <!--<button mat-button matStepperPrevious>Voltar</button>-->
-        <button mat-button (click)="openStoragePage()">Abrir Despensa</button>
+        <button mat-button (click)="openStoragePage()"><div translate>{{'addstorage.openstorage'}}</div></button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

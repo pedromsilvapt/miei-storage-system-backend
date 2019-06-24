@@ -108,5 +108,19 @@
       "buttondetailsExpiredDate": "Product with expiration date Definitions",
       "Notifications": "Notifications"
     }
+  },
+  "addstorage": {
+    "title": "Storage",
+    "name": "Storage Name",
+    "optionshared": "Shared Storage",
+    "justyours": "Storage just for you",
+    "purposeof": "Purpose of the Storage:",
+    "addpeople": "Add People",
+    "addshare": "Add people to share the storage:",
+    "location": "Storage Location (Optional)",
+    "erroremail": "Need to Add Email.",
+    "request": "Waiting for the Request...",
+    "sucess": "Storage Created Successfully",
+    "openstorage":  "Open Storage"
   }
 }

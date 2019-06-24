@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { HttpService } from '../core/http/http.service';
 import { Observable } from 'rxjs/Observable';
 import { mergeMap } from 'rxjs/operators';
+import { TranslationService } from 'angular-l10n';
 
 enableProdMode();
 
@@ -22,9 +23,9 @@ export class AddStorageComponent implements OnInit {
 
   formGroup: FormGroup;
 
-  options: string[] = ['Pessoal', 'Partilhada'];
-  show: string = 'Partilhada';
-  goalstorage: string;
+  options: string[];
+  show: string = this.translationService.translate('addstorage.optionshared');
+  goalstorage: string = this.translationService.translate('addstorage.justyours');
   namestorage: string;
   citynamestorage: any;
   citystorage: any;
@@ -35,7 +36,8 @@ export class AddStorageComponent implements OnInit {
   @Input()
   required: boolean;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpService, private router: Router) {
+
+  constructor(private formBuilder: FormBuilder, private http: HttpService, private router: Router, private translationService: TranslationService) {
     this.citiesSource = Observable
       .create((observer: any) => observer.next(this.citynamestorage))
       .pipe(mergeMap((name: string) => this.searchCities(name)));
@@ -47,8 +49,9 @@ export class AddStorageComponent implements OnInit {
       cityCtrl: this.formBuilder.control('', []),
       typeCtrl: this.formBuilder.control('', [Validators.required]),
       emails: this.formBuilder.array([])
-    });
 
+    });
+    this.translationService.translationChanged().subscribe(() => { this.options = [this.translationService.translate('addstorage.justyours'), this.translationService.translate('addstorage.optionshared')]; });
     this.addEmail();
   }
 
@@ -93,7 +96,7 @@ export class AddStorageComponent implements OnInit {
       this.http.post('storage', {
         name: this.namestorage,
         // this.em.value is Array<string>, but since the server expects Array<{userEmail: string}> (an array of objects, each with a single variable "userEmail"), we have to convert it before sending
-        invitations: this.em.value.map(userEmail => ({ userEmail })),
+        invitations: this.goalstorage == this.show ? this.em.value.map(userEmail => ({ userEmail })):[],
         city: this.citystorage != null ? { id: this.citystorage.id } : null
       }).subscribe((result: any) => {
         this.savedStorage = result;
