@@ -15,10 +15,13 @@ namespace StorageSystem.Services
 
         private readonly WeatherService weatherService;
 
-        public StorageService(StorageSystemContext context, WeatherService weatherService)
+        private readonly EmailService emailService;
+
+        public StorageService(StorageSystemContext context, WeatherService weatherService, EmailService emailService)
         {
             this.Context = context;
             this.weatherService = weatherService;
+            this.emailService = emailService;
         }
 
         public async Task<List<Storage>> ListStorages(int userId)
@@ -78,8 +81,9 @@ namespace StorageSystem.Services
                         }
 
                         StorageInvitation invitation = new StorageInvitation() { StorageId = storageModel.Id, UserEmail = invitationInput };
-                        EmailService.SendEmail(invitation.UserEmail,owner.Name, "Convite para partilha de dispensa - Storage System ", "Recebeu um novo convite de "+owner.Name+" para a partilha de dispensa "+ name + ".  " +
-                            "Faça login para ver: http://localhost:60947/#/login");
+
+                        emailService.SendEmail(invitation.UserEmail,owner.Name, "Convite para partilha de dispensa - Storage System ", "Recebeu um novo convite de "+owner.Name+" para a partilha de dispensa "+ name + ".  " +
+                            "Faça login para ver: " + emailService.GetBaseUrl() + "/#/login");
                         await Context.StorageInvitations.AddAsync(invitation);
                     }
                 }

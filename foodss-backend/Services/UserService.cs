@@ -20,10 +20,13 @@ namespace StorageSystem.Services
 
         private IConfiguration configuration;
 
-        public UserService(IConfiguration configuration, StorageSystemContext context)
+        private readonly EmailService emailService;
+
+        public UserService(IConfiguration configuration, StorageSystemContext context, EmailService emailService)
         {
             this.configuration = configuration;
             this.context = context;
+            this.emailService = emailService;
         }
 
         public static (string, string) HashPassword(string password)
@@ -64,7 +67,8 @@ namespace StorageSystem.Services
             await context.AddAsync(newUser);
             
             await context.SaveChangesAsync();
-            EmailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : http://localhost:60947/api/User/"+ newUser.Id+ "/verify/"+code);
+
+            emailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : " + emailService.GetBaseUrl() + "/api/User/" + newUser.Id+ "/verify/"+code);
 
             return newUser;
         }

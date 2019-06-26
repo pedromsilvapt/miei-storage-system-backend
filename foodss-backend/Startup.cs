@@ -75,6 +75,7 @@ namespace StorageSystem
                 };
             });
 
+            services.AddSingleton<EmailService>();
             services.AddScoped<UserService>();
             services.AddScoped<StorageService>();
             services.AddScoped<StorageInvitationService>();

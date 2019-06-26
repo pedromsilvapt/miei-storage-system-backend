@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,17 +10,32 @@ namespace StorageSystem.Services
 {
     public class EmailService
     {
-        public static bool SendEmail(string email, string name, string subjectaux, string bodyaux)
+        public IConfiguration Configuration { get; }
+
+        public EmailService (IConfiguration configuration)
         {
+            Configuration = configuration;
+        }
 
+        public string GetBaseUrl ()
+        {
+            return Configuration.GetValue<string>("Email:BaseUrl");
+        }
 
-            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587)
+        public bool SendEmail(string email, string name, string subjectaux, string bodyaux)
+        {
+            string host = Configuration.GetValue<string>("Email:Host");
+            int port = Configuration.GetValue<int>("Email:Port");
+            string username = Configuration.GetValue<string>("Email:Username");
+            string password = Configuration.GetValue<string>("Email:Password");
+
+            using (SmtpClient client = new SmtpClient(host, port)
             {
-                Credentials = new NetworkCredential("projetoaasi@gmail.com", "stdlib.h"),
+                Credentials = new NetworkCredential(username, password),
                 EnableSsl = true
             })
             {
-                client.Send("projetoaasi@gmail.com", email, subjectaux, bodyaux);
+                client.Send(username, email, subjectaux, bodyaux);
             }
 
             return true;
