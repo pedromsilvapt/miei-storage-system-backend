@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using StorageSystem.Architecture.Exception;
 using StorageSystem.Services;
+using System.Net;
 
 namespace StorageSystem
 {
@@ -87,6 +89,10 @@ namespace StorageSystem
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedHost  | ForwardedHeaders.XForwardedProto
+            });
+            app.UseAuthentication();
             app.UseExceptionHandler(a => a.Run(async context =>
             {
                 var feature = context.Features.Get<IExceptionHandlerPathFeature>();
