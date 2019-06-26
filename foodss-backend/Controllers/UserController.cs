@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using StorageSystem.Controllers.DTO;
 using StorageSystem.Architecture;
 using StorageSystem.Architecture.Exception;
+using System.Collections.Generic;
 
 namespace StorageSystem.Controllers
 {
@@ -47,8 +48,6 @@ namespace StorageSystem.Controllers
             return UserDTO.FromModel(userModel);
         }
 
-
-
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("session")]
         public async Task<UserDTO> GetCurrentSession()
@@ -56,6 +55,17 @@ namespace StorageSystem.Controllers
             User user = await userService.GetUserAsync(this.User);
 
             return UserDTO.FromModel(user);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("invitation")]
+        public async Task<ICollection<StorageInvitationDTO>> ListInvitations()
+        {
+            User user = await userService.GetUserAsync(this.User);
+
+            List<StorageInvitation> invitations = await userService.ListInvitations(user);
+
+            return invitations.Select(i => StorageInvitationDTO.FromModel(i)).ToList();
         }
 
         [AllowAnonymous]

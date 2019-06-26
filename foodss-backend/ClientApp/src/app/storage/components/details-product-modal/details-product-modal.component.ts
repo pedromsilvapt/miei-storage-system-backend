@@ -8,7 +8,7 @@ import {
   DetailsProductPage,
   EditingProductItemAggregate,
   ProductItem,
-  ProductItemAggregate,
+  ProductItemAggregate,
   ConsumedProductItemAggregate
 } from './enums-interfaces/enums-interfaces.util';
 

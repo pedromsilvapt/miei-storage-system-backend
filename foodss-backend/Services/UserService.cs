@@ -69,6 +69,13 @@ namespace StorageSystem.Services
             return newUser;
         }
 
+        public async Task<List<StorageInvitation>> ListInvitations(User user)
+        {
+            return await context.StorageInvitations
+                .Where(invitation => invitation.UserEmail == user.Email)
+                .Include(invitation => invitation.Storage)
+                .ToListAsync();
+        }
 
         public async Task<User> VerifyUser(int id, string code)
         {
