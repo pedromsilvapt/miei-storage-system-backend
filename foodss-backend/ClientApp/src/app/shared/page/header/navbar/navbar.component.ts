@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { LoginService } from '../../../../login/login.service';
 import { StorageInvitationModel } from './navbar.model';
 import { HttpService } from '../../../../core/http/http.service'
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,7 @@ export class NavbarComponent implements OnInit {
       if (user != null) {
         this.invitation = await this.httpService.get('user/invitation').toPromise();
         this.totalinvites = this.invitation.length;
-        console.log(this.invitation);
+        this.refresh();
       }
       else {
         this.invitation = [];
@@ -29,6 +30,13 @@ export class NavbarComponent implements OnInit {
    
   }
 
+  refresh() {
+    interval(600000).subscribe(
+      async (val) => {
+        this.invitation = await this.httpService.get('user/invitation').toPromise();
+        this.totalinvites = this.invitation.length;
+      });
+  }
   public signOut() {
     this.loginService.signOut();
   }
