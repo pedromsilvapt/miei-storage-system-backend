@@ -70,7 +70,7 @@ namespace StorageSystem.Services
             // If the invitation already exists, then this is a successful no-op
             if (invitation == null)
             {
-                invitation = new StorageInvitation() { StorageId = storageId, UserEmail = email };
+                invitation = new StorageInvitation() { StorageId = storageId, AuthorId = user.Id, UserEmail = email };
 
                 await Context.StorageInvitations.AddAsync(invitation);
 

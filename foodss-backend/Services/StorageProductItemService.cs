@@ -30,7 +30,7 @@ namespace StorageSystem.Services
             Product product = await productService.GetProduct(user, storageId, productId, false);
 
             return await Context.ProductItems
-                .Where(p => (p.ProductId == product.Id) && CanUserSeeItem(user, p))
+                .Where(p => (p.ProductId == product.Id) && ((p.Shared == true) || (p.OwnerId == user.Id)))
                 // How many records to skip (defaults to 0)
                 .Skip(skip)
                 // How many records to return (defaults to 20)

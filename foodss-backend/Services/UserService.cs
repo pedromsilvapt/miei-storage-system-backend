@@ -78,6 +78,7 @@ namespace StorageSystem.Services
             return await context.StorageInvitations
                 .Where(invitation => invitation.UserEmail == user.Email)
                 .Include(invitation => invitation.Storage)
+                .Include(invitation => invitation.Author)
                 .ToListAsync();
         }
 

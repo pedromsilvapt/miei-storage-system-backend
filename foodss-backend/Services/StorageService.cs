@@ -80,7 +80,7 @@ namespace StorageSystem.Services
                             throw new InviteSelfException();
                         }
 
-                        StorageInvitation invitation = new StorageInvitation() { StorageId = storageModel.Id, UserEmail = invitationInput };
+                        StorageInvitation invitation = new StorageInvitation() { StorageId = storageModel.Id, AuthorId = owner.Id, UserEmail = invitationInput };
 
                         emailService.SendEmail(invitation.UserEmail,owner.Name, "Convite para partilha de dispensa - Storage System ", "Recebeu um novo convite de "+owner.Name+" para a partilha de dispensa "+ name + ".  " +
                             "Faça login para ver: " + emailService.GetBaseUrl() + "/#/login");
