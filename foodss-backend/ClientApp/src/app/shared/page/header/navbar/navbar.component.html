@@ -22,9 +22,23 @@
     <li class="nav-item d-down-none">
       <app-language-selector></app-language-selector>
     </li>
-    <!--<li class="nav-item d-md-down-none">-->
-    <li class="nav-item dropdown">
-      <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">7</span></a>
+    <li class="nav-item dropdown" dropdown placement="bottom right" >
+      <div class="avatar-margin">
+        <button class="nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle><i class="icon-bell"></i><span class="badge badge-pill badge-danger">{{totalinvites}}</span></button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right"role="menu" aria-labelledby="button-basic">
+          <li class="dropdown-header text-center"><strong>Convites</strong>&nbsp;<span class="badge badge-info">{{totalinvites}}</span></li>
+          <li role="menuitem" class="dropdown-item" *ngFor="let invite of invitation">
+            <i style="text-align:left" class="fa fa-envelope-o"></i><div style="text-align:center" translate>{{'notification.invitationmessage1'}}  <b>{{invite.storage.name}}</b><br /><a translate>{{'notification.invitationmessage2'}}</a>
+           <b>{{invite.author.email}}</b> </div>
+            <div style="text-align:center">
+              <button class="btn btn-sm btn-pill btn-success" type="button" (click)="AcceptInvitation(invite.storageId,0)" translate>{{'form.button.accept'}}</button>&nbsp;
+              <button class="btn btn-sm btn-pill btn-danger" type="button" (click)="AcceptInvitation(invite.storageId,1)" translate>{{'form.button.reject'}}</button>
+            </div>
+          </li>
+          <li class="dropdown-header text-center"><strong>Produtos</strong></li>
+          <li role="menuitem" class="dropdown-item" ><i class="fa fa-user"></i> Profile</li>
+        </ul>
+      </div>
     </li>
     <li class="nav-item dropdown" dropdown placement="bottom right">
       <div class="avatar-margin">

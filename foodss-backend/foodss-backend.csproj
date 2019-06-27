@@ -57,11 +57,13 @@
     <None Remove="ClientApp\src\app\home\graph\graph.component.sass" />
     <None Remove="ClientApp\src\app\home\graph\graph.component.spec.ts" />
     <None Remove="ClientApp\src\app\home\graph\graph.component.ts" />
+    <None Remove="ClientApp\src\app\shared\page\header\navbar\navbar.model.ts" />
     <None Remove="ClientApp\src\NewStyle.css" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\add-storage\Elementos.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\page\header\navbar\navbar.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
