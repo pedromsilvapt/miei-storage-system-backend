@@ -70,11 +70,13 @@ namespace StorageSystem.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("invitation/{storage}/accept")]
-        public async Task<StorageUser> AcceptInvitation(int storage)
+        public async Task<StorageUserDTO> AcceptInvitation(int storage)
         {
             User user = await userService.GetUserAsync(this.User);
 
-            return await userService.AcceptInvitation(user, storage);
+            StorageUser storageUser = await userService.AcceptInvitation(user, storage);
+
+            return StorageUserDTO.FromModel(storageUser);
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

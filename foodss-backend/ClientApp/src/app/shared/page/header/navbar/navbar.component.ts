@@ -33,12 +33,20 @@ export class NavbarComponent implements OnInit {
     this.loginService.signOut();
   }
 
-  AcceptInvitation(storageid: number, state: number) {
+  async AcceptInvitation(storageid: number, state: number) {
     if (state == 0) {
-      this.httpService.post('user/invitation/' + storageid + '/accept').toPromise();
+      //await this.httpService.post('user/invitation/' + storageid + '/accept').toPromise();
     }
     else {
-      this.httpService.post('user/invitation/' + storageid + '/reject').toPromise();
+      //await this.httpService.post('user/invitation/' + storageid + '/reject').toPromise();
+    }
+
+    const index = this.invitation.findIndex(inv => inv.storageId == storageid);
+
+    if (index >= 0) {
+      this.invitation.splice(index, 1);
+
+      this.totalinvites -= 1;
     }
   }
 
