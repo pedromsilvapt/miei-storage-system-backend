@@ -35,10 +35,10 @@ export class NavbarComponent implements OnInit {
 
   async AcceptInvitation(storageid: number, state: number) {
     if (state == 0) {
-      //await this.httpService.post('user/invitation/' + storageid + '/accept').toPromise();
+      await this.httpService.post('user/invitation/' + storageid + '/accept').toPromise();
     }
     else {
-      //await this.httpService.post('user/invitation/' + storageid + '/reject').toPromise();
+      await this.httpService.post('user/invitation/' + storageid + '/reject').toPromise();
     }
 
     const index = this.invitation.findIndex(inv => inv.storageId == storageid);
