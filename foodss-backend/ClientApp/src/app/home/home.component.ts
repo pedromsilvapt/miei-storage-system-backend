@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-  
+
   fileUrl;
   constructor(private infoCardService: InfoCardService, private httpService: HttpService, private sanitizer: DomSanitizer) { }
 
@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   async openPDF() {
-    
+
     const blob = await this.httpService.get('shoppinglist/pdf', { responseType: 'arraybuffer' }).toPromise();
     this.downloadFile(blob, 'application/pdf', 'ShoppingList.pdf');
 
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
    * @param type - type of the document.
    */
   downloadFile(data: any, type: string, name: string) {
-    var blob = new Blob([data], { type: type });
+    let blob = new Blob([data], { type });
 
     // IE doesn't allow using a blob object directly as link href
     // instead it is necessary to use msSaveOrOpenBlob
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    var dataURL = window.URL.createObjectURL(blob);
+    let dataURL = window.URL.createObjectURL(blob);
 
     const link = document.createElement('a');
     link.href = dataURL;

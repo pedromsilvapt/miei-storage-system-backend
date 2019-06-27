@@ -32,7 +32,8 @@
                [limit]="datatableLengthLimit">
 <ng-container *ngFor="let column of columns; let index = index">
 
-  <ngx-datatable-column [name]="column.name" *ngIf="column.name != 'actions'" [sortable]="column.sortable">
+  <ngx-datatable-column [name]="column.name" *ngIf="column.name != 'actions' && column.name != 'amountWithAction'"
+                        [sortable]="column.sortable">
     <ng-template ngx-datatable-header-template let-sort="sortFn">
       <span (click)="sort()" [ngStyle]="{'cursor': column.sortable ? 'pointer' : 'auto'}">
         <strong translate>{{column.translationKey}}</strong>
@@ -49,6 +50,37 @@
       <ng-template #notColumnWithLink>
         <ng-container [ngTemplateOutlet]="handleColumnType" [ngTemplateOutletContext]="{column: column, value: value}"></ng-container>
       </ng-template>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column [name]="column.name" *ngIf="column.name == 'amountWithAction'" >
+    <ng-template ngx-datatable-header-template>
+      <strong translate>{{column.translationKey}}</strong>
+    </ng-template>
+
+    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+
+      <div style="display: flex">
+        <button [disabled]="disableAmountButtons" *ngIf="row.amountWithAction > 0" class="btn btn-ghost" style="margin-bottom: 8px; margin-right: 2px"
+                (click)="onClickAmountButton({id: row.id, count: row.amountWithAction - 1})">
+          <span style="align-self: center">
+            <i class="fas fa-minus"></i>
+          </span>
+        </button>
+
+        <ng-container>
+          {{value}}
+        </ng-container>
+
+        <button [disabled]="disableAmountButtons" class="btn btn-ghost" style="margin-bottom: 8px; margin-left: 2px"
+                (click)="onClickAmountButton({id: row.id, count: row.amountWithAction + 1})">
+          <span  style="align-self: center">
+            <i class="fas fa-plus"></i>
+          </span>
+        </button>
+
+      </div>
+
     </ng-template>
   </ngx-datatable-column>
 

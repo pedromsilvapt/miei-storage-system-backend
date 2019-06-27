@@ -8,7 +8,7 @@ import {ColumnType} from '../../../shared/components/custom-datatable/model/colu
   selector: 'app-storage-datatable',
   templateUrl: './storage-datatable.component.html'
 })
-export class StorageDatatableComponent extends DatatablePageContent<Array<Product>> implements OnInit {
+export class StorageDatatableComponent extends DatatablePageContent implements OnInit {
 
   constructor() {
     super();

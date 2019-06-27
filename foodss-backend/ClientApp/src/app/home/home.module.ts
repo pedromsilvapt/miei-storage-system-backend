@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HomeComponent} from './home.component';
-import {ListaComprasComponent} from './components/lista-compras/lista-compras.component';
+import {ShoppingListComponent} from './components/shopping-list/shopping-list.component';
 import {InfoCardComponent} from './components/info-card/info-card.component';
 import {SharedModule} from '../shared/shared.module';
 import {ExpireDateTableComponent} from './components/expire-date-table/expire-date-table.component';
@@ -11,7 +11,7 @@ import {ChartsModule} from 'ng2-charts';
 @NgModule({
   declarations: [
     HomeComponent,
-    ListaComprasComponent,
+    ShoppingListComponent,
     InfoCardComponent,
     ExpireDateTableComponent,
     GraphComponent,

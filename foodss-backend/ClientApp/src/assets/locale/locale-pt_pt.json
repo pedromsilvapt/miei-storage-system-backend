@@ -10,7 +10,13 @@
     "expire_date": "Validade",
     "operation_performed_successfully": "Operação realizada com sucesso!",
     "login":  "Login",
-    "user": "Utilizador"
+    "user": "Utilizador",
+    "private":  "Privado",
+    "shared": "Compartilhado",
+    "empty": "Vazio",
+    "close_to_expire": "Perto de expirar",
+    "expired": "Expirado",
+    "expiration_date": "Prazo de Validade"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",
@@ -19,7 +25,8 @@
     "NOT_AUTHENTICATED": "Utilizador não autenticado.",
     "INCORRECT_EMAIL_OR_PASSWORD": "Email ou senha incorretos.",
     "EMAIL_NOT_VERIFIED": "Confirmação de email não efectuada.",
-    "EMAIL_ALREADY_INFORMED": "Email já registado."
+    "EMAIL_ALREADY_INFORMED": "Email já registado.",
+    "SHOPPING_LIST_ITEM_NOT_FOUND": "Item de lista de compras não encontrado."
   },
   "avatar": {
     "edit_profile": "Editar perfil",
@@ -95,5 +102,8 @@
     "close": "Fechar",
     "cancel": "Cancelar",
     "save": "Gravar"
+  },
+  "shopping_list": {
+    "shopping_list": "Lista de Compras"
   }
 }

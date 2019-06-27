@@ -31,6 +31,7 @@ namespace StorageSystem.Controllers
           
         }
   
+        [HttpGet]
         public async Task<List<ShoppingListDTO>> ShoppingLists()
         {
             User user = await userService.GetUserAsync(this.User);
@@ -50,6 +51,19 @@ namespace StorageSystem.Controllers
             return File(abytes, "application/pdf");
         }
         
+        [HttpPost("update-shopping-list-item")]
+        public async Task<ShoppingListItem> UpdateShoppingListItem(ShoppingListItem shoppingListItem)
+        {
+            ShoppingListItem shoppingListItemPersisted = await shoppinglistService.UpdateShoppingListItem(shoppingListItem);
+            return shoppingListItemPersisted;
+        }
 
+        [HttpDelete("{id}")]
+        public async Task DeleteShoppingListItem(int id)
+        {
+            int userId = userService.GetUserId(this.User);
+
+            await shoppinglistService.DeleteShoppingListItem(userId, id);
+        }
     }
 }

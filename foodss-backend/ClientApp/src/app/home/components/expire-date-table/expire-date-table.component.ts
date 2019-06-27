@@ -1,117 +1,70 @@
-import { Component, OnInit } from '@angular/core';
-import { DatatablePageContent } from '../../../shared/page/content/datatable-page.content';
-import { ColumnDatatable } from '../../../shared/components/custom-datatable/model/column.datatable';
-import { Product } from '../../../product/model/product.model';
+import {Component, OnInit} from '@angular/core';
+import {DatatablePageContent} from '../../../shared/page/content/datatable-page.content';
+import {ColumnDatatable} from '../../../shared/components/custom-datatable/model/column.datatable';
 import {ColumnType} from '../../../shared/components/custom-datatable/model/column-type.enum';
+import {ProductService} from '../../../product/product.service';
+import {ProductItemDTO} from '../../../product/model/product-item-dto.model';
+import {MessageUtil} from '../../../shared/util/message.util';
+import * as _ from 'lodash';
+import {Language} from 'angular-l10n';
 
 @Component({
   selector: 'app-expire-date-table',
   templateUrl: './expire-date-table.component.html'
 
 })
-export class ExpireDateTableComponent extends DatatablePageContent<Array<Product>> implements OnInit {
+export class ExpireDateTableComponent extends DatatablePageContent implements OnInit {
 
-  constructor() {
+  constructor(private productService: ProductService, private messageUtil: MessageUtil) {
     super();
   }
-  public products = [
-      {
-        id: 1,
-        name: 'Arroz',
-        amount: 1,
-        barCode: '10001',
-        hasExpireDate: true,
-        userOwner: {
-          id: 1,
-          name: 'José'
-        },
-        isShared: false,
-        expireDate: new Date('2019-04-11'),
-        addedDate: new Date('2019-03-10'),
-        consumedDate: null
-      },
-      {
-        id: 2,
-        name: 'Café',
-        amount: 2,
-        barCode: '10002',
-        hasExpireDate: true,
-        userOwner: {
-          id: 1,
-          name: 'José'
-        },
-        isShared: false,
-        expireDate: new Date('2019-04-12'),
-        addedDate: new Date('2019-03-10'),
-        consumedDate: null
-      },
-      {
-        id: 3,
-        name: 'Bolacha',
-        amount: 3,
-        barCode: '10003',
-        hasExpireDate: true,
-        userOwner: {
-          id: 1,
-          name: 'José'
-        },
-        isShared: false,
-        expireDate: new Date('2019-04-13'),
-        addedDate: new Date('2019-03-10'),
-        consumedDate: null
-      },
-      {
-        id: 4,
-        name: 'Leite',
-        amount: 4,
-        barCode: '10004',
-        hasExpireDate: true,
-        userOwner: {
-          id: 1,
-          name: 'José'
-        },
-        isShared: false,
-        expireDate: new Date('2019-04-14'),
-        addedDate: new Date('2019-03-10'),
-        consumedDate: null
-      },
-      {
-        id: 5,
-        name: 'Ovos',
-        amount: 5,
-        barCode: '10005',
-        hasExpireDate: true,
-        userOwner: {
-          id: 1,
-          name: 'José'
-        },
-        isShared: false,
-        expireDate: new Date('2019-04-15'),
-        addedDate: new Date('2019-03-10'),
-        consumedDate: null
-      },
-      {
-        id: 6,
-        name: 'Carne',
-        amount: 6,
-        barCode: '10006',
-        hasExpireDate: true,
-        userOwner: {
-          id: 1,
-          name: 'José'
-        },
-        isShared: false,
-        expireDate: new Date('2019-04-16'),
-        addedDate: new Date('2019-03-10'),
-        consumedDate: null
-      }
-  ];
 
-  public rows: Array<object> = [];
+  @Language() lang;
+
+  public productItemDTOs: Array<ProductItemDTO> = [];
+
+  public productItemDTOsNearExpiringDate: Array<ProductItemDTO> = [];
+  public productItemDTOsAfterExpiringDate: Array<ProductItemDTO> = [];
+
+  public rowsForTableWithProductsNearExpiringDate: Array<any> = [];
+  public rowsForTableWithProductsAfterExpiringDate: Array<any> = [];
+
   public columns: Array<ColumnDatatable> = [];
 
   ngOnInit() {
-    this.rows = this.createDatatableRows(this.products);
+    this.fetchProductsItems();
+  }
+
+  private fetchProductsItems(): void {
+    this.productService.getProductsNearExpiringDate().subscribe((productItemDTOs: Array<ProductItemDTO>) => {
+      this.productItemDTOs = productItemDTOs;
+      this.createTables(this.productItemDTOs);
+    }, error => {
+      this.messageUtil.addErrorMessage('general.product', error.message);
+    });
+  }
+
+  private createTables(productItemDTOs: Array<ProductItemDTO>): void {
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+
+    this.productItemDTOsNearExpiringDate = productItemDTOs
+      .filter(productItemDTO => new Date(productItemDTO.expiryDate).getTime() >= todayDate.getTime());
+
+    this.productItemDTOsAfterExpiringDate = productItemDTOs
+      .filter(productItemDTO => new Date(productItemDTO.expiryDate).getTime() < todayDate.getTime());
+
+    this.createTableWithProductsNearExpiringDate(this.productItemDTOsNearExpiringDate);
+    this.createTableWithProductsAfterExpiringDate(this.productItemDTOsAfterExpiringDate);
+  }
+
+  private createTableWithProductsNearExpiringDate(productItemDTOs: Array<ProductItemDTO>): void {
+    this.rowsForTableWithProductsNearExpiringDate = this.createDatatableRows(productItemDTOs);
+    this.columns = this.createDatatableColumns();
+  }
+
+  private createTableWithProductsAfterExpiringDate(productItemDTOs: Array<ProductItemDTO>): void {
+    this.rowsForTableWithProductsAfterExpiringDate = this.createDatatableRows(productItemDTOs);
     this.columns = this.createDatatableColumns();
   }
 
@@ -119,26 +72,26 @@ export class ExpireDateTableComponent extends DatatablePageContent<Array<Product
     const columns: Array<ColumnDatatable> = [];
 
     columns.push(new ColumnDatatable('name', 'general.product', true, true));
-    columns.push(new ColumnDatatable('amount', 'general.amount', true));
     columns.push(new ColumnDatatable('expireDate', 'general.expire_date', true, false, ColumnType.ExpireDate));
-    columns.push(new ColumnDatatable('actions', 'datatable.actions', false));
 
     return columns;
   }
 
-  // TODO edit 'any' from parameter from the function below after REST is implemented.
-  public createDatatableRows(products: Array<any>): Array<any> {
+  public createDatatableRows(productItemDTOs: Array<ProductItemDTO>): Array<any> {
     const rows: Array<any> = [];
 
-    if (products) {
-      products.forEach(product => {
+    const data = _(productItemDTOs).groupBy(productItemDTO => productItemDTO.productName)
+      .map((value, key) => ({name: key, productItemDTO: value})).value();
+
+    if (productItemDTOs) {
+      data.forEach(product => {
         const row = {
-          id: product.id,
-          name: product.name,
-          expireDate: product.expireDate,
-          nameRouterLink: 'product/' + product.id,
-          amount: product.amount,
-          actions: this.createDatatableActionButtons()
+          id: product.productItemDTO[0].productId,
+          name: product.productItemDTO[0].productName + ' (' + product.productItemDTO.length + ')',
+          productId: product.productItemDTO[0].productId,
+          storageId: product.productItemDTO[0].storageId,
+          expireDate: product.productItemDTO[0].expiryDate,
+          nameRouterLink: 'storage/' + product.productItemDTO[0].storageId
         };
         rows.push(row);
       });
@@ -152,6 +105,12 @@ export class ExpireDateTableComponent extends DatatablePageContent<Array<Product
   }
 
   public executeDeleteAction(event: any): void {
-    console.log('Deletou o produto de id: ' + event.id);
+    this.productService.deleteProductItem(event.storageId, event.productId, event.id).subscribe(() => {
+      this.messageUtil.addSuccessMessage('general.product');
+      this.productItemDTOs.splice(this.productItemDTOs.findIndex(productItemDTO => productItemDTO.id === event.id), 1);
+      this.createTables(this.productItemDTOs);
+    }, error => {
+      this.messageUtil.addErrorMessage('general.product', error.message);
+    });
   }
 }

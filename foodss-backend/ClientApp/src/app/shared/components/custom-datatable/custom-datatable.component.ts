@@ -1,4 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  EventEmitter,
+  Input,
+  IterableDiffer,
+  IterableDiffers,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {TranslationService} from 'angular-l10n';
 import {DatatableComponent} from '@swimlane/ngx-datatable';
 import {MessageUtil} from '../../util/message.util';
@@ -8,24 +18,38 @@ import {MessageUtil} from '../../util/message.util';
   templateUrl: './custom-datatable.component.html',
   styleUrls: ['./custom-datatable.component.scss']
 })
-export class CustomDatatableComponent implements OnInit {
-
-  constructor(private translationService: TranslationService, private messageUtil: MessageUtil) { }
-
-  private temp: Array<any> = [];
-
-  datatableLengthLimit = 5;
+export class CustomDatatableComponent implements OnInit, DoCheck {
 
   @ViewChild(DatatableComponent) datatableComponent: DatatableComponent;
 
   @Input() rows: Array<any> = [];
   @Input() columns: Array<any> = [];
   @Input() sortDefaultColumn: string;
+  @Input() disableAmountButtons = false;
 
   @Output() clickActionButton: EventEmitter<any> = new EventEmitter();
+  @Output() clickAmountButton: EventEmitter<any> = new EventEmitter();
+
+  private temp: Array<any> = [];
+  private iterableDifferForRows: IterableDiffer<any>;
+
+  public datatableLengthLimit = 5;
+
+  constructor(private translationService: TranslationService, private messageUtil: MessageUtil,
+              private differs: IterableDiffers) {
+    this.iterableDifferForRows = this.differs.find([]).create(null);
+  }
 
   ngOnInit() {
     this.temp = [...this.rows];
+  }
+
+  ngDoCheck(): void {
+    const changesInRow = this.iterableDifferForRows.diff(this.rows);
+    if (changesInRow) {
+      console.log('row has changed');
+      this.temp = [...this.rows];
+    }
   }
 
   public onClickActionButton(event: any): void {
@@ -46,7 +70,7 @@ export class CustomDatatableComponent implements OnInit {
     this.rows = this.temp.filter((d) => {
       let hasLine = false;
       Object.keys(d).forEach(column => {
-        if (String(d[column]).toLowerCase().indexOf(value) !== -1) {
+        if (String(d.name).toLowerCase().indexOf(value) !== -1) {
           hasLine = true;
         }
       });
@@ -73,4 +97,7 @@ export class CustomDatatableComponent implements OnInit {
     };
   }
 
+  public onClickAmountButton(row: {id, count}) {
+    this.clickAmountButton.next(row);
+  }
 }

@@ -82,6 +82,7 @@ namespace StorageSystem
             services.AddScoped<ShoppingListService>();
             services.AddScoped<CityService>();
             services.AddScoped<WeatherService>();
+            services.AddScoped<ProductItemService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
