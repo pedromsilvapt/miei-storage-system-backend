@@ -36,7 +36,7 @@ export class DateUtil {
   private static getRemainingDaysLevel(days: number): ProductExpiryLevel {
     if (days < 0) {
       return ProductExpiryLevel.Expired;
-    } else if (days <= 3) {
+    } else if (days <= 7) {
       return ProductExpiryLevel.Close;
     } else {
       return ProductExpiryLevel.Distant;

@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs';
 export class ProductComponent implements OnInit, OnDestroy {
 
   id: number;
-  activatedRouteSubscription: Subscription;
+  private activatedRouteSubscription: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute) { }
 

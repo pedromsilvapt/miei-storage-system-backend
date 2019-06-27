@@ -1,12 +1,12 @@
 import {ColumnDatatable} from '../../components/custom-datatable/model/column.datatable';
 import {ActionButtonDatatable} from '../../components/custom-datatable/model/action-button.datatable';
 
-export abstract class DatatablePageContent<T> {
+export abstract class DatatablePageContent {
 
   constructor() {}
 
   abstract createDatatableColumns(): Array<ColumnDatatable>;
-  abstract createDatatableRows(entity: T): Array<any>;
+  abstract createDatatableRows(entity: any): Array<any>;
   abstract executeEditAction(event: any): void;
   abstract executeDeleteAction(event: any): void;
 

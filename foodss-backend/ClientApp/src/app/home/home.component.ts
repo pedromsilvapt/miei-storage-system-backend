@@ -10,8 +10,8 @@ import { Language } from 'angular-l10n';
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
-
 export class HomeComponent implements OnInit {
+
   @Language() lang: string;
   fileUrl;
   constructor(private infoCardService: InfoCardService, private httpService: HttpService, private sanitizer: DomSanitizer, private messageUtil: MessageUtil) { }
@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
     this.infoCardYellow = this.buildInfoCardYellow();
     this.infoCardGreen = this.buildInfoCardGreen();
   }
-
 
   buildInfoCardBlue(): InfoCard {
     return new InfoCard(this.infoCardService.getProductsOnStock(),
@@ -56,7 +55,7 @@ export class HomeComponent implements OnInit {
   }
 
   async openPDF() {
-    
+
     const blob = await this.httpService.get('shoppinglist/pdf', { responseType: 'arraybuffer' }).toPromise();
     this.downloadFile(blob, 'application/pdf', 'ShoppingList.pdf');
 
@@ -75,14 +74,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  
+
   /**
    * Method is use to download file.
    * @param data - Array Buffer data
    * @param type - type of the document.
    */
   downloadFile(data: any, type: string, name: string) {
-    var blob = new Blob([data], { type: type });
+    let blob = new Blob([data], { type });
 
     // IE doesn't allow using a blob object directly as link href
     // instead it is necessary to use msSaveOrOpenBlob
@@ -91,7 +90,7 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    var dataURL = window.URL.createObjectURL(blob);
+    let dataURL = window.URL.createObjectURL(blob);
 
     const link = document.createElement('a');
     link.href = dataURL;

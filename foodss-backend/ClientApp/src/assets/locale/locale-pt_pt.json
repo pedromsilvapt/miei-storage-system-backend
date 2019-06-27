@@ -12,7 +12,13 @@
     "login": "Login",
     "user": "Utilizador",
     "googleTask": "Adição da lista de Compras com Sucesso no GoogleTask!",
-    "add_shopping_list": "Adição da lista de compras"
+    "add_shopping_list": "Adição da lista de compras",
+    "private":  "Privado",
+    "shared": "Compartilhado",
+    "empty": "Vazio",
+    "close_to_expire": "Perto de expirar",
+    "expired": "Expirado",
+    "expiration_date": "Prazo de Validade"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",
@@ -22,6 +28,7 @@
     "INCORRECT_EMAIL_OR_PASSWORD": "Email ou senha incorretos.",
     "EMAIL_NOT_VERIFIED": "Confirmação de email não efectuada.",
     "EMAIL_ALREADY_INFORMED": "Email já registado.",
+    "SHOPPING_LIST_ITEM_NOT_FOUND": "Item de lista de compras não encontrado.",
     "GOOGLETASK_ERROR": "Falha ao adicionar a lista de compras no GoogleTask.",
     "ERROR_ADD_GOOGLETASK": "Erro da adição da lista no GoogleTask!"
   },
@@ -122,6 +129,8 @@
     "request": "A guardar pedido...",
     "sucess": "Dispensa Criada com Sucesso",
     "openstorage": "Abrir Dispensa"
+  },
+  "shopping_list": {
+    "shopping_list": "Lista de Compras"
   }
-
 }

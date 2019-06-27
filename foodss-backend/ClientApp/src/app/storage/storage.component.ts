@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { StorageModel } from './model/storage.model';
-import * as _ from 'lodash';
 import { BsModalService } from 'ngx-bootstrap';
 import { AddProductModalComponent } from './components/add-product-modal/add-product-modal.component';
 import { HttpService } from '../core/http/http.service';
@@ -8,6 +7,7 @@ import { Product } from '../product/model/product.model';
 import { DetailsProductModalComponent } from './components/details-product-modal/details-product-modal.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import {Language} from 'angular-l10n';
 
 export interface TabbedStorageModel extends StorageModel {
   privateProducts?: Product[];
@@ -20,6 +20,9 @@ export interface TabbedStorageModel extends StorageModel {
   templateUrl: './storage.component.html'
 })
 export class StorageComponent implements OnInit, OnDestroy {
+
+  @Language() lang;
+
   public storages: Array<TabbedStorageModel> = [];
 
   protected subscriptions: Subscription[] = [];

@@ -12,7 +12,13 @@
     "login": "Login",
     "user": "User",
     "googleTask": "Add Shopping List with sucess in GoogleTask",
-    "add_shopping_list": "Add Shopping List"
+    "add_shopping_list": "Add Shopping List",
+    "private":  "Private",
+    "shared": "Shared",
+    "empty": "Empty",
+    "close_to_expire": "Close to expire",
+    "expired": "Expired",
+    "expiration_date": "Expiration Date"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Failed to connect to server.",
@@ -22,6 +28,7 @@
     "INCORRECT_EMAIL_OR_PASSWORD": "Incorrect email or password.",
     "EMAIL_NOT_VERIFIED": "Email confirmation not done.",
     "EMAIL_ALREADY_INFORMED": "Email already informed.",
+    "SHOPPING_LIST_ITEM_NOT_FOUND": "Shopping list item not found.",
     "GOOGLETASK_ERROR": "Failed to add shopping list in GoogleTask",
     "ERROR_ADD_GOOGLETASK": "Error adding list in GoogleTask."
   },
@@ -122,5 +129,8 @@
     "request": "Waiting for the Request...",
     "sucess": "Storage Created Successfully",
     "openstorage":  "Open Storage"
+  },
+  "shopping_list": {
+    "shopping_list": "Shopping List"
   }
 }

@@ -14,6 +14,7 @@ namespace StorageSystem.Architecture
         USER_NOT_FOUND,
         STORAGE_NOT_FOUND,
         UNAUTHORIZED_STORAGE_ACCESS,
+        UNAUTHORIZED_SHOPPING_LIST_ACCESS,
         PRODUCT_NOT_FOUND,
         PRODUCT_EXPIRY_DATE_MISMATCH,
         PRODUCT_REMOVAL,
@@ -21,6 +22,8 @@ namespace StorageSystem.Architecture
         INVITE_EXISTING_STORAGE_MEMBER,
         INVITE_SELF,
         INVITE_NOT_FOUND,
-        CITY_NOT_FOUND
+        CITY_NOT_FOUND,
+        SHOPPING_LIST_ITEM_NOT_FOUND,
+        INVALID_COUNT
     }
 }

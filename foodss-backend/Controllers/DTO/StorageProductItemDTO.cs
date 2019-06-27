@@ -17,6 +17,8 @@ namespace StorageSystem.Controllers.DTO
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public int StorageId { get; set; }
         public int OwnerId { get; set; }
         public bool Shared { get; set; }
         public DateTime ExpiryDate { get; set; }
@@ -32,6 +34,8 @@ namespace StorageSystem.Controllers.DTO
                 Shared = model.Shared,
                 ExpiryDate = model.ExpiryDate,
                 AddedDate = model.AddedDate,
+                ProductName = model.Product != null ? model.Product.Name : null,
+                StorageId = model.Product != null ? model.Product.StorageId : 0,
                 ConsumedDate = null
             };
 

@@ -67,6 +67,12 @@ namespace StorageSystem.Architecture.Exception
         public UnauthorizedStorageAccessException() : base(ApiErrorCode.UNAUTHORIZED_STORAGE_ACCESS.ToString()) { }
     }
 
+    public class UnauthorizedShoppingListAccessException : UnauthorizedException
+    {
+        public UnauthorizedShoppingListAccessException() : base(ApiErrorCode.UNAUTHORIZED_SHOPPING_LIST_ACCESS.ToString()) { }
+    }
+
+
     public class ProductNotFoundException : NotFoundException
     {
         public ProductNotFoundException() : base(ApiErrorCode.PRODUCT_NOT_FOUND.ToString()) { }
@@ -105,5 +111,15 @@ namespace StorageSystem.Architecture.Exception
     public class CityNotFoundException : NotFoundException
     {
         public CityNotFoundException() : base(ApiErrorCode.CITY_NOT_FOUND.ToString()) { }
+    }
+
+    public class ShoppingListItemNotFoundException : NotFoundException
+    {
+        public ShoppingListItemNotFoundException() : base(ApiErrorCode.SHOPPING_LIST_ITEM_NOT_FOUND.ToString()) { }
+    }
+
+    public class InvalidCountException : BadRequestException
+    {
+        public InvalidCountException() : base(ApiErrorCode.INVALID_COUNT.ToString()) { }
     }
 }

@@ -8,9 +8,18 @@ import { AddProductModalComponent } from './components/add-product-modal/add-pro
 import { MinDateValidatorDirective } from './components/add-product-modal/min-date.directive';
 import { BarcodeScannerComponent } from './components/add-product-modal/barcode-scanner.component';
 import { DetailsProductModalComponent } from './components/details-product-modal/details-product-modal.component';
+import {StorageDetailComponent} from './detail/storage-detail.component';
 
 @NgModule({
-  declarations: [StorageComponent, StorageDatatableComponent, MinDateValidatorDirective, AddProductModalComponent, BarcodeScannerComponent, DetailsProductModalComponent],
+  declarations: [
+    StorageComponent,
+    StorageDatatableComponent,
+    MinDateValidatorDirective,
+    AddProductModalComponent,
+    BarcodeScannerComponent,
+    DetailsProductModalComponent,
+    StorageDetailComponent,
+  ],
   entryComponents: [AddProductModalComponent, DetailsProductModalComponent],
   imports: [
     CommonModule,

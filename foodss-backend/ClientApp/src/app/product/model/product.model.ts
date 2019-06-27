@@ -6,7 +6,6 @@ export class Product {
   name: string;
   barcode: string;
   maxTemperature?: number;
-  // TODO analisar necessidade de atributo abaixo
   // storage: StorageModel;
   storageId: number;
   userOwner: User;
