@@ -41,6 +41,9 @@ namespace StorageSystem.Models
         [InverseProperty("User")]
         public ICollection<UserProductPreference> Preferences { get; set; }
 
+        [InverseProperty("Author")]
+        public ICollection<StorageInvitation> InvitationsMade { get; set; }
+
 
         public static void OnModelCreating(ModelBuilder modelBuilder)
         {
