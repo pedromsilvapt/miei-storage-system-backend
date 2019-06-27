@@ -59,7 +59,7 @@ export class DetailsProductModalComponent {
     }
   }
 
-  public openPage(page: DetailsProductPage): void {
+  public openPage(page: DetailsProductPage | any): void {
     this.page = page;
 
     if (this.loadedPages[page] == false) {

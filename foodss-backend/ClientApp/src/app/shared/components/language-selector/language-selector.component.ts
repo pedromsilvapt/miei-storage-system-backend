@@ -11,7 +11,7 @@ export class LanguageSelectorComponent implements OnInit {
   constructor(public locale: LocaleService) { }
 
   languagesConfig: Array<any>;
-  currentLanguage: string;
+  currentLanguage: any;
 
   ngOnInit() {
     this.languagesConfig = languagesConfig;

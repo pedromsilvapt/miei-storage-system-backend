@@ -37,7 +37,7 @@ export class AddStorageComponent implements OnInit {
   required: boolean;
 
 
-  constructor(private formBuilder: FormBuilder, private http: HttpService, private router: Router, private translationService: TranslationService) {
+  constructor(private formBuilder: FormBuilder, private http: HttpService, private router: Router, public translationService: TranslationService) {
     this.citiesSource = Observable
       .create((observer: any) => observer.next(this.citynamestorage))
       .pipe(mergeMap((name: string) => this.searchCities(name)));

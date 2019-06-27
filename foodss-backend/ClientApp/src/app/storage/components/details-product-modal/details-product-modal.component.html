@@ -140,8 +140,8 @@
                 <td translate>product.mine</td>
                 <td class="text-center">{{shoppingList.count}}</td>
                 <td>
-                  <button [hidden]="editingItem != item" type="button" class="btn btn-primary mr-2" (click)="decreaseShoppingList()"><i class="fa fa-minus"></i></button>
-                  <button [hidden]="editingItem != item" type="button" class="btn btn-primary" (click)="increaseShoppingList()"><i class="fa fa-plus"></i></button>
+                  <button type="button" class="btn btn-primary mr-2" (click)="decreaseShoppingList()"><i class="fa fa-minus"></i></button>
+                  <button type="button" class="btn btn-primary" (click)="increaseShoppingList()"><i class="fa fa-plus"></i></button>
                 </td>
               </tr>
             </tbody>

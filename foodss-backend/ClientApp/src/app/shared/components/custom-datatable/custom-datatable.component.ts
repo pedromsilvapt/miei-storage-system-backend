@@ -10,7 +10,7 @@ import {MessageUtil} from '../../util/message.util';
 })
 export class CustomDatatableComponent implements OnInit {
 
-  constructor(private translationService: TranslationService, private messageUtil: MessageUtil) { }
+  constructor(public translationService: TranslationService, private messageUtil: MessageUtil) { }
 
   private temp: Array<any> = [];
 
