@@ -62,13 +62,13 @@ namespace StorageSystem.Services
 
             var (hashed, salt) = HashPassword(password);
             string code = EmailService.GenerateCode();
-            var newUser = new User() { Name = name, Email = email, Password = hashed, Salt = salt, VerificationCode=code };
+            var newUser = new User() { Name = name, Email = email, Password = hashed, Salt = salt, VerificationCode = code };
 
             await context.AddAsync(newUser);
-            
+
             await context.SaveChangesAsync();
 
-            emailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : " + emailService.GetBaseUrl() + "/api/User/" + newUser.Id+ "/verify/"+code);
+            emailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : " + emailService.GetBaseUrl() + "/api/User/" + newUser.Id + "/verify/" + code);
 
             return newUser;
         }
@@ -80,6 +80,63 @@ namespace StorageSystem.Services
                 .Include(invitation => invitation.Storage)
                 .Include(invitation => invitation.Author)
                 .ToListAsync();
+        }
+
+        public async Task<StorageUser> AcceptInvitation(User user, int storageId)
+        {
+            StorageInvitation invitation = context.StorageInvitations
+                .Where(i => i.UserEmail == user.Email && i.StorageId == storageId)
+                .FirstOrDefault();
+
+            if (invitation == null)
+            {
+                throw new InviteNotFoundException();
+            }
+
+            context.StorageInvitations.Remove(invitation);
+
+            StorageUser storageUser = new StorageUser
+            {
+                StorageId = storageId,
+                UserId = user.Id
+            };
+
+            await context.StorageUsers.AddAsync(storageUser);
+
+            await context.SaveChangesAsync();
+
+            return storageUser;
+        }
+
+        public async Task RejectInvitation(User user, int storageId)
+        {
+            StorageInvitation invitation = context.StorageInvitations
+                .Where(i => i.UserEmail == user.Email && i.StorageId == storageId)
+                .FirstOrDefault();
+
+            // If the invitation is null, then it already doesn't exist in the database
+            // And since we're trying to remove it here, that means objective accomplished
+            if (invitation != null)
+            {
+                Storage storage = await context.Storages
+                    .Where(s => s.Id == storageId)
+                    .Include(s => s.Invitations)
+                    .Include(s => s.Users)
+                    .FirstOrDefaultAsync();
+
+                // If there is only one invitation in this storage, and we are removing it,
+                // and if there are no active users as well, then we can consider this storage as not shared anymore
+                if (storage.Invitations.Count <= 1 && storage.Users.Count == 0)
+                {
+                    storage.Shared = false;
+
+                    context.Storages.Update(storage);
+                }
+
+                context.StorageInvitations.Remove(invitation);
+
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<User> VerifyUser(int id, string code)

@@ -20,6 +20,7 @@ namespace StorageSystem.Architecture
         DUPLICATED_BARCODE,
         INVITE_EXISTING_STORAGE_MEMBER,
         INVITE_SELF,
+        INVITE_NOT_FOUND,
         CITY_NOT_FOUND
     }
 }

@@ -68,6 +68,24 @@ namespace StorageSystem.Controllers
             return invitations.Select(i => StorageInvitationDTO.FromModel(i)).ToList();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("invitation/{storage}/accept")]
+        public async Task<StorageUser> AcceptInvitation(int storage)
+        {
+            User user = await userService.GetUserAsync(this.User);
+
+            return await userService.AcceptInvitation(user, storage);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("invitation/{storage}/reject")]
+        public async Task RejectInvitation(int storage)
+        {
+            User user = await userService.GetUserAsync(this.User);
+
+            await userService.RejectInvitation(user, storage);
+        }
+
         [AllowAnonymous]
         [HttpGet("{id}/verify/{code}")]
         public async Task<ActionResult> VerifyUser(int id, string code)
