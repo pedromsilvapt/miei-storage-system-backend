@@ -13,7 +13,7 @@
     "user": "Utilizador",
     "googleTask": "Adição da lista de Compras com Sucesso no GoogleTask!",
     "add_shopping_list": "Adição da lista de compras",
-    "private":  "Privado",
+    "private": "Privado",
     "shared": "Compartilhado",
     "empty": "Vazio",
     "close_to_expire": "Perto de expirar",
@@ -76,7 +76,9 @@
       "back": "Voltar",
       "back_to_login_page": "Voltar à página de login",
       "back_to_storage_page": "Voltar à página de despensa",
-      "submit": "Submeter"
+      "submit": "Submeter",
+      "accept": "Aceitar",
+      "reject": "Rejeitar"
     },
     "validation": {
       "required_field": "Campo obrigatório.",
@@ -132,5 +134,9 @@
   },
   "shopping_list": {
     "shopping_list": "Lista de Compras"
+  },
+  "notification": {
+    "invitationmessage1": "Tens um convite para a dispensa",
+    "invitationmessage2": "feita por "
   }
-}
+  }

@@ -13,7 +13,7 @@
     "user": "User",
     "googleTask": "Add Shopping List with sucess in GoogleTask",
     "add_shopping_list": "Add Shopping List",
-    "private":  "Private",
+    "private": "Private",
     "shared": "Shared",
     "empty": "Empty",
     "close_to_expire": "Close to expire",
@@ -76,7 +76,10 @@
       "back": "Back",
       "back_to_login_page": "Back to login page",
       "back_to_storage_page": "Back to storage page",
-      "submit": "Submit"
+      "submit": "Submit",
+      "accept": "Accept",
+      "reject": "Reject"
+
     },
     "validation": {
       "required_field": "Required field.",
@@ -128,9 +131,13 @@
     "erroremail": "Need to Add Email.",
     "request": "Waiting for the Request...",
     "sucess": "Storage Created Successfully",
-    "openstorage":  "Open Storage"
+    "openstorage": "Open Storage"
   },
   "shopping_list": {
     "shopping_list": "Shopping List"
+  },
+  "notification": {
+    "invitationmessage1": "You have an invitation to the Storage",
+    "invitationmessage2": "made by "
   }
 }
