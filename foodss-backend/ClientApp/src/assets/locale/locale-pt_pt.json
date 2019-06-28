@@ -19,7 +19,10 @@
     "close_to_expire": "Perto de expirar",
     "expired": "Expirado",
     "expiration_date": "Prazo de Validade",
-    "go_back": "Voltar"
+    "go_back": "Voltar",
+    "insertproduct": "Inserir Produto",
+    "editstorage": "Editar Despensa",
+    "deletestorage": "Apagar Despensa"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",

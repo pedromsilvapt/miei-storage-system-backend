@@ -19,7 +19,10 @@
     "close_to_expire": "Close to expire",
     "expired": "Expired",
     "expiration_date": "Expiration Date",
-    "go_back": "Go Back"
+    "go_back": "Go Back",
+    "insertproduct": "Insert Product",
+    "editstorage": "Edit Storage",
+    "deletestorage": "Delete Storage"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Failed to connect to server.",
