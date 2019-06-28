@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatStepperModule, MatInputModule, MatButtonModule, MatAutocompleteModule, MatIconModule, MatRadioModule } from '@angular/material';
+import { MatStepperModule, MatInputModule, MatButtonModule, MatAutocompleteModule, MatIconModule, MatRadioModule, MatToolbarModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { TranslationModule } from 'angular-l10n';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [AddStorageComponent],
@@ -25,7 +26,8 @@ import { TranslationModule } from 'angular-l10n';
     MatRadioModule,
     BrowserModule,
     TypeaheadModule.forRoot(),
-    TranslationModule
+    TranslationModule,
+    MatTooltipModule
   ]
 })
 export class AddStorageModule { }

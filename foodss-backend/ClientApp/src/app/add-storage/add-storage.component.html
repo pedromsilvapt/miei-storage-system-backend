@@ -28,11 +28,11 @@
           </mat-form-field>
         </div>
 
-        <div>
+        <div matTooltip="{{translationService.translate('tooltip.addstorage.city')}}" aria-label="Button that displays a tooltip when focused or hovered over">
           <ng-template #cityItemTemplate let-model="item">
             {{model.name}}, {{model.country}}
           </ng-template>
-          <mat-form-field>
+          <mat-form-field  >
             <input [(ngModel)]="citynamestorage"
                    formControlName="cityCtrl"
                    matInput
@@ -46,6 +46,7 @@
                    [typeaheadItemTemplate]="cityItemTemplate"
                    [typeaheadOptionsInScrollableView]="5"
                    container="body">
+                    
           </mat-form-field>
         </div>
       </div>
