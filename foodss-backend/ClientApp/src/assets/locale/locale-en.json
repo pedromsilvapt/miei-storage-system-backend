@@ -164,7 +164,13 @@
   "storage_remove": {
     "confirm": "Confirm Removal",
     "cancel": "Cancel",
-    "remove": "Remove"
+    "remove": "Remove",
+    "message1": "Are you sure you want to delete this storage? Such action is",
+    "message2": "irreversible ",
+    "message3": "and will erase ",
+    "message4": "all ",
+    "message5": "the data associated with this storage including ",
+    "message6": "products, stocks and consumption history."
   },
   "profile": {
     "title": "Profile",

@@ -162,7 +162,13 @@
   "storage_remove": {
     "confirm": "Confirmar Remoção",
     "cancel": "Cancelar",
-    "remove": "Remover"
+    "remove": "Remover",
+    "message1": "Tem a certeza que pretende eliminar esta despensa? Tal ação é ",
+    "message2": "irreversível ",
+    "message3": "e apagará ",
+    "message4": "todos ",
+    "message5": "os dados associados a esta despensa incluindo ",
+    "message6": "produtos, stocks e históricos de consumo."
   },
   "profile": {
     "title": "Perfil",
