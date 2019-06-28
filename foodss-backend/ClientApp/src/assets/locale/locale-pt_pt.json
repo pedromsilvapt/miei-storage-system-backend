@@ -167,8 +167,8 @@
       "email": "Email",
       "name": "Nome",
       "change_password": "Mudar Password",
-      "password": "Password",
-      "password_confirm": "Password (confirmar)"
+      "password": "Nova Password",
+      "password_confirm": "Confirmar Password"
     },
     "goback":  "Voltar",
     "save":  "Gravar"

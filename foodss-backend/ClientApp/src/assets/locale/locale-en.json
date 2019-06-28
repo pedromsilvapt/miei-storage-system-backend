@@ -169,8 +169,8 @@
       "email": "Email",
       "name": "Name",
       "change_password": "Change Password",
-      "password": "Password",
-      "password_confirm": "Password (confirmation)"
+      "password": "New Password",
+      "password_confirm": "Confirm Password"
     },
     "goback": "Back",
     "save": "Save"
