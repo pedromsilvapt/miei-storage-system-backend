@@ -166,6 +166,7 @@
     "field": {
       "email": "Email",
       "name": "Nome",
+      "change_password": "Mudar Password",
       "password": "Password",
       "password_confirm": "Password (confirmar)"
     },

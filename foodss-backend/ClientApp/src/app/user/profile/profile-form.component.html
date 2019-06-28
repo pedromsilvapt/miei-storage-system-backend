@@ -34,7 +34,19 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="form-group row">
+                <label class="col-md-9 col-form-label" translate>profile.field.change_password</label>
+                <div class="col-md-3 col-form-label">
+                  <div class="form-check">
+                    <label class="switch switch-pill switch-primary">
+                      <input class="form-check-input switch-input" type="checkbox" name="changePassword" id="changePassword" [(ngModel)]="changePassword" />
+                      <span class="switch-slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div><!--/.form-group.row-->
+
+              <div class="row" *ngIf="changePassword">
                 <div class="col-12">
                   <div class="form-group">
                     <label class="label" translate>profile.field.password</label>
@@ -44,7 +56,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row" *ngIf="changePassword">
                 <div class="col-12">
                   <div class="form-group">
                     <label class="label" translate>profile.field.password_confirm</label>
