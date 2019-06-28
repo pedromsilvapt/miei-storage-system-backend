@@ -37,10 +37,12 @@ namespace StorageSystem.Services
                 .ToListAsync();
         }
 
-        public async Task<Storage> GetStorage(int userId, int id)
+        public async Task<Storage> GetStorage(int userId, int id, bool includeOwner = false, bool includeCity = false)
         {
             Storage storage = await Context.Storages
                 .Include(s => s.Users)
+                .ConditionalInclude(s => s.Owner, includeOwner)
+                .ConditionalInclude(s => s.City, includeCity)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (storage == null)
@@ -150,7 +152,7 @@ namespace StorageSystem.Services
                 .Where(prod => prod.StorageId == storage.Id && prod.MaxTemperature != null && prod.MaxTemperature < storage.LastWeatherForecastTemperature)
                 .ToListAsync();
         }
-
+        
         public async Task DeleteStorage(int userId, int id)
         {
             Storage storage = await Context.Storages.FindAsync(id);
@@ -169,6 +171,47 @@ namespace StorageSystem.Services
             Context.Storages.Remove(storage);
 
             await Context.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> ListStorageUsers(int userId, int id)
+        {
+            Storage storage = await GetStorage(userId, id);
+
+            if (storage == null)
+            {
+                throw new StorageNotFoundException();
+            }
+
+            return await Context.StorageUsers
+                .Where(u => u.StorageId == storage.Id)
+                .Include(s => s.User)
+                .Select(s => s.User)
+                .ToListAsync();
+        }
+
+        public async Task DeleteStorageUser(int userId, int id, int member)
+        {
+            Storage storage = await GetStorage(userId, id);
+
+            if (storage == null)
+            {
+                throw new StorageNotFoundException();
+            }
+
+            // Let's assume only the owner can delete a storage's member
+            if (storage.OwnerId != userId && userId != member)
+            {
+                throw new UnauthorizedStorageAccessException();
+            }
+
+            StorageUser user = await Context.StorageUsers.Where(s => s.StorageId == storage.Id && s.UserId == member).FirstOrDefaultAsync();
+
+            if (user != null)
+            {
+                Context.StorageUsers.Remove(user);
+
+                await Context.SaveChangesAsync();
+            }
         }
     }
 }

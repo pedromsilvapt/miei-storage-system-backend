@@ -8,6 +8,9 @@ import {DetailsProductModalComponent} from './components/details-product-modal/d
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {Language} from 'angular-l10n';
+import { DetailsStorageModalComponent } from './components/details-storage-modal/details-storage-modal.component';
+import { LoginService } from '../login/login.service';
+import { User } from '../user/model/user.model';
 
 export interface TabbedStorageModel extends StorageModel {
   privateProducts?: Product[];
@@ -25,29 +28,34 @@ export class StorageComponent implements OnInit, OnDestroy {
 
   public storages: Array<TabbedStorageModel> = [];
 
+  public session: User;
+
   protected subscriptions: Subscription[] = [];
 
   protected isDetailsOpen: boolean = false;
 
   protected lastParams: any = {};
 
-  protected lastStorageChanged: StorageModel = null;
+  protected lastStorageChanged: {id: number} = null;
 
   constructor(
     private modalService: BsModalService,
+    protected loginService: LoginService,
     protected httpService: HttpService,
     protected route: ActivatedRoute,
     protected router: Router
   ) { }
 
   async ngOnInit() {
+    this.session = this.loginService.getUser();
+
     this.storages = await this.httpService.get('storage?includeProducts=true').toPromise();
 
     for (let storage of this.storages) {
       this.prepareStorage(storage);
     }
 
-    this.subscriptions.push(this.route.params.subscribe(params => {
+    this.subscriptions.push(this.route.params.subscribe(async params => {
       this.lastParams = params;
 
       if (params.storage && params.product) {
@@ -60,6 +68,8 @@ export class StorageComponent implements OnInit, OnDestroy {
             this.openDetailsProduct(storage, product);
           }
         }
+      } else if (params.storage) {
+        this.openDetailsStorage(+params.storage);
       }
     }));
 
@@ -156,5 +166,18 @@ export class StorageComponent implements OnInit, OnDestroy {
     this.isDetailsOpen = true;
 
     this.modalService.show(DetailsProductModalComponent, { initialState: { storage, product } });
+  }
+
+  openDetailsStorage(storage: StorageModel | number) {
+    this.isDetailsOpen = true;
+    if (typeof storage === 'number') {
+      this.lastStorageChanged = { id: storage };
+
+      this.modalService.show(DetailsStorageModalComponent, { initialState: { storageId: storage } });
+    } else {
+      this.lastStorageChanged = storage;
+
+      this.modalService.show(DetailsStorageModalComponent, { initialState: { storage } });
+    }
   }
 }

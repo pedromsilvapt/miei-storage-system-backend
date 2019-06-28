@@ -1,0 +1,44 @@
+table th.half {
+  width: 50%;
+}
+
+table.table-borderless td, table.table-borderless th {
+  border: none;
+}
+
+table.table-middle td, table.table-middle th {
+  vertical-align: middle;
+}
+
+section {
+  &.bottom-separator {
+    border-bottom: 1px solid #DDDDDD;
+    margin-bottom: 1rem;
+  }
+
+  &.idented {
+    margin: 1rem;
+  }
+
+  small.section-title {
+    color: #808080;
+    display: block;
+    margin-bottom: 1rem;
+  }
+}
+
+.user-list .card .card-body {
+  cursor: pointer;
+}
+
+.user-list .card:not(:last-child) {
+  margin-bottom: 0;
+  border-bottom-width: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.user-list .card:not(:first-child) {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}

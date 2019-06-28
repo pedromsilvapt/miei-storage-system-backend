@@ -13,7 +13,11 @@ import { BehaviorSubject } from 'rxjs';
 export class LoginService {
   onLogin: BehaviorSubject<User> = new BehaviorSubject(null);
   constructor(private httpService: HttpService, private router: Router, private messageUtil: MessageUtil) {
-    this.onLogin.next(JSON.parse(localStorage.getItem(environment.userSession)));
+    this.onLogin.next(this.getUser());
+  }
+
+  getUser() : User {
+    return JSON.parse(localStorage.getItem(environment.userSession))
   }
 
   public signIn(email: string, password: string): void {

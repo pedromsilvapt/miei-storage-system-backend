@@ -130,7 +130,7 @@
     "purposeof": "Finalidade da dispensa:",
     "addpeople": "Adicionar elemenos",
     "addshare": "Adicionar elementos para partilhar a dispensa:",
-    "location": "Localização da dispensa (Optional)",
+    "location": "Cidade (Optional)",
     "erroremail": "Necessário adicionar um email.",
     "request": "A guardar pedido...",
     "sucess": "Dispensa Criada com Sucesso",
@@ -142,5 +142,18 @@
   "notification": {
     "invitationmessage1": "Tens um convite para a dispensa",
     "invitationmessage2": "feita por "
+  },
+  "storage_details": {
+    "details": "Detalhes",
+    "name": "Nome",
+    "city": "Cidade",
+    "owner": "Proprietário",
+    "members": "Membros",
+    "invitations": "Convites",
+    "no_account": "(sem conta criada)",
+    "save": "Gravar",
+    "close": "Fechar",
+    "cancel": "Cancelar",
+    "remove": "Remover"
   }
-  }
+}

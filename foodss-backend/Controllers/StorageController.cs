@@ -72,6 +72,8 @@ namespace StorageSystem.Controllers
         public class DetailsQuery
         {
             public bool? IncludeProducts { get; set; }
+            public bool? IncludeOwner { get; set; }
+            public bool? IncludeCity { get; set; }
         }
 
         [HttpGet("{id}")]
@@ -79,7 +81,7 @@ namespace StorageSystem.Controllers
         {
             User user = await userService.GetUserAsync(this.User);
 
-            Storage storage = await storageService.GetStorage(user.Id, id);
+            Storage storage = await storageService.GetStorage(user.Id, id, query.IncludeOwner ?? false, query.IncludeCity ?? false);
 
             bool includeProducts = query.IncludeProducts ?? false;
 
@@ -138,6 +140,26 @@ namespace StorageSystem.Controllers
             int userId = userService.GetUserId(this.User);
 
             await storageService.DeleteStorage(userId, id);
+        }
+
+        [HttpGet("{id}/user")]
+        public async Task<ICollection<UserDTO>> ListUsers(int id)
+        {
+            User user = await userService.GetUserAsync(this.User);
+
+            List<User> users = await storageService.ListStorageUsers(user.Id, id);
+
+            return users
+                .Select(u => UserDTO.FromModel(u))
+                .ToList();
+        }
+
+        [HttpDelete("{id}/user/{member}")]
+        public async Task DeleteUser(int id, int member)
+        {
+            User user = await userService.GetUserAsync(this.User);
+
+            await storageService.DeleteStorageUser(user.Id, id, member);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace StorageSystem.Architecture.Exception
 
     public class UnauthorizedException : ApiException
     {
-        public UnauthorizedException(string message) : base(401, message) { }
+        public UnauthorizedException(string message) : base(400, message) { }
     }
 
     public class NotFoundException : ApiException

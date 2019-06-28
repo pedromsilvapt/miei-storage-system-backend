@@ -8,7 +8,9 @@ import { AddProductModalComponent } from './components/add-product-modal/add-pro
 import { MinDateValidatorDirective } from './components/add-product-modal/min-date.directive';
 import { BarcodeScannerComponent } from './components/add-product-modal/barcode-scanner.component';
 import { DetailsProductModalComponent } from './components/details-product-modal/details-product-modal.component';
+import { DetailsStorageModalComponent } from './components/details-storage-modal/details-storage-modal.component';
 import {StorageDetailComponent} from './detail/storage-detail.component';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import {StorageDetailComponent} from './detail/storage-detail.component';
     BarcodeScannerComponent,
     DetailsProductModalComponent,
     StorageDetailComponent,
+    DetailsStorageModalComponent
   ],
-  entryComponents: [AddProductModalComponent, DetailsProductModalComponent],
+  entryComponents: [AddProductModalComponent, DetailsProductModalComponent, DetailsStorageModalComponent],
   imports: [
     CommonModule,
     SharedModule,
-    StorageFormModule
+    StorageFormModule,
+    TypeaheadModule.forRoot(),
   ]
 })
 export class StorageModule { }

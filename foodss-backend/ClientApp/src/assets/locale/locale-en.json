@@ -131,7 +131,7 @@
     "purposeof": "Purpose of the Storage:",
     "addpeople": "Add People",
     "addshare": "Add people to share the storage:",
-    "location": "Storage Location (Optional)",
+    "location": "City (Optional)",
     "erroremail": "Need to Add Email.",
     "request": "Waiting for the Request...",
     "sucess": "Storage Created Successfully",
@@ -142,6 +142,20 @@
   },
   "notification": {
     "invitationmessage1": "You have an invitation to the Storage",
-    "invitationmessage2": "made by "
+    "invitationmessage2": "made by ",
+    "openstorage": "Open Storage"
+  },
+  "storage_details": {
+    "details": "Details",
+    "name": "Name",
+    "city": "City",
+    "owner": "Owner",
+    "members": "Members",
+    "invitations": "Invitations",
+    "no_account": "(no account associated)",
+    "save": "Save",
+    "close": "Close",
+    "cancel": "Cancel",
+    "remove": "Remove"
   }
 }

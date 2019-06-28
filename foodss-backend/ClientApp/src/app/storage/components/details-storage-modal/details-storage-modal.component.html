@@ -1,0 +1,108 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="storage != null">{{storage.name}}</h4>
+  <h4 class="modal-title" *ngIf="storage == null">A Carregar Despensa...</h4>
+  <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="shopping-list" *ngIf="storage != null">
+    <section>
+      <small class="section-title" translate>storage_details.details</small>
+      <div class="form-group">
+        <label for="name" translate="">storage_details.name</label>
+        <input type="text" id="name" name="name"
+               class="form-control" placeholder="Nome da despensa..."
+               [(ngModel)]="storage.name" #modelName="ngModel"
+               required
+               [class.is-invalid]="!modelName.valid && !modelName.disabled && modelName.dirty" />
+        <div class="invalid-feedback" *ngIf="!modelName.valid && !modelName.disabled && modelName.dirty">
+          O nome do produto é obrigatório
+        </div>
+      </div>
+
+      <div class="form-group">
+        <ng-template #cityItemTemplate let-model="item">
+          {{model.name}}, {{model.country}}
+        </ng-template>
+        <label for="name" translate>storage_details.city</label>
+        <input type="text" id="city" name="city"
+               class="form-control" placeholder="Cidade..."
+               [(ngModel)]="storageCityName"
+               [typeaheadAsync]="true"
+               [typeahead]="citiesSource"
+               [typeaheadScrollable]="true"
+               typeaheadOptionField="name"
+               (typeaheadOnSelect)="storage.city = $event.item"
+               (typeaheadNoResults)="storage.city = null"
+               [typeaheadItemTemplate]="cityItemTemplate"
+               [typeaheadOptionsInScrollableView]="5" />
+      </div>
+    </section>
+
+    <section>
+      <small class="section-title" translate>storage_details.owner</small>
+      <div class="card">
+        <div class="card-body p-3 clearfix">
+          <i class="fa fa-user bg-warning p-3 font-2xl mr-3 float-left" style="width: 56px; text-align: center;"></i>
+          <div class="h5 text-info mb-0 mt-2">{{storage.owner.name}}</div>
+          <div class="text-muted text-uppercase font-weight-bold font-xs">{{storage.owner.email}}</div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <small class="section-title" translate>storage_details.members</small>
+      <div class="user-list">
+        <h4 class="text-secondary text-center" [hidden]="members.length > 0">No members</h4>
+        <div class="card" *ngFor="let member of members">
+          <div class="card-body p-0 clearfix">
+            <i class="fa fa-user bg-info p-3 font-2xl mr-3 float-left" style="width: 56px; text-align: center;"></i>
+            <i class="fa fa-times float-right text-muted" style="padding: 1.3rem; width: 56px; text-align: center;" (click)="removingMember = member"></i>
+            <div class="h5 text-info mb-0 mt-2">{{member.name}}</div>
+            <div class="text-muted text-uppercase font-weight-bold font-xs">{{member.email}}</div>
+          </div>
+          <div class="card-footer px-3 py-2" *ngIf="removingMember == member">
+            <a class="font-weight-bold font-xs p-1 text-muted float-left" href="javascript:;" (click)="removingMember = null" translate>storage_details.cancel</a>
+            <button class="btn btn-sm btn-danger float-right" (click)="removeMember(removingMember)" translate>storage_details.remove</button>
+            <!--<a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>-->
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <small class="section-title" translate>storage_details.invitations</small>
+      <h4 class="text-secondary text-center" [hidden]="invitations.length > 0">No invitations</h4>
+      <div class="user-list">
+        <div class="card" *ngFor="let invitation of invitations">
+          <div class="card-body p-0 clearfix">
+            <i class="fa fa-clock-o bg-secondary p-3 font-2xl mr-3 float-left" style="width: 56px; text-align: center;"></i>
+            <i class="fa fa-times float-right text-muted" style="padding: 1.3rem; width: 56px; text-align: center;" (click)="removingInvitation = invitation"></i>
+            <div class="h5 text-info mb-0 mt-2" *ngIf="invitation.user == null" style="font-style: italic;" translate>storage_details.no_account</div>
+            <div class="h5 text-info mb-0 mt-2" *ngIf="invitation.user != null">{{invitation.user.name}}</div>
+            <div class="text-muted text-uppercase font-weight-bold font-xs">{{invitation.userEmail}}</div>
+          </div>
+          <div class="card-footer px-3 py-2" *ngIf="removingInvitation == invitation">
+            <a class="font-weight-bold font-xs p-1 text-muted float-left" href="javascript:;" (click)="removingInvitation = null" translate>storage_details.cancel</a>
+            <button class="btn btn-sm btn-danger float-right" (click)="removeInvitation(removingInvitation)" translate>storage_details.remove</button>
+            <!--<a class="font-weight-bold font-xs btn-block text-muted" href="#">View More <i class="fa fa-angle-right float-right font-lg"></i></a>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <input type="text" id="newInvitation" name="newInvitation"
+                 class="form-control" placeholder="Email address..."
+                 [(ngModel)]="newInvitation" #modelInvitation="ngModel" />
+          <span class="input-group-append">
+            <button type="button" class="btn btn-primary" (click)="addInvitation()">Invite</button>
+          </span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary float-left" (click)="modalRef.hide()" translate>storage_details.close</button>
+  <button type="button" class="btn btn-primary" (click)="save()" translate>storage_details.save</button>
+</div>
