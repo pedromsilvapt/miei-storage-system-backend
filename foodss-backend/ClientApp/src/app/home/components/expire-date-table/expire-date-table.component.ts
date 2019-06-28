@@ -91,7 +91,8 @@ export class ExpireDateTableComponent extends DatatablePageContent implements On
           productId: product.productItemDTO[0].productId,
           storageId: product.productItemDTO[0].storageId,
           expireDate: product.productItemDTO[0].expiryDate,
-          nameRouterLink: 'storage/' + product.productItemDTO[0].storageId
+          nameRouterLink: 'storage/' + product.productItemDTO[0].storageId + ';storage=' +
+            product.productItemDTO[0].storageId + ';product=' + product.productItemDTO[0].productId
         };
         rows.push(row);
       });

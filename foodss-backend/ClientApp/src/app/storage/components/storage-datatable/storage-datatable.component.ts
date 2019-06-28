@@ -27,7 +27,7 @@ export class StorageDatatableComponent extends DatatablePageContent implements O
   }
 
   ngOnChanges() {
-    if (this.products != this.lastProducts) {
+    if (this.products !== this.lastProducts) {
       this.rows = this.createDatatableRows(this.products);
     }
   }

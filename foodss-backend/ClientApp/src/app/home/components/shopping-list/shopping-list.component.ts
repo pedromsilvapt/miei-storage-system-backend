@@ -68,7 +68,8 @@ export class ShoppingListComponent extends DatatablePageContent implements OnIni
         const row = {
           id: shoppingListDTO.id,
           name: shoppingListDTO.productName,
-          nameRouterLink: 'product/' + shoppingListDTO.idProduct,
+          nameRouterLink: 'storage/' + shoppingListDTO.idStorage + ';storage=' +
+            shoppingListDTO.idStorage + ';product=' + shoppingListDTO.idProduct,
           amountWithAction: shoppingListDTO.count,
           actions: this.createDatatableActionButtons()
         };
