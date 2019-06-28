@@ -36,9 +36,9 @@ export class DeleteStorageModalComponent {
     try {
       this.removing = true;
       
-      this.modalRef.hide();
-
       await this.http.delete("storage/" + this.storage.id).toPromise();
+
+      this.modalRef.hide();
 
       this.toastr.addSuccessMessage("Deleting Storage", "Storage successfuly deleted.")
     } catch (err) {
