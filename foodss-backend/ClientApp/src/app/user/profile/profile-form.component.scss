@@ -1,0 +1,10 @@
+.user-form-box {
+  width: 550px;
+  @media screen and (max-width: 576px) {
+    width: 95%;
+  }
+}
+
+.authentication-page {
+  background-image: none !important;
+}

@@ -73,6 +73,32 @@ namespace StorageSystem.Services
             return newUser;
         }
 
+        public async Task<User> Update(int id, string name, string password)
+        {
+            var user = await context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                throw new ExistingEmailException();
+            }
+
+            user.Name = name;
+
+            if (password != null)
+            {
+                var (hashed, salt) = HashPassword(password);
+
+                user.Password = hashed;
+                user.Salt = salt;
+            }
+
+            context.Update(user);
+
+            await context.SaveChangesAsync();
+
+            return user;
+        }
+
         public async Task<List<StorageInvitation>> ListInvitations(User user)
         {
             return await context.StorageInvitations

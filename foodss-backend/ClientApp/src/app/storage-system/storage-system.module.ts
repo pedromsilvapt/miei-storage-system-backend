@@ -5,6 +5,7 @@ import {ProductModule} from '../product/product.module';
 import {UserFormModule} from '../user/form/user-form.module';
 import { StorageModule } from '../storage/storage.module';
 import { AddStorageModule } from '../add-storage/add-storage.module';
+import { ProfileFormModule } from '../user/profile/profile-form.module';
 
 
 
@@ -17,6 +18,7 @@ import { AddStorageModule } from '../add-storage/add-storage.module';
     UserFormModule,
     StorageModule,
     AddStorageModule,
+    ProfileFormModule
   ],
   exports: []
 })

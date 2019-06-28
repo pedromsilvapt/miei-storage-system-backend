@@ -49,6 +49,17 @@ namespace StorageSystem.Controllers
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost]
+        public async Task<UserDTO> UpdateUser(UserUpdateDTO user)
+        {
+            var userId = this.userService.GetUserId(this.User);
+
+            var userModel = await userService.Update(userId, user.Name, user.Password);
+
+            return UserDTO.FromModel(userModel);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("session")]
         public async Task<UserDTO> GetCurrentSession()
         {

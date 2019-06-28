@@ -8,6 +8,7 @@ import {UserFormRoutes} from './user/form/user-form.routes';
 import {ProductDetailRoutes} from './product/product.routes';
 import {AddStorageRoutes} from './add-storage/add-storage.routes';
 import {AuthGuard} from './login/auth.guard';
+import { ProfileFormRoutes } from './user/profile/profile-form.routes';
 
 const routes: Routes = [
   {
@@ -26,8 +27,8 @@ const routes: Routes = [
       ...HomeRoutes,
       ...ProductDetailRoutes,
       ...StorageRoutes,
-      ...AddStorageRoutes
-
+      ...AddStorageRoutes,
+      ...ProfileFormRoutes
     ]
   }
 ];

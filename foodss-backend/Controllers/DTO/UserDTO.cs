@@ -34,4 +34,10 @@ namespace StorageSystem.Controllers.DTO
         public string Name { get; set; }
         public string Password { get; set; }
     }
+
+    public class UserUpdateDTO
+    {
+        public string Name { get; set; }
+        public string Password { get; set; }
+    }
 }

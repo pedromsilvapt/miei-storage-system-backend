@@ -1,0 +1,68 @@
+<div class="authentication-page">
+  <div class="authentication-container">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="card p-4 user-form-box">
+
+          <div class="card-body">
+            <div class="pull-left" translate>
+              <h2 translate>profile.title</h2>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="label" translate>profile.field.email</label>
+                    <input type="text" class="form-control" #inputEmail="ngModel" appValidateEmail
+                           [(ngModel)]="user.email" name="email" required disabled>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="label-required" translate>profile.field.name</label>
+                    <input type="text" class="form-control" #inputName="ngModel"
+                           [(ngModel)]="user.name" name="name" required>
+                    <app-input-errors [input]="inputName" [validate]="nextButtonClicked"></app-input-errors>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="label" translate>profile.field.password</label>
+                    <input type="password" class="form-control" #inputName="ngModel"
+                           [(ngModel)]="user.password" name="password" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="label" translate>profile.field.password_confirm</label>
+                    <input type="password" class="form-control"
+                           [(ngModel)]="user.passwordConfirm" name="password-confirm" [class.is-invalid]="user.password != user.passwordConfirm" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12">
+                  <button class="btn btn-primary float-right" (click)="save()" translate>profile.save</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
