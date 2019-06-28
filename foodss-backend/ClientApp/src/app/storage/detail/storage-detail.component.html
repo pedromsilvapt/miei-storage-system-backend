@@ -1,0 +1,44 @@
+<div class="row" style="margin-bottom: 24px">
+  <div class="col-6">
+    <button class="btn bg-warning" [routerLink]="['/']" translate>
+      general.go_back
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-6" *ngIf="storage">
+
+    <app-panel [title]="storage.name">
+      <div panel-right-header>
+        <div class="dropdown" dropdown>
+          <button dropdownToggle class="btn p-0">
+            <i class="fas fa-cog"></i>
+          </button>
+          <div *dropdownMenu class="dropdown-menu">
+            <a class="dropdown-item" href="javascript:;" (click)="openAddProduct(storage)">Inserir Produto</a>
+            <a class="dropdown-item" href="javascript:;">Editar Despensa</a>
+            <a class="dropdown-item" href="javascript:;">Remover Despensa</a>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="storage.shared" panel-body>
+        <tabset>
+          <tab heading="{{'general.private' | translate:lang}}">
+            <app-storage-datatable [products]="storage.privateProducts"></app-storage-datatable>
+          </tab>
+          <tab heading="{{'general.shared' | translate:lang}}">
+            <app-storage-datatable [products]="storage.sharedProducts"></app-storage-datatable>
+          </tab>
+          <tab heading="{{'general.empty' | translate:lang}} ({{storage.missingProducts.length}})">
+            <app-storage-datatable [products]="storage.missingProducts"></app-storage-datatable>
+          </tab>
+        </tabset>
+      </ng-container>
+      <ng-container *ngIf="!storage.shared" panel-body>
+        <app-storage-datatable [products]="storage.products"></app-storage-datatable>
+      </ng-container>
+    </app-panel>
+  </div>
+</div>
+

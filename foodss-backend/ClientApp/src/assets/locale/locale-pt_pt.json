@@ -18,7 +18,8 @@
     "empty": "Vazio",
     "close_to_expire": "Perto de expirar",
     "expired": "Expirado",
-    "expiration_date": "Prazo de Validade"
+    "expiration_date": "Prazo de Validade",
+    "go_back": "Voltar"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",
@@ -45,8 +46,8 @@
   },
   "info_cards": {
     "registered_products": "Produtos registados",
-    "products_near_expire_date": "Produtos próximos de expirar",
-    "products_near_to_end": "Produtos próximos de acabar",
+    "products_expiring": "Produtos expirando",
+    "products_expired": "Produtos expirados",
     "products_consumed_this_month": "Produtos consumidos este mês"
   },
   "datatable": {

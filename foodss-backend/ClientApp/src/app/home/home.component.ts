@@ -14,44 +14,57 @@ export class HomeComponent implements OnInit {
 
   @Language() lang: string;
   fileUrl;
-  constructor(private infoCardService: InfoCardService, private httpService: HttpService, private sanitizer: DomSanitizer, private messageUtil: MessageUtil) { }
+  constructor(private infoCardService: InfoCardService, private httpService: HttpService,
+              private sanitizer: DomSanitizer, private messageUtil: MessageUtil) { }
 
-  public infoCardBlue;
-  public infoCardGreen;
-  public infoCardYellow;
-  public infoCardRed;
+  public infoCardBlue: InfoCard;
+  public infoCardGreen: InfoCard;
+  public infoCardYellow: InfoCard;
+  public infoCardRed: InfoCard;
   public googletask;
   ShowSpinner = false;
 
-  ngOnInit() {
-    this.infoCardBlue = this.buildInfoCardBlue();
-    this.infoCardRed = this.buildInfoCardRed();
-    this.infoCardYellow = this.buildInfoCardYellow();
-    this.infoCardGreen = this.buildInfoCardGreen();
+  async ngOnInit() {
+    this.buildInfoCardBlue();
+    // this.buildInfoCardGreen();
+    this.buildInfoCardYellow();
+    this.buildInfoCardRed();
   }
 
-  buildInfoCardBlue(): InfoCard {
-    return new InfoCard(this.infoCardService.getProductsOnStock(),
-      'info_cards.registered_products', 'ic-blue',
-      '#');
+  buildInfoCardBlue(): void {
+    this.infoCardService.getProductsOnStock().subscribe((amount: number) => {
+      this.infoCardBlue = new InfoCard(amount,
+        'info_cards.registered_products', 'ic-blue',
+        '#');
+    }, error => {
+      this.messageUtil.addErrorMessage('Info Cards', error.message);
+    });
   }
 
-  buildInfoCardRed(): InfoCard {
-    return new InfoCard(this.infoCardService.getProductsConsumedThisMonth(),
-      'info_cards.products_near_expire_date', 'ic-red',
-      '#');
+  // buildInfoCardGreen(): void {
+  //   return new InfoCard(this.infoCardService.getProductsNearExpirationDate(),
+  //     'info_cards.products_consumed_this_month', 'ic-green',
+  //     '#');
+  // }
+
+  buildInfoCardYellow(): void {
+    this.infoCardService.getProductsExpiring().subscribe((amount: number) => {
+      this.infoCardYellow = new InfoCard(amount,
+        'info_cards.products_expiring', 'ic-yellow',
+        '#');
+    }, error => {
+      this.messageUtil.addErrorMessage('Info Cards', error.message);
+    });
   }
 
-  buildInfoCardYellow(): InfoCard {
-    return new InfoCard(this.infoCardService.getProductsNearToEnd(),
-      'info_cards.products_near_to_end', 'ic-yellow',
-      '#');
-  }
-
-  buildInfoCardGreen(): InfoCard {
-    return new InfoCard(this.infoCardService.getProductsNearExpirationDate(),
-      'info_cards.products_consumed_this_month', 'ic-green',
-      '#');
+  buildInfoCardRed(): void {
+    this.infoCardService.getProductsExpired().subscribe((amount: number) => {
+      this.infoCardRed = new InfoCard(amount,
+        'info_cards.products_expired', 'ic-red',
+        '#');
+    }, error => {
+      this.messageUtil.addErrorMessage('Info Cards', error.message);
+    });
   }
 
   async openPDF() {
@@ -67,8 +80,7 @@ export class HomeComponent implements OnInit {
     if (this.googletask == 1) {
       this.messageUtil.addSuccessMessage('general.add_shopping_list', 'general.googleTask');
       this.ShowSpinner = false;
-    }
-    else {
+    } else {
       this.messageUtil.addErrorMessage('error.ERROR_ADD_GOOGLETASK', 'error.GOOGLETASK_ERROR');
       this.ShowSpinner = false;
     }
@@ -81,7 +93,7 @@ export class HomeComponent implements OnInit {
    * @param type - type of the document.
    */
   downloadFile(data: any, type: string, name: string) {
-    let blob = new Blob([data], { type });
+    const blob = new Blob([data], { type });
 
     // IE doesn't allow using a blob object directly as link href
     // instead it is necessary to use msSaveOrOpenBlob
@@ -90,7 +102,7 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    let dataURL = window.URL.createObjectURL(blob);
+    const dataURL = window.URL.createObjectURL(blob);
 
     const link = document.createElement('a');
     link.href = dataURL;

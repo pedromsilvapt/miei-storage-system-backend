@@ -40,5 +40,25 @@ namespace StorageSystem.Controllers
 
             return productItems.Select(ProductItemDTO.FromModel).ToList();
         }
+
+        [HttpGet("amount")]
+        public async Task<int> GetProductsRegisteredAmount()
+        {
+            return await itemService.GetProductsRegisteredAmount();
+        }
+
+        [HttpGet("amount-expiring")]
+        public async Task<int> GetProductsExpiringAmount()
+        {
+            User user = await userService.GetUserAsync(this.User);
+            return await itemService.GetProductsExpiringAmount(user);
+        }
+
+        [HttpGet("amount-expired")]
+        public async Task<int> GetProductsExpiredAmount()
+        {
+            User user = await userService.GetUserAsync(this.User);
+            return await itemService.GetProductsExpiredAmount(user);
+        }
     }
 }

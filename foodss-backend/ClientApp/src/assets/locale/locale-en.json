@@ -18,7 +18,8 @@
     "empty": "Empty",
     "close_to_expire": "Close to expire",
     "expired": "Expired",
-    "expiration_date": "Expiration Date"
+    "expiration_date": "Expiration Date",
+    "go_back": "Go Back"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Failed to connect to server.",
