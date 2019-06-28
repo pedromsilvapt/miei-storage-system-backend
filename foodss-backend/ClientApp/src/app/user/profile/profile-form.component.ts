@@ -35,7 +35,7 @@ export class ProfileFormComponent implements OnInit {
   }
 
   async save() {
-    if (this.changePassword && this.user.password == this.user.passwordConfirm) {
+    if (this.changePassword && this.user.password != this.user.passwordConfirm) {
       return;
     }
 
