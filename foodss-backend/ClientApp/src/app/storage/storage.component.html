@@ -19,7 +19,7 @@
             <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
               <a class="dropdown-item" href="javascript:;" translate (click)="openAddProduct(storage)">general.insertproduct</a>
               <a class="dropdown-item" *ngIf="storage.ownerId == session.id" translate [routerLink]="{ storage: storage.id }">general.editstorage</a>
-              <a class="dropdown-item" *ngIf="storage.ownerId == session.id" translate href="javascript:;">general.deletestorage</a>
+              <a class="dropdown-item" *ngIf="storage.ownerId == session.id" translate href="javascript:;" (click)="openDeleteStorage(storage)">general.deletestorage</a>
             </div>
           </div>
         </div>

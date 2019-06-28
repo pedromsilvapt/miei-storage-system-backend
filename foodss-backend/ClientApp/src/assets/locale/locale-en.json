@@ -157,5 +157,10 @@
     "close": "Close",
     "cancel": "Cancel",
     "remove": "Remove"
+  },
+  "storage_remove": {
+    "confirm": "Confirm Removal",
+    "cancel": "Cancel",
+    "remove": "Remove"
   }
 }

@@ -11,6 +11,7 @@ import { DetailsProductModalComponent } from './components/details-product-modal
 import { DetailsStorageModalComponent } from './components/details-storage-modal/details-storage-modal.component';
 import {StorageDetailComponent} from './detail/storage-detail.component';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { DeleteStorageModalComponent } from './components/delete-storage-modal/delete-storage-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +22,10 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
     BarcodeScannerComponent,
     DetailsProductModalComponent,
     StorageDetailComponent,
-    DetailsStorageModalComponent
+    DetailsStorageModalComponent,
+    DeleteStorageModalComponent
   ],
-  entryComponents: [AddProductModalComponent, DetailsProductModalComponent, DetailsStorageModalComponent],
+  entryComponents: [AddProductModalComponent, DetailsProductModalComponent, DetailsStorageModalComponent, DeleteStorageModalComponent],
   imports: [
     CommonModule,
     SharedModule,

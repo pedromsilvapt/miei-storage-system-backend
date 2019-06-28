@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h4 class="modal-title">Remover <b>{{storage.name}}</b></h4>
+  <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p>
+    Tem a certeza que pretende eliminar esta depsensa? Tal ação é <strong>irreversível</strong> e apagará <strong>todos</strong> os dados associados a esta despensa,
+    incluindo <strong>produtos, stocks e históricos de consumo</strong>.
+  </p>
+  <div class="form-group row">
+    <label class="col-md-9 col-form-label" translate>storage_remove.confirm</label>
+    <div class="col-md-3 col-form-label">
+      <div class="form-check">
+        <label class="switch switch-pill switch-primary">
+          <input class="form-check-input switch-input" type="checkbox" name="confirmation" id="confirmation" [(ngModel)]="confirmation" />
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div><!--/.form-group.row-->
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary float-left" (click)="modalRef.hide()" translate>storage_remove.cancel</button>
+  <button type="button" class="btn btn-danger" [disabled]="!confirmation" (click)="remove()" translate>storage_remove.remove</button>
+</div>

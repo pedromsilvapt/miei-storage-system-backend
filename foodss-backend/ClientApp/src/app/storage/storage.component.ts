@@ -11,6 +11,7 @@ import {Language} from 'angular-l10n';
 import { DetailsStorageModalComponent } from './components/details-storage-modal/details-storage-modal.component';
 import { LoginService } from '../login/login.service';
 import { User } from '../user/model/user.model';
+import { DeleteStorageModalComponent } from './components/delete-storage-modal/delete-storage-modal.component';
 
 export interface TabbedStorageModel extends StorageModel {
   privateProducts?: Product[];
@@ -33,6 +34,8 @@ export class StorageComponent implements OnInit, OnDestroy {
   protected subscriptions: Subscription[] = [];
 
   protected isDetailsOpen: boolean = false;
+
+  protected isDeleteOpen: boolean = false;
 
   protected lastParams: any = {};
 
@@ -73,10 +76,9 @@ export class StorageComponent implements OnInit, OnDestroy {
       }
     }));
 
-    this.subscriptions.push(this.modalService.onHide.subscribe(modal => {
-      if (this.lastStorageChanged != null) {
+    this.subscriptions.push(this.modalService.onHide.subscribe(async modal => {
+      if (this.lastStorageChanged != null && !this.isDeleteOpen) {
         this.refreshStorage(this.lastStorageChanged.id);
-
         this.lastStorageChanged = null;
       }
 
@@ -90,6 +92,20 @@ export class StorageComponent implements OnInit, OnDestroy {
 
         this.router.navigate([newParams], {relativeTo: this.route});
       }
+
+      if (this.isDeleteOpen) {
+        this.isDeleteOpen = false;
+
+        if (await this.storageWasRemoved(this.lastStorageChanged.id)) {
+          const index = this.storages.findIndex(s => s.id == this.lastStorageChanged.id);
+
+          if (index >= 0) {
+            this.storages.splice(index, 1);
+          }
+
+          this.lastStorageChanged = null;
+        }
+      }
     }));
   }
 
@@ -97,6 +113,10 @@ export class StorageComponent implements OnInit, OnDestroy {
     for (const subscription of this.subscriptions) {
       subscription.unsubscribe();
     }
+  }
+
+  public storageWasRemoved(id : number) : Promise<boolean> {
+    return this.httpService.get('storage/' + id).toPromise().then(() => false, () => true);
   }
 
   public trackByStorage(storage: StorageModel) {
@@ -179,5 +199,13 @@ export class StorageComponent implements OnInit, OnDestroy {
 
       this.modalService.show(DetailsStorageModalComponent, { initialState: { storage } });
     }
+  }
+
+  openDeleteStorage(storage: StorageModel) {
+    this.isDeleteOpen = true;
+
+    this.lastStorageChanged = storage;
+
+    this.modalService.show(DeleteStorageModalComponent, { initialState: { storage } });
   }
 }
