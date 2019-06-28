@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-import { StorageModel } from './model/storage.model';
-import { BsModalService } from 'ngx-bootstrap';
-import { AddProductModalComponent } from './components/add-product-modal/add-product-modal.component';
-import { HttpService } from '../core/http/http.service';
-import { Product } from '../product/model/product.model';
-import { DetailsProductModalComponent } from './components/details-product-modal/details-product-modal.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {StorageModel} from './model/storage.model';
+import {BsModalService} from 'ngx-bootstrap';
+import {AddProductModalComponent} from './components/add-product-modal/add-product-modal.component';
+import {HttpService} from '../core/http/http.service';
+import {Product} from '../product/model/product.model';
+import {DetailsProductModalComponent} from './components/details-product-modal/details-product-modal.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
 import {Language} from 'angular-l10n';
 
 export interface TabbedStorageModel extends StorageModel {
@@ -84,7 +84,7 @@ export class StorageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    for (let subscription of this.subscriptions) {
+    for (const subscription of this.subscriptions) {
       subscription.unsubscribe();
     }
   }

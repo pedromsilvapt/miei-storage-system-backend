@@ -1,25 +1,24 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {HttpService} from '../../../core/http/http.service';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InfoCardService {
 
-  constructor() { }
+  constructor(private httpService: HttpService) { }
 
-  public getProductsOnStock(): number {
-    // TODO
-    return 94;
+  public getProductsOnStock(): Observable<any> {
+    return this.httpService.get('productitem/amount');
   }
 
-  public getProductsNearExpirationDate(): number {
-    // TODO
-    return 32;
+  public getProductsExpiring(): Observable<any> {
+    return this.httpService.get('productitem/amount-expiring');
   }
 
-  public getProductsNearToEnd(): number {
-    // TODO
-    return 20;
+  public getProductsExpired(): Observable<any> {
+    return this.httpService.get('productitem/amount-expired');
   }
 
   public getProductsConsumedThisMonth(): number {
