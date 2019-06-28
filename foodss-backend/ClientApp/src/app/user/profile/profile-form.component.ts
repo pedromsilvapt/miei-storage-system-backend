@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Language } from 'angular-l10n';
 import { MessageUtil } from '../../shared/util/message.util';
 import { HttpService } from 'src/app/core/http/http.service';
+import { Router } from '@angular/router';
 
 interface User {
   email: string;
@@ -23,10 +24,14 @@ export class ProfileFormComponent implements OnInit {
 
   public user: User;
 
-  constructor(private http: HttpService, private messageUtil: MessageUtil) { }
+  constructor(private http: HttpService, private messageUtil: MessageUtil, private router: Router) { }
 
   async ngOnInit() {
     this.user = await this.http.get('user/session').toPromise();
+  }
+
+  goBack() {
+    this.router.navigate(['storage-system']);
   }
 
   async save() {
@@ -46,6 +51,8 @@ export class ProfileFormComponent implements OnInit {
       }).toPromise();
 
       this.messageUtil.addSuccessMessage("Perfil", "Perfil alterado.");
+
+      this.router.navigate(['storage-system']);
     } catch (err) {
       console.error(err);
 

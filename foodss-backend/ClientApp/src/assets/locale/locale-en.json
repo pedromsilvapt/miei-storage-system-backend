@@ -172,6 +172,7 @@
       "password": "Password",
       "password_confirm": "Password (confirmation)"
     },
+    "goback": "Back",
     "save": "Save"
   }
 }

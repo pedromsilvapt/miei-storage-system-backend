@@ -170,6 +170,7 @@
       "password": "Password",
       "password_confirm": "Password (confirmar)"
     },
+    "goback":  "Voltar",
     "save":  "Gravar"
   }
 }

@@ -11,8 +11,7 @@
           </div>
 
           <div class="card-body">
-            <form>
-
+            <form *ngIf="user != null">
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
@@ -68,6 +67,7 @@
 
               <div class="row">
                 <div class="col-12">
+                  <button class="btn btn-secondary float-left" (click)="goBack()" translate>profile.goback</button>
                   <button class="btn btn-primary float-right" (click)="save()" translate>profile.save</button>
                 </div>
               </div>
