@@ -162,5 +162,15 @@
     "confirm": "Confirm Removal",
     "cancel": "Cancel",
     "remove": "Remove"
+  },
+  "profile": {
+    "title": "Profile",
+    "field": {
+      "email": "Email",
+      "name": "Name",
+      "password": "Password",
+      "password_confirm": "Password (confirmation)"
+    },
+    "save": "Save"
   }
 }

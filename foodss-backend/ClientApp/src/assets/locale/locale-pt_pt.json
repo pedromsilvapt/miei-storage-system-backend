@@ -160,5 +160,15 @@
     "confirm": "Confirmar Remoção",
     "cancel": "Cancelar",
     "remove": "Remover"
+  },
+  "profile": {
+    "title": "Perfil",
+    "field": {
+      "email": "Email",
+      "name": "Nome",
+      "password": "Password",
+      "password_confirm": "Password (confirmar)"
+    },
+    "save":  "Gravar"
   }
 }
