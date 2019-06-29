@@ -84,8 +84,16 @@ namespace StorageSystem.Services
 
                         StorageInvitation invitation = new StorageInvitation() { StorageId = storageModel.Id, AuthorId = owner.Id, UserEmail = invitationInput };
 
-                        await emailService.SendEmail(invitation.UserEmail,owner.Name, "Convite para partilha de dispensa - Storage System ", "Recebeu um novo convite de "+owner.Name+" para a partilha de dispensa "+ name + ".  " +
-                            "Faça login para ver: " + emailService.GetBaseUrl() + "/#/login");
+                        try
+                        {
+                            await emailService.SendEmail(invitation.UserEmail, owner.Name, "Convite para partilha de dispensa - Storage System ", "Recebeu um novo convite de " + owner.Name + " para a partilha de dispensa " + name + ".  " +
+                                "Faça login para ver: " + emailService.GetBaseUrl() + "/#/login");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+
                         await Context.StorageInvitations.AddAsync(invitation);
                     }
                 }
