@@ -41,10 +41,24 @@ namespace StorageSystem.Controllers
             return productItems.Select(ProductItemDTO.FromModel).ToList();
         }
 
+        [HttpGet("all")]
+        public async Task<List<ProductItemDTO>> GetRegisteredProductItems()
+        {
+            ICollection<ProductItem> productItems = await itemService.GetRegisteredProductItems();
+            return productItems.Select(ProductItemDTO.FromModel).ToList();
+        }
+
+        [HttpGet("consumed")]
+        public async Task<List<ConsumedProductItem>> GetConsumedProductItems()
+        {
+            return await itemService.GetConsumedProductItems();
+        }
+
         [HttpGet("amount")]
         public async Task<int> GetProductsRegisteredAmount()
         {
-            return await itemService.GetProductsRegisteredAmount();
+            int amount = await itemService.GetProductsRegisteredAmount();
+            return amount;
         }
 
         [HttpGet("amount-expiring")]

@@ -15,6 +15,7 @@ import {BreadcrumbComponent} from './header/breadcrumb/breadcrumb.component';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {RightSidebarComponent} from './right-sidebar/right-sidebar.component';
 import {SharedModule} from '../shared.module';
+import {AvatarModule} from 'ngx-avatar';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {SharedModule} from '../shared.module';
     RightSidebarComponent,
   ],
   imports: [
+    AvatarModule,
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
     AppHeaderModule,

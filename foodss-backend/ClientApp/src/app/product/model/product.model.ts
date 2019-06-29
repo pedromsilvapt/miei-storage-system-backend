@@ -1,4 +1,5 @@
 import {User} from '../../user/model/user.model';
+import {ProductItemDTO} from './product-item-dto.model';
 
 export class Product {
 
@@ -9,7 +10,7 @@ export class Product {
   // storage: StorageModel;
   storageId: number;
   userOwner: User;
-
+  products: Array<ProductItemDTO>;
   count?: number;
   closestExpiryDate?: Date;
   sharedCount?: number;

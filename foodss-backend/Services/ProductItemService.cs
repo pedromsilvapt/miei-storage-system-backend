@@ -20,8 +20,18 @@ namespace StorageSystem.Services
         {
             return await Context.ProductItems
                 .Include(i => i.Product)
-                .Where(l => l.OwnerId == user.Id && (DateTime.Now - l.ExpiryDate).TotalDays <= 7)
+                .Where(l => l.OwnerId == user.Id && (l.ExpiryDate - DateTime.Now).TotalDays <= 7)
                 .ToListAsync();
+        }
+
+        public async Task<List<ProductItem>> GetRegisteredProductItems()
+        {
+            return await Context.ProductItems.Include(i => i.Product).ToListAsync();
+        }
+
+        public async Task<List<ConsumedProductItem>> GetConsumedProductItems()
+        {
+            return await Context.ConsumedProductItems.ToListAsync();
         }
 
         public async Task<int> GetProductsRegisteredAmount()
@@ -31,19 +41,28 @@ namespace StorageSystem.Services
 
         public async Task<int> GetProductsExpiringAmount(User user)
         {
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             return await Context.ProductItems
                 .Include(i => i.Product)
-                .Where(l => l.OwnerId == user.Id && (DateTime.Now - l.ExpiryDate).TotalDays <= 7 && (DateTime.Now - l.ExpiryDate).TotalDays >= 0)
+                .Where(l => l.OwnerId == user.Id && (l.ExpiryDate - DateTime.Now).TotalDays <= 7 && (l.ExpiryDate - DateTime.Now).TotalDays >= 0)
                 .CountAsync();
         }
 
         public async Task<int> GetProductsExpiredAmount(User user)
         {
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             return await Context.ProductItems
                 .Include(i => i.Product)
-                .Where(l => l.OwnerId == user.Id && (DateTime.Now - l.ExpiryDate).TotalDays < 0)
+                .Where(l => l.OwnerId == user.Id && (l.ExpiryDate - DateTime.Now).TotalDays < 0)
                 .CountAsync();
         }
-
     }
 }

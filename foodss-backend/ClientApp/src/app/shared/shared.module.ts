@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {MessageUtil} from './util/message.util';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ChartModule} from 'angular-highcharts';
 
 @NgModule({
   declarations: [],
@@ -17,6 +18,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
   exports: [
     BrowserAnimationsModule,
     BsDropdownModule,
+    ChartModule,
     CommonModule,
     FormsModule,
     HttpClientModule,

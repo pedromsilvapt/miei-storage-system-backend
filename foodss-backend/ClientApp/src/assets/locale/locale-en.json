@@ -22,7 +22,8 @@
     "go_back": "Go Back",
     "insertproduct": "Insert Product",
     "editstorage": "Edit Storage",
-    "deletestorage": "Delete Storage"
+    "deletestorage": "Delete Storage",
+    "consumed_and_registered_products_per_month": "Consumed and registered products per month"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Failed to connect to server.",
