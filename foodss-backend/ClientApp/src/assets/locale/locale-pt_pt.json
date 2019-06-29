@@ -19,7 +19,8 @@
     "close_to_expire": "Perto de expirar",
     "expired": "Expirado",
     "expiration_date": "Prazo de Validade",
-    "go_back": "Voltar"
+    "go_back": "Voltar",
+    "consumed_and_registered_products_per_month": "Produtos consumidos e registados por mês"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",

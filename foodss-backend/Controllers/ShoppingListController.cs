@@ -63,9 +63,7 @@ namespace StorageSystem.Controllers
         {
             int userId = userService.GetUserId(this.User);
             GoogleTaskService storageTask = new GoogleTaskService();
-            return storageTask.TransferTask(userId,await ShoppingLists());
-            
-            
+            return storageTask.TransferTask(userId,await ShoppingLists()); 
         }
 
         [HttpDelete("{id}")]

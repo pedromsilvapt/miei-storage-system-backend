@@ -19,7 +19,8 @@
     "close_to_expire": "Close to expire",
     "expired": "Expired",
     "expiration_date": "Expiration Date",
-    "go_back": "Go Back"
+    "go_back": "Go Back",
+    "consumed_and_registered_products_per_month": "Consumed and registered products per month"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Failed to connect to server.",

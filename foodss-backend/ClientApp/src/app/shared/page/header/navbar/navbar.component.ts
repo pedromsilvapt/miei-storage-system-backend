@@ -3,6 +3,8 @@ import { LoginService } from '../../../../login/login.service';
 import { StorageInvitationModel } from './navbar.model';
 import { HttpService } from '../../../../core/http/http.service'
 import { interval } from 'rxjs';
+import {StringUtil} from '../../../util/string-util';
+import {AuthenticationUtil} from '../../../../core/util/authentication.util';
 
 @Component({
   selector: 'app-navbar',
@@ -14,10 +16,13 @@ export class NavbarComponent implements OnInit {
   public invitation: Array<StorageInvitationModel> = [];
   public totalinvites;
 
+  public userNameInitials = '';
+
   constructor(private loginService: LoginService, protected httpService: HttpService) { }
 
    ngOnInit() {
-    this.loginService.onLogin.subscribe(async user => {
+     this.userNameInitials = StringUtil.getInitials(AuthenticationUtil.getUserFromSession().name);
+     this.loginService.onLogin.subscribe(async user => {
       if (user != null) {
         this.invitation = await this.httpService.get('user/invitation').toPromise();
         this.totalinvites = this.invitation.length;
@@ -27,7 +32,7 @@ export class NavbarComponent implements OnInit {
         this.invitation = [];
       }
     });
-   
+
   }
 
   refresh() {

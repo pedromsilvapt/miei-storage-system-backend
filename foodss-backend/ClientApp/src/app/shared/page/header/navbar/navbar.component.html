@@ -43,12 +43,12 @@
     <li class="nav-item dropdown" dropdown placement="bottom right">
       <div class="avatar-margin">
         <button class="nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle>
-          <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@storagesystem.com"/>
+          <ngx-avatar [name]="userNameInitials" [size]="35" [textSizeRatio]="2.1"></ngx-avatar>
         </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right"
+        <ul id="dropdown-basic2" *dropdownMenu class="dropdown-menu dropdown-menu-right"
             role="menu" aria-labelledby="button-basic">
           <li role="menuitem"><button class="dropdown-item" translate>avatar.edit_profile</button></li>
-          <li class="divider dropdown-divider"></li>
+          <li class="divider dropdown-divider m-0"></li>
           <li role="menuitem"><button class="dropdown-item" (click)="signOut()" translate>avatar.sign_out</button>
           </li>
         </ul>

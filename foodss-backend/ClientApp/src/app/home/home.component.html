@@ -54,10 +54,18 @@
         <app-expire-date-table></app-expire-date-table>
       </div>
     </app-panel>
-
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-6">
+    <app-panel [title]="'general.consumed_and_registered_products_per_month'">
+      <div panel-right-header>
+        <button class="btn p-0" mat-raised-button matTooltip="{{'tooltip.home.buttondetailsExpiredDate' | translate:lang}}">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+      <div panel-body>
+        <app-pie-chart></app-pie-chart>
+      </div>
+    </app-panel>
   </div>
 
 </div>
-
-<!--<app-graph></app-graph>-->
-<app-pie-chart></app-pie-chart>
