@@ -42,7 +42,7 @@
 
     <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
       <ng-template [ngIf]="column.hasLink" [ngIfElse]="notColumnWithLink">
-        <a [routerLink]="row[column.name + 'RouterLink']">
+        <a [routerLink]="row[column.name + 'RouterLink']" matTooltip="{{'tooltip.home.DetailsProduct' | translate:lang}}">
           <ng-container [ngTemplateOutlet]="handleColumnType" [ngTemplateOutletContext]="{column: column, value: value}"></ng-container>
         </a>
       </ng-template>

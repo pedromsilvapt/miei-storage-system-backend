@@ -126,31 +126,43 @@ namespace StorageSystem.Services
             return storage;
         }
 
-        public async Task<List<Product>> GetStorageWeatherReport(int userId, int id) {
-            return await GetStorageWeatherReport(await GetStorage(userId, id));
-        }
+        //public async Task<List<Product>> GetStorageWeatherReport(int userId, int id) {
+        //    return await GetStorageWeatherReport(await GetStorage(userId, id));
+        //}
 
-        public async Task<List<Product>> GetStorageWeatherReport(Storage storage)
+        public async Task<List<Product>> GetStorageWeatherReport(ICollection<Storage> storages)
         {
-            if (storage.CityId == null)
+            List<Product> sendstorages = new List<Product>();
+            foreach (Storage storage in storages)
             {
-                return new List<Product>();
+                //if (storage.CityId == null)
+                //{
+                //    return new List<Product>();
+                //}
+                if (storage.CityId != null)
+                {
+                    if ((storage.LastWeatherForecastTemperature == null)
+                     || (storage.LastWeatherForecast == null)
+                     || (storage.LastWeatherForecast.Value.Date != DateTime.Today))
+                    {
+                        storage.LastWeatherForecastTemperature = await weatherService.GetNextDaysMaxTemperatureForecast(storage.CityId.Value, 3);
+                        storage.LastWeatherForecast = DateTime.Now;
+
+                        Context.Storages.Update(storage);
+                        await Context.SaveChangesAsync();
+                    }
+                    List<Product> totalproducts = (await Context.Products
+                    .Where(prod => prod.StorageId == storage.Id && prod.MaxTemperature != null && prod.MaxTemperature < storage.LastWeatherForecastTemperature)
+                    .ToListAsync());
+
+                    if (totalproducts.Count() != 0)
+                    {
+                        sendstorages.Add(totalproducts[0]);
+                    }
+
+                }
             }
-
-            if ((storage.LastWeatherForecastTemperature == null)
-             || (storage.LastWeatherForecast == null)
-             || (storage.LastWeatherForecast.Value.Date != DateTime.Today))
-            {
-                storage.LastWeatherForecastTemperature = await weatherService.GetNextDaysMaxTemperatureForecast(storage.CityId.Value, 3);
-                storage.LastWeatherForecast = DateTime.Now;
-
-                Context.Storages.Update(storage);
-                await Context.SaveChangesAsync();
-            }
-
-            return await Context.Products
-                .Where(prod => prod.StorageId == storage.Id && prod.MaxTemperature != null && prod.MaxTemperature < storage.LastWeatherForecastTemperature)
-                .ToListAsync();
+            return sendstorages;
         }
         
         public async Task DeleteStorage(int userId, int id)

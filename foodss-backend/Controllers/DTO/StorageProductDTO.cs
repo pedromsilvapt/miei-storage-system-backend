@@ -18,6 +18,7 @@ namespace StorageSystem.Controllers.DTO
         public string Name { get; set; }
         public string Barcode { get; set; }
         public int StorageId { get; set; }
+        public string StorageName { get; set; }
         public double? MaxTemperature { get; set; }
         public int? Count { get; set; }
         public DateTime? ClosestExpiryDate { get; set; }
@@ -85,6 +86,7 @@ namespace StorageSystem.Controllers.DTO
                 Name = model.Name,
                 Barcode = model.Barcode,
                 StorageId = model.StorageId,
+                StorageName=model.Storage?.Name,
                 MaxTemperature = model.MaxTemperature,
 
                 Count = count,

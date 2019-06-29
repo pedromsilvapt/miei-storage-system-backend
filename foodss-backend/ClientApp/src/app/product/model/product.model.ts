@@ -1,5 +1,6 @@
 import {User} from '../../user/model/user.model';
-import {ProductItemDTO} from './product-item-dto.model';
+import { ProductItemDTO } from './product-item-dto.model';
+import { StorageModel } from '../../storage/model/storage.model';
 
 export class Product {
 
@@ -7,7 +8,7 @@ export class Product {
   name: string;
   barcode: string;
   maxTemperature?: number;
-  // storage: StorageModel;
+  storage?: StorageModel;
   storageId: number;
   userOwner: User;
   products: Array<ProductItemDTO>;

@@ -121,7 +121,8 @@
       "downloadpdf": "Download Pdf Shopping List",
       "buttonGoogleTask": "Add Shopping List to GoogleTask",
       "buttondetailsExpiredDate": "Product with expiration date Definitions",
-      "Notifications": "Notifications"
+      "Notifications": "Notifications",
+      "DetailsProduct": "Product Details"
     },
     "addstorage": {
       "city": "This request is for later we can know the temperature of where you are and warn if it passes the temperature of the products and cause damages!"
@@ -147,7 +148,14 @@
   "notification": {
     "invitationmessage1": "You have an invitation to the Storage",
     "invitationmessage2": "made by ",
-    "openstorage": "Open Storage"
+    "openstorage": "Open Storage",
+    "titleinvitation": "Invitations ",
+    "titleProducts": "Products ",
+    "temperaturemessage1": "You have in the Storage",
+    "temperaturemessage2": " products with a ",
+    "temperaturemessage3": " temperature below of the temperature ",
+    "temperaturemessage4": " that will be verified in the next days.",
+    "temperaturemessage5": "Attention!"
   },
   "storage_details": {
     "details": "Details",

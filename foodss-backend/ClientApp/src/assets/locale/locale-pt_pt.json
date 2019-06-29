@@ -120,7 +120,8 @@
       "downloadpdf": "Download Pdf Lista de Compras",
       "buttonGoogleTask": "Adicionar a lista de Compras ao GoogleTask",
       "buttondetailsExpiredDate": "Definições dos produtos com data de validade próxima",
-      "Notifications": "Notificações"
+      "Notifications": "Notificações",
+      "DetailsProduct": "Detalhes do Produto"
     },
     "addstorage": {
       "city": "Este pedido é para sabermos a temperatura de onde se encontra e avisar caso esta possa causar estragos num produto"
@@ -145,7 +146,14 @@
   },
   "notification": {
     "invitationmessage1": "Tens um convite para a dispensa",
-    "invitationmessage2": "feita por "
+    "invitationmessage2": "feita por ",
+    "titleinvitation": "Concites ",
+    "titleProducts": "Produtos ",
+    "temperaturemessage1": "Tem na dispensa ",
+    "temperaturemessage2": " produtos com uma ",
+    "temperaturemessage3": "temperatura de conservação inferior a temperatura que",
+    "temperaturemessage4": " se vai verificar nos próximos dias. ",
+    "temperaturemessage5": "Atenção!"
   },
   "storage_details": {
     "details": "Detalhes",

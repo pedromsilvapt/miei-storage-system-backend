@@ -98,16 +98,17 @@ namespace StorageSystem.Controllers
             );
         }
 
-        [HttpGet("{id}/weather")]
-        public async Task<StorageDTO> FindStorageWeatherReport(int id)
+        [HttpGet("weather")]
+        public async Task<List<ProductDTO>> FindStorageWeatherReport()
         {
             int userId = userService.GetUserId(this.User);
+            List<StorageDTO> Storageweather = new List<StorageDTO>();
+           ICollection <Storage> storages = await storageService.ListStorages(userId);
 
-            Storage storage = await storageService.GetStorage(userId, id);
+            List<Product> products = await storageService.GetStorageWeatherReport(storages);
+           
+            return products.Select(p=>ProductDTO.FromModel(p)).ToList();
 
-            List<Product> products = await storageService.GetStorageWeatherReport(storage);
-
-            return StorageDTO.FromModel(storage, products.Select(p => ProductDTO.FromModel(p)).ToList());
         }
 
         [HttpPost]

@@ -24,9 +24,9 @@
     </li>
     <li class="nav-item dropdown" dropdown placement="bottom right" >
       <div class="avatar-margin">
-        <button class="nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle><i class="icon-bell"></i><span class="badge badge-pill badge-danger">{{totalinvites}}</span></button>
+        <button class="nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle><i class="icon-bell"></i><span class="badge badge-pill badge-danger">{{total}}</span></button>
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right"role="menu" aria-labelledby="button-basic">
-          <li class="dropdown-header text-center"><strong>Convites</strong>&nbsp;<span class="badge badge-info">{{totalinvites}}</span></li>
+          <li class="dropdown-header text-center"><strong translate>{{'notification.titleinvitation'}}</strong>&nbsp;<span class="badge badge-info">{{totalinvites}}</span></li>
           <li role="menuitem" class="dropdown-item" *ngFor="let invite of invitation">
             <i style="text-align:left" class="fa fa-envelope-o"></i><div style="text-align:center" translate>{{'notification.invitationmessage1'}}  <b>{{invite.storage.name}}</b><br /><a translate>{{'notification.invitationmessage2'}}</a>
            <b>{{invite.author.email}}</b> </div>
@@ -35,8 +35,16 @@
               <button class="btn btn-sm btn-pill btn-danger" type="button" (click)="AcceptInvitation(invite.storageId,1)" translate>{{'form.button.reject'}}</button>
             </div>
           </li>
-          <li class="dropdown-header text-center"><strong>Produtos</strong></li>
-          <li role="menuitem" class="dropdown-item" ><i class="fa fa-user"></i> Profile</li>
+          <li class="dropdown-header text-center"><strong translate>{{'notification.titleProducts'}}</strong><span class="badge badge-info">{{totalstorageweather}}</span></li>
+          <li role="menuitem" class="dropdown-item"  *ngFor="let temperature of weather"><i class="icon-speedometer text-primary"></i>
+          <div style="text-align:center" translate>{{'notification.temperaturemessage1'}} <b>{{temperature.storageName}}</b><br /><a translate="">{{'notification.temperaturemessage2'}} </a>
+            <br /><a translate>{{'notification.temperaturemessage3'}}</a><br /> <a translate>{{'notification.temperaturemessage4'}}</a><br /> <b translate>{{'notification.temperaturemessage5'}}</b>
+          </div>
+          <div style="text-align:center">
+            <br />
+            <button class="btn btn-sm btn-pill btn-success" type="button" (click)="OK(1)">OK</button>
+            </div>
+</li>
         </ul>
       </div>
     </li>
