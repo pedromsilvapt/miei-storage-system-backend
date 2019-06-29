@@ -19,7 +19,7 @@ const routes: Routes = [
   {
     path: 'storage-system', component: StorageSystemComponent,
     // TODO uncomment line below to activate AuthGuard
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     data: {
       title: 'Home'
     },
