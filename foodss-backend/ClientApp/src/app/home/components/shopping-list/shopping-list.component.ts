@@ -88,6 +88,8 @@ export class ShoppingListComponent extends DatatablePageContent implements OnIni
         const rowIndex = _.findIndex(this.shoppingListDTOs, {id: row.id});
         this.rows[rowIndex].amountWithAction = response.count;
         this.disableAmountButtons = false;
+
+        this.rows = [...this.rows];
       }, error => {
         this.disableAmountButtons = false;
         this.fetchShoppingListProducts();
