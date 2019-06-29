@@ -107,12 +107,17 @@ namespace StorageSystem.Controllers
             return ProductDTO.FromModel(product);
         }
 
+        public class DeleteQuery
+        {
+            public bool? Force { get; set; }
+        }
+
         [HttpDelete("{id}")]
-        public async Task RemoveProduct(int storageId, int id)
+        public async Task RemoveProduct(int storageId, int id, [FromQuery]DeleteQuery query)
         {
             User user = await userService.GetUserAsync(this.User);
 
-            await productService.RemoveProduct(user, storageId, id);
+            await productService.RemoveProduct(user, storageId, id, query.Force ?? false);
         }
 
         [HttpGet("{id}/shopping-list")]

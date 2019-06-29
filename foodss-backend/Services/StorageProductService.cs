@@ -200,7 +200,7 @@ namespace StorageSystem.Services
             return item;
         }
 
-        public async Task RemoveProduct(User user, int storageId, int id)
+        public async Task RemoveProduct(User user, int storageId, int id, bool force = false)
         {
             Storage storage = await storageService.GetStorage(user.Id, storageId);
 
@@ -214,7 +214,7 @@ namespace StorageSystem.Services
                 throw new ProductNotFoundException();
             }
 
-            if (product.Items.Count() > 0)
+            if (!force && product.Items.Count() > 0)
             {
                 throw new ProductRemovalException();
             }

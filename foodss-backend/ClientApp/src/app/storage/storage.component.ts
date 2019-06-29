@@ -12,6 +12,7 @@ import { DetailsStorageModalComponent } from './components/details-storage-modal
 import { LoginService } from '../login/login.service';
 import { User } from '../user/model/user.model';
 import { DeleteStorageModalComponent } from './components/delete-storage-modal/delete-storage-modal.component';
+import { MessageUtil } from '../shared/util/message.util';
 
 export interface TabbedStorageModel extends StorageModel {
   privateProducts?: Product[];
@@ -46,7 +47,8 @@ export class StorageComponent implements OnInit, OnDestroy {
     protected loginService: LoginService,
     protected httpService: HttpService,
     protected route: ActivatedRoute,
-    protected router: Router
+    protected router: Router,
+    protected toastr : MessageUtil
   ) { }
 
   async ngOnInit() {
@@ -207,5 +209,28 @@ export class StorageComponent implements OnInit, OnDestroy {
     this.lastStorageChanged = storage;
 
     this.modalService.show(DeleteStorageModalComponent, { initialState: { storage } });
+  }
+
+  async openDeleteProduct(storage: TabbedStorageModel, product: Product) {
+    try {
+      await this.httpService.delete("storage/" + storage.id + "/product/" + product.id + "?force=true").toPromise();
+
+      storage.products = storage.products.filter(p => p.id != product.id);
+
+      if (storage.privateProducts instanceof Array) {
+        storage.privateProducts = storage.privateProducts.filter(p => p.id != product.id);
+      }
+      if (storage.missingProducts instanceof Array) {
+        storage.missingProducts = storage.missingProducts.filter(p => p.id != product.id);
+      }
+
+      if (storage.sharedProducts instanceof Array) {
+        storage.sharedProducts = storage.sharedProducts.filter(p => p.id != product.id);
+      }
+
+      this.toastr.addSuccessMessage("Deleting Product", "Product successfuly deleted.")
+    } catch (err) {
+      this.toastr.addErrorMessage("Deleting Product", "Could not delete the product.");
+    }
   }
 }
