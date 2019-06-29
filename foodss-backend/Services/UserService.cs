@@ -68,7 +68,7 @@ namespace StorageSystem.Services
 
             await context.SaveChangesAsync();
 
-            emailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : " + emailService.GetBaseUrl() + "/api/User/" + newUser.Id + "/verify/" + code);
+            await emailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : " + emailService.GetBaseUrl() + "/api/User/" + newUser.Id + "/verify/" + code);
 
             return newUser;
         }

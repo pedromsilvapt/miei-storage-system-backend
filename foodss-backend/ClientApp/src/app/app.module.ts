@@ -16,17 +16,26 @@ import {HttpClientModule} from '@angular/common/http';
 import {ModalModule, TabsModule, TooltipModule} from 'ngx-bootstrap';
 import {StorageSystemModule} from './storage-system/storage-system.module';
 import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
-import { ToastrModule } from 'ngx-toastr';
-import { Chart } from 'chart.js';
-//import { ExpireDateTableComponent } from './home/components/expire-date-table/expire-date-table.component';
+import {ToastrModule} from 'ngx-toastr';
+import {Chart} from 'chart.js';
+import {AvatarModule} from 'ngx-avatar';
+import {ChartModule} from 'angular-highcharts';
+import {UrlSerializer} from '@angular/router';
+import CustomUrlSerializer from './core/util/custom-url-serializer';
+
+const avatarColors = ['#2c3e50'];
 
 @NgModule({
   imports: [
+    ChartModule,
     AppRoutingModule,
     BrowserModule,
     HttpClientModule,
     PageModule,
     StorageSystemModule,
+    AvatarModule.forRoot({
+      colors: avatarColors
+    }),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     SlimLoadingBarModule.forRoot(),
@@ -40,12 +49,18 @@ import { Chart } from 'chart.js';
   declarations: [
     AppComponent,
     StorageSystemComponent,
-    //ExpireDateTableComponent,
+    // ExpireDateTableComponent,
   ],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
+  providers: [
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
+    {
+      provide: UrlSerializer,
+      useClass: CustomUrlSerializer
+    }
+  ],
   exports: [
     TranslationModule
   ],

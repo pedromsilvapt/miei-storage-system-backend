@@ -63,7 +63,7 @@ namespace StorageSystem.Controllers
                 .Select(storage => StorageDTO.FromModel(
                     storage,
                     includeProducts
-                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items)))?.ToList()
+                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items), includeProducts))?.ToList()
                         : null
                 ))
                 .ToList();
@@ -93,7 +93,7 @@ namespace StorageSystem.Controllers
             return StorageDTO.FromModel(
                 storage, 
                 includeProducts
-                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items)))?.ToList()
+                        ? storage.Products?.Select(p => ProductDTO.FromModel(p, productService.ListVisibleItems(user, p.Items), includeProducts))?.ToList()
                         : null
             );
         }

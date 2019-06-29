@@ -5,11 +5,10 @@ import {ShoppingListComponent} from './components/shopping-list/shopping-list.co
 import {InfoCardComponent} from './components/info-card/info-card.component';
 import {SharedModule} from '../shared/shared.module';
 import {ExpireDateTableComponent} from './components/expire-date-table/expire-date-table.component';
-import { GraphComponent } from './components/graph/graph.component';
-import { PieChartComponent } from './components/pie-chart/pie-chart.component'
-import { ChartsModule } from 'ng2-charts';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule, MatTooltip } from '@angular/material/tooltip';
+import {GraphComponent} from './components/graph/graph.component';
+import {PieChartComponent} from './components/pie-chart/pie-chart.component'
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import { MatTooltipModule, MatTooltip } from '@angular/material/tooltip';
   ],
   imports: [
     CommonModule,
-    ChartsModule,
     SharedModule,
     MatProgressSpinnerModule,
     MatTooltipModule

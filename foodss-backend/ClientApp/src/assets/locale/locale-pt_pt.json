@@ -22,7 +22,8 @@
     "go_back": "Voltar",
     "insertproduct": "Inserir Produto",
     "editstorage": "Editar Despensa",
-    "deletestorage": "Apagar Despensa"
+    "deletestorage": "Apagar Despensa",
+    "consumed_and_registered_products_per_month": "Produtos consumidos e registados por mês"
   },
   "error": {
     "FAILED_TO_CONNECT_TO_SERVER": "Falha ao se conectar com o servidor.",

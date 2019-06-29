@@ -33,7 +33,7 @@ export class StorageComponent implements OnInit, OnDestroy {
 
   protected subscriptions: Subscription[] = [];
 
-  protected isDetailsOpen: boolean = false;
+  protected isDetailsOpen = false;
 
   protected isDeleteOpen: boolean = false;
 
@@ -53,8 +53,8 @@ export class StorageComponent implements OnInit, OnDestroy {
     this.session = this.loginService.getUser();
 
     this.storages = await this.httpService.get('storage?includeProducts=true').toPromise();
-
-    for (let storage of this.storages) {
+    console.log(this.storages);
+    for (const storage of this.storages) {
       this.prepareStorage(storage);
     }
 
@@ -145,10 +145,10 @@ export class StorageComponent implements OnInit, OnDestroy {
       storage.missingProducts = [];
     }
 
-    for (let product of storage.products) {
-      if (product.closestExpiryDate) product.closestExpiryDate = new Date(product.closestExpiryDate);
-      if (product.sharedClosestExpiryDate) product.sharedClosestExpiryDate = new Date(product.sharedClosestExpiryDate);
-      if (product.privateClosestExpiryDate) product.privateClosestExpiryDate = new Date(product.privateClosestExpiryDate);
+    for (const product of storage.products) {
+      if (product.closestExpiryDate) { product.closestExpiryDate = new Date(product.closestExpiryDate); }
+      if (product.sharedClosestExpiryDate) { product.sharedClosestExpiryDate = new Date(product.sharedClosestExpiryDate); }
+      if (product.privateClosestExpiryDate) { product.privateClosestExpiryDate = new Date(product.privateClosestExpiryDate); }
 
       if (storage.shared) {
         if (product.sharedCount > 0) {

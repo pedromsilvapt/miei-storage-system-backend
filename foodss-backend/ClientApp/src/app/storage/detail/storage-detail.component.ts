@@ -20,7 +20,7 @@ export class StorageDetailComponent implements OnInit, OnDestroy {
 
   public storage: TabbedStorageModel;
 
-  public id: number;
+  public idStorage: number;
 
   private activatedRouteSubscription: Subscription;
 
@@ -41,17 +41,19 @@ export class StorageDetailComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
-      this.id = +params.id;
+      this.idStorage = params.idStorage;
 
-      this.httpService.get('storage/' + this.id + '?includeProducts=true').subscribe(storage => {
+      this.httpService.get('storage/' + this.idStorage + '?includeProducts=true').subscribe(storage => {
         this.storage = storage;
         this.prepareStorage(this.storage);
 
+        const productFetched = this.storage.products.find(p => p.id == params.idProduct);
+
         this.lastParams = params;
 
-        if (params.storage && params.product) {
+        if (params.idStorage && params.idProduct) {
           if (this.storage != null) {
-            const product = this.storage.products.find(p => p.id == params.product);
+            const product = this.storage.products.find(p => p.id == params.idProduct);
 
             if (product != null) {
               this.openDetailsProduct(this.storage, product);

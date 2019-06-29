@@ -5,9 +5,7 @@ namespace StorageSystem.Models
 {
     public class StorageSystemContext : DbContext
     {
-        public StorageSystemContext(DbContextOptions<StorageSystemContext> options)
-            : base(options)
-        { }
+        public StorageSystemContext(DbContextOptions<StorageSystemContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductItem> ProductItems { get; set; }

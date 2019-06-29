@@ -22,7 +22,7 @@ namespace StorageSystem.Services
             return Configuration.GetValue<string>("Email:BaseUrl");
         }
 
-        public bool SendEmail(string email, string name, string subjectaux, string bodyaux)
+        public async Task<bool> SendEmail(string email, string name, string subjectaux, string bodyaux)
         {
             string host = Configuration.GetValue<string>("Email:Host");
             int port = Configuration.GetValue<int>("Email:Port");
@@ -35,7 +35,7 @@ namespace StorageSystem.Services
                 EnableSsl = true
             })
             {
-                client.Send(username, email, subjectaux, bodyaux);
+                await client.SendMailAsync(username, email, subjectaux, bodyaux);
             }
 
             return true;
