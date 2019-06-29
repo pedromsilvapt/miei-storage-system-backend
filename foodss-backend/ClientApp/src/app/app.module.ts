@@ -55,10 +55,6 @@ const avatarColors = ['#2c3e50'];
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
-    },
-    {
-      provide: UrlSerializer,
-      useClass: CustomUrlSerializer
     }
   ],
   exports: [
