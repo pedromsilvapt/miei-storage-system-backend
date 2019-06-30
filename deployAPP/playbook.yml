@@ -1,0 +1,133 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    test: false
+    gcp_region: us-east1
+    gcp_zone: us-east1-b
+    gcp_project: trabalho-abd-225313
+    gcp_cred_kind: serviceaccount
+    gcp_cred_file: ../credentials.json
+    source_image: projects/ubuntu-os-cloud/global/images/ubuntu-1604-xenial-v20190617
+
+  roles:
+    #create network
+    - role: gcp-network
+
+    #create apacheBalancer
+    - role: gcp-instance
+      vars:
+        gcp_machine_type: n1-standard-1
+        instances:
+          - { index: 1, tag: apache-balancer }
+        disk_size: 10
+        disk_type: pd-standard
+        type: apache
+        external_ip: true
+
+    #create database machines
+    - role: gcp-instance
+      vars:
+        gcp_machine_type: n1-highcpu-2
+        #gcp_machine_type: n1-standard-2
+        instances:
+          - { index: 1, tag: db-primary }
+          #- { index: 2, tag: db-standby }
+        disk_size: 10
+        #disk_type: pd-standard
+        #disk_size: 100
+        disk_type: pd-ssd
+        type: mysqldb
+        external_ip: true
+
+
+
+    #create app
+    - role: gcp-instance
+      vars:
+        gcp_machine_type: n1-highcpu-2
+        instances:
+          - { index: 1, tag: app}
+          - { index: 2, tag: app}
+        disk_size: 10
+        disk_type: pd-standard
+        type: app
+        external_ip: true
+
+
+
+
+
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Wait for instances to respond
+      wait_for:
+        host: "{{ item }}"
+        port: 22
+      loop: "{{ groups['all'] }}"
+
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Wait for updates to finish
+      shell: while pgrep apt; do sleep 1; done;
+    #- name: Change ssh port on VM's
+    #  lineinfile:
+    #    dest: "/etc/ssh/sshd_config"
+    #    regexp: "^Port"
+    #    line: "Port 2222"
+    - name: Restart ssh service
+      service:
+        name: sshd
+        state: restarted
+      ignore_errors: "yes"
+
+
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Wait for instances to respond
+      wait_for:
+        host: "{{ item }}"
+        port: 22
+      loop: "{{ groups['all'] }}"
+
+# - hosts: localhost
+#   gather_facts: no
+#   vars:
+#     test: true
+#     gcp_region: us-east1
+#     gcp_zone: us-east1-b
+#     gcp_project: true-entropy-221110
+#     gcp_cred_kind: serviceaccount
+#     gcp_cred_file: ../credentials.json
+#     source_image: projects/ubuntu-os-cloud/global/images/ubuntu-1604-xenial-v20181030
+#   roles:
+#   #create load balancer
+#     - role: gcp-load-balancer
+
+- hosts: apache-balancer
+  become: yes
+  roles:
+    - { role: apache }
+
+- hosts: db-*
+  become: yes
+  roles:
+    - {
+      role: mysqldb,
+      mysql_root_pass: root
+      }
+
+- hosts: app
+  become: yes
+  roles:
+    - { role: appdotnet }
+#    - { role: beats, type: redis }
+
+#- hosts: app
+#  roles:
+#    - { role: gitlab-conf, local: false }
