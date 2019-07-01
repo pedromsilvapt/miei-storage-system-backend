@@ -1,5 +1,0 @@
-- include: local.yml
-  when: local
-
-- include: app.yml
-  when: not local

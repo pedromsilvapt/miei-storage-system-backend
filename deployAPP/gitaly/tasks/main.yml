@@ -1,5 +1,0 @@
-- include: local.yml
-  when: local
-
-- include: gitaly.yml
-  when: not local
