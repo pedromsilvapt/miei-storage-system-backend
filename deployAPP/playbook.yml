@@ -27,7 +27,7 @@
     #create database machines
     - role: gcp-instance
       vars:
-        gcp_machine_type: n1-highcpu-2
+        gcp_machine_type: n1-highcpu-4
         #gcp_machine_type: n1-standard-2
         instances:
           - { index: 1, tag: db-primary }
@@ -44,7 +44,7 @@
     #create app
     - role: gcp-instance
       vars:
-        gcp_machine_type: n1-highcpu-2
+        gcp_machine_type: n1-highcpu-4
         instances:
           - { index: 1, tag: app}
           - { index: 2, tag: app}
