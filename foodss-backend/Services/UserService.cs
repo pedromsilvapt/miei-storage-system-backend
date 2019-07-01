@@ -68,7 +68,22 @@ namespace StorageSystem.Services
 
             await context.SaveChangesAsync();
 
-            await emailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : " + emailService.GetBaseUrl() + "/api/User/" + newUser.Id + "/verify/" + code);
+            try
+            {
+                await emailService.SendEmail(email, name, "Ativação de Conta", "Confirme o seu endereço de email clicando na ligação : " + emailService.GetBaseUrl() + "/api/User/" + newUser.Id + "/verify/" + code);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+                // In some servers we can't send emails. As such, we built this failsafe to allow the registration of users in such cases.
+                newUser.Verified = true;
+
+                context.Users.Update(newUser);
+
+                await context.SaveChangesAsync();
+            }
+
 
             return newUser;
         }

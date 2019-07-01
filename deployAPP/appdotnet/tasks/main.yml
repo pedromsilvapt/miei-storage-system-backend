@@ -1,0 +1,42 @@
+- name: Install the unzip
+  action: apt pkg={{item}} state=installed update_cache=yes
+  with_items:
+    - unzip
+
+- name: Get Needed Packages
+  become: yes
+  shell: |
+    wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    dpkg -i packages-microsoft-prod.deb
+    apt-get install -y apt-transport-https
+    apt-get update
+    apt-get install -y dotnet-sdk-2.2
+
+#- name: Copy zip
+#  copy:
+#    src: build.zip
+#    dest: /tmp/.zip
+
+- name: Extract build.zip
+  unarchive:
+    src: build.zip
+    dest: /tmp/
+
+- name: Configuring database ip on json
+  block:
+    - template:
+        src: appsettings.json.j2
+        dest: /tmp/build/appsettings.json
+
+- copy:
+    src: limits.conf
+    dest: /etc/security/limits.conf
+
+- name: reset ssh connection
+  meta: reset_connection
+
+# upload dos ficheiros e para correr o projeto (cd para a pasta primeiro)
+- name: Run Project
+  shell: |
+    cd /tmp/build
+    ASPNETCORE_ENVIRONMENT=Production dotnet storage-system.dll > stdout.txt 2> stderr.txt &

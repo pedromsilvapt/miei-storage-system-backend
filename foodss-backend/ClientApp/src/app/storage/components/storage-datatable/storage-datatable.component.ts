@@ -91,12 +91,7 @@ export class StorageDatatableComponent extends DatatablePageContent implements O
   }
 
   public executeDeleteAction(event: any): void {
-    console.log(event); // TODO
-    // this.productService.deleteProductItem(event.storageId, event.productId, event.id).subscribe(() => {
-    //   this.messageUtil.addSuccessMessage('general.product');
-    // }, error => {
-    //   this.messageUtil.addErrorMessage('general.product', error.message);
-    // });
+    this.clickDeleteButton.next(event);
   }
 
 }

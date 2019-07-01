@@ -1,0 +1,95 @@
+#- name: Obtain last mysql version
+#  become: yes
+#  shell: |
+#    curl -OL https://dev.mysql.com/get/mysql-apt-config_0.8.13-1_all.deb
+#    dpkg -i mysql-apt-config*
+#    apt update
+
+- name: Install the MySQL packages
+  action: apt pkg={{item}} state=installed update_cache=yes
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb
+    - libmysqlclient-dev
+    - unzip
+    - gzip
+
+- name: Update MySQL root password for all root accounts
+  mysql_user: name=root host={{ item }} password={{ mysql_root_pass }} state=present
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: Copy the root credentials as .my.cnf file
+  template: src=my.cnf.j2 dest=~/.my.cnf mode=0600
+
+- name: Ensure Anonymous user(s) are not in the database
+  mysql_user: name='' host={{ item }} state=absent
+  with_items:
+    - localhost
+    - "{{ ansible_hostname }}"
+
+
+- copy:
+    src: mysql.cnf
+    dest: /etc/mysql/mysql.cnf
+
+- copy:
+    src: mysqld.cnf
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+
+- name: Remove the test database
+  mysql_db: name=test state=absent
+  notify:
+    - Restart MySQL
+
+- name: Create a new database with name 'storagesystem'
+  sudo: yes
+  mysql_db:
+    name: storagesystem
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_pass }}"
+
+- copy:
+    src: storage-system-schema.sql
+    dest: /tmp/storage-system-schema.sql
+
+- copy:
+    src: DumpData.sql
+    dest: /tmp/storage-system-data.sql
+
+- copy:
+    src: file.sql
+    dest: /tmp/file.sql
+
+
+#- name: Unarchive a file that is already on the remote machine
+#  shell: |
+#    unzip -f /tmp/storage-system-schema.sql.zip
+
+- name: Import schema.sql
+  mysql_db:
+    state: import
+    name: storagesystem
+    target: /tmp/storage-system-schema.sql
+    login_user: root
+    login_password: "{{ mysql_root_pass }}"
+
+- name: Import data.sql
+  mysql_db:
+    state: import
+    name: storagesystem
+    target: /tmp/storage-system-data.sql
+    login_user: root
+    login_password: "{{ mysql_root_pass }}"
+
+- name: Change permissions
+  shell: |
+    cd /tmp
+    mysql -h localhost -u root --password=root -D storagesystem -e "source file.sql"
+  notify:
+    - Restart MySQL

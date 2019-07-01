@@ -31,6 +31,7 @@ namespace StorageSystem.Services
 
             using (SmtpClient client = new SmtpClient(host, port)
             {
+                UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(username, password),
                 EnableSsl = true
             })

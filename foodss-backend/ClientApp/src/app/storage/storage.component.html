@@ -26,18 +26,18 @@
         <ng-container *ngIf="storage.shared" panel-body>
           <tabset>
             <tab heading="{{'general.private' | translate:lang}}">
-              <app-storage-datatable [products]="storage.privateProducts"></app-storage-datatable>
+              <app-storage-datatable [products]="storage.privateProducts" (clickDeleteButton)="openDeleteProduct(storage, $event)"></app-storage-datatable>
             </tab>
             <tab heading="{{'general.shared' | translate:lang}}">
-              <app-storage-datatable [products]="storage.sharedProducts"></app-storage-datatable>
+              <app-storage-datatable [products]="storage.sharedProducts" (clickDeleteButton)="openDeleteProduct(storage, $event)"></app-storage-datatable>
             </tab>
             <tab heading="{{'general.empty' | translate:lang}} ({{storage.missingProducts.length}})">
-              <app-storage-datatable [products]="storage.missingProducts"></app-storage-datatable>
+              <app-storage-datatable [products]="storage.missingProducts" (clickDeleteButton)="openDeleteProduct(storage, $event)"></app-storage-datatable> 
             </tab>
           </tabset>
         </ng-container>
         <ng-container *ngIf="!storage.shared" panel-body>
-          <app-storage-datatable [products]="storage.products"></app-storage-datatable>
+          <app-storage-datatable [products]="storage.products" (clickDeleteButton)="openDeleteProduct(storage, $event)"></app-storage-datatable>
         </ng-container>
       </app-panel>
     </div>

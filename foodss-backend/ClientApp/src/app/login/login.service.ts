@@ -41,8 +41,12 @@ export class LoginService {
     this.onLogin.next(null);
   }
 
-  public isLoggedIn(): boolean {
-    return !isNullOrUndefined(localStorage.getItem(environment.userToken));
+  public isLoggedIn(): Promise<boolean> {
+    if (isNullOrUndefined(this.getUser())) {
+      return Promise.resolve(false);
+    }
+
+    return this.httpService.get('user/session').toPromise().then(() => true, () => false);
   }
 
   private createUserSession(response: any): User {

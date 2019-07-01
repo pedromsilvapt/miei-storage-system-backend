@@ -35,7 +35,7 @@ export class CustomDatatableComponent implements OnInit, DoCheck {
 
   public datatableLengthLimit = 5;
 
-  constructor(private translationService: TranslationService, private messageUtil: MessageUtil,
+  constructor(public translationService: TranslationService, private messageUtil: MessageUtil,
               private differs: IterableDiffers) {
     this.iterableDifferForRows = this.differs.find([]).create(null);
   }

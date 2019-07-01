@@ -1,0 +1,44 @@
+- debug:
+    msg: System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }} all {{ hostvars [groups ["app"] [0]] }}
+  when: ansible_default_ipv4.gateway is defined
+
+- name: Install Apache WebServer
+  apt:
+    name: [apache2]
+    state: latest
+
+- name: Install Apache WebServer
+  shell: |
+    sudo apt-get install -y apache2
+
+- name: Configuring Apache Balancer
+  block:
+    - template:
+        src: 000-default.conf
+        dest: /etc/apache2/sites-available/000-default.conf
+
+- copy:
+    src: limits.conf
+    dest: /etc/security/limits.conf
+
+- name: reset ssh connection
+  meta: reset_connection
+
+
+- name: Enable Modes for Proxy
+  shell: |
+    a2enmod proxy
+    a2enmod proxy_http
+    a2enmod proxy_ajp
+    a2enmod rewrite
+    a2enmod deflate
+    a2enmod headers
+    a2enmod proxy_balancer
+    a2enmod proxy_connect
+    a2enmod proxy_html
+    a2enmod lbmethod_byrequests
+
+- name: Restart service httpd, in all cases
+  service:
+    name: apache2
+    state: restarted

@@ -1,0 +1,60 @@
+#Maybe not needed
+- name: Install Docker
+  apt:
+    name: [docker.io]
+    state: latest
+
+- name: Install pip
+  apt:
+    name: [python-pip]
+    state: latest
+
+- name: Upgrade pip
+  shell: |
+    pip install --upgrade pip
+
+- name: Install docker pip module
+  shell: |
+    pip install docker
+
+- name: Pull docker image
+  docker_image:
+    name: luismeruje/dockerized-gitlab:noGitaly
+
+#- name: Create log directory in host
+#  file:
+#    path: /home/sdb/gitlab_logs
+#    state: directory
+#    mode: 777
+
+- name: Create container
+  docker_container:
+    name: app
+    tty: yes
+    detach: yes
+    state: present
+    image: luismeruje/dockerized-gitlab:noGitaly
+    ports:
+      - "80:80"
+      - "22:22"
+      - "8080:8080"
+    #volumes:
+    #  - "/home/sdb/gitlab_logs:/home/git/gitlab/log/"
+      
+    restart_policy: always
+
+- name: Copy config files to container(cheating)
+  shell: |
+    docker cp /home/sdb/gitlab.yml app:/home/git/gitlab/config/gitlab.yml
+    docker cp /home/sdb/resque.yml app:/home/git/gitlab/config/resque.yml
+    docker cp /home/sdb/database.yml app:/home/git/gitlab/config/database.yml
+    docker cp /home/sdb/.gitlab_shell_secret app:/home/git/gitlab-shell/.gitlab_shell_secret
+    docker cp /home/sdb/unicorn.rb app:/home/git/gitlab/config/unicorn.rb
+
+- name: Start container
+  docker_container:
+    name: app
+    tty: yes
+    detach: yes
+    state: started
+    restart_policy: always
