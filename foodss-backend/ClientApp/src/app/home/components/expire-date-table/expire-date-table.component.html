@@ -1,10 +1,10 @@
 <tabset>
   <tab heading="{{'general.close_to_expire' | translate:lang}}">
-    <app-custom-datatable [rows]="rowsForTableWithProductsNearExpiringDate" [columns]="columns" [sortDefaultColumn]="'product'"tabset
+    <app-custom-datatable [allRows]="rowsForTableWithProductsNearExpiringDate" [columns]="columns" [sortDefaultColumn]="'product'"tabset
                           (clickActionButton)="callbackEventOnClickActionButton($event)"></app-custom-datatable>
   </tab>
   <tab heading="{{'general.expired' | translate:lang}}">
-    <app-custom-datatable [rows]="rowsForTableWithProductsAfterExpiringDate" [columns]="columns" [sortDefaultColumn]="'product'"tabset
+    <app-custom-datatable [allRows]="rowsForTableWithProductsAfterExpiringDate" [columns]="columns" [sortDefaultColumn]="'product'"tabset
                           (clickActionButton)="callbackEventOnClickActionButton($event)"></app-custom-datatable>
   </tab>
 </tabset>

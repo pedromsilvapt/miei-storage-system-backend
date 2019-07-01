@@ -12,6 +12,7 @@ import {
 import {TranslationService} from 'angular-l10n';
 import {DatatableComponent} from '@swimlane/ngx-datatable';
 import {MessageUtil} from '../../util/message.util';
+import { validateConfig } from '@angular/router/src/config';
 
 @Component({
   selector: 'app-custom-datatable',
@@ -22,7 +23,8 @@ export class CustomDatatableComponent implements OnInit, DoCheck {
 
   @ViewChild(DatatableComponent) datatableComponent: DatatableComponent;
 
-  @Input() rows: Array<any> = [];
+  lastFilter: string = '';
+  rows: Array<any> = [];
   @Input() columns: Array<any> = [];
   @Input() sortDefaultColumn: string;
   @Input() disableAmountButtons = false;
@@ -30,7 +32,7 @@ export class CustomDatatableComponent implements OnInit, DoCheck {
   @Output() clickActionButton: EventEmitter<any> = new EventEmitter();
   @Output() clickAmountButton: EventEmitter<any> = new EventEmitter();
 
-  private temp: Array<any> = [];
+  @Input() allRows: Array<any> = [];
   private iterableDifferForRows: IterableDiffer<any>;
 
   public datatableLengthLimit = 5;
@@ -41,13 +43,13 @@ export class CustomDatatableComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    this.temp = [...this.rows];
+    this.rows = [...this.allRows];
   }
 
   ngDoCheck(): void {
-    const changesInRow = this.iterableDifferForRows.diff(this.rows);
+    const changesInRow = this.iterableDifferForRows.diff(this.allRows);
     if (changesInRow) {
-      this.temp = [...this.rows];
+      this.updateFilter();
     }
   }
 
@@ -64,9 +66,10 @@ export class CustomDatatableComponent implements OnInit, DoCheck {
     }
   }
 
-  public updateFilter(event: any) {
-    const value = event.target.value.toLowerCase();
-    this.rows = this.temp.filter((d) => {
+  public updateFilter(event: any = null) {
+    const value = event ? event.target.value.toLowerCase() : this.lastFilter;
+    this.lastFilter = value;
+    this.rows = this.allRows.filter((d) => {
       let hasLine = false;
       Object.keys(d).forEach(column => {
         if (String(d.name).toLowerCase().indexOf(value) !== -1) {
@@ -84,12 +87,12 @@ export class CustomDatatableComponent implements OnInit, DoCheck {
 
   public translateDefaultDatatableMessages(): any {
     let datatableTotalMessage = '';
-    if (this.rows.length !== this.temp.length) {
-      datatableTotalMessage = ' ' + this.translationService.translate('general.of') + ' ' + this.temp.length;
+    if (this.rows.length !== this.allRows.length) {
+      datatableTotalMessage = ' ' + this.translationService.translate('general.of') + ' ' + this.allRows.length;
     }
     return {
       emptyMessage: this.translationService.translate('datatable.empty_message'),
-      totalMessage: this.temp.length > 1 ? datatableTotalMessage + ' ' +
+      totalMessage: this.allRows.length > 1 ? datatableTotalMessage + ' ' +
         this.translationService.translate('datatable.total_message_plural') :
         this.translationService.translate('datatable.total_message'),
       selectedMessage: this.translationService.translate('datatable.selected_message'),

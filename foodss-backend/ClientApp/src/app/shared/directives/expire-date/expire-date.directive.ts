@@ -1,11 +1,11 @@
-import {Directive, ElementRef, Input, OnInit} from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges} from '@angular/core';
 import {DateUtil} from '../../util/date-util';
 import {ProductExpiryLevel} from '../../../storage/components/details-product-modal/enums-interfaces/enums-interfaces.util';
 
 @Directive({
   selector: '[appExpireDate]'
 })
-export class ExpireDateDirective implements OnInit {
+export class ExpireDateDirective implements OnChanges {
 
   @Input() colorfy = false;
   @Input() distantColorGray = false;
@@ -22,7 +22,7 @@ export class ExpireDateDirective implements OnInit {
     [ProductExpiryLevel.Distant]: ''
   };
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     Promise.resolve(null).then(() => this.formatDate());
   }
 

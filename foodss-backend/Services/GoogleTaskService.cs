@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using StorageSystem.Controllers.DTO;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Auth.OAuth2.Flows;
 
 namespace StorageSystem.Services
 {
@@ -18,24 +20,50 @@ namespace StorageSystem.Services
     {
         static string[] Scopes = { TasksService.Scope.Tasks};
         static string ApplicationName = "Google Tasks API .NET Quickstart";
-        public int TransferTask(int idUser, List<ShoppingListDTO> products)
+        public async Task<int> TransferTask(int idUser, string code, List<ShoppingListDTO> products)
         {
-            UserCredential credential;
+            //UserCredential credential;
+            
+            //using (var stream =
+            //    new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            //{
+            //    // The file token.json stores the user's access and refresh tokens, and is created
+            //    // automatically when the authorization flow completes for the first time.
+            //    string credPath = "token.json";
+            //    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+            //        GoogleClientSecrets.Load(stream).Secrets,
+            //        Scopes,
+            //        idUser.ToString(),
+            //        CancellationToken.None,
+            //        new FileDataStore(credPath, true)).Result;
+            //    Console.WriteLine("Credential file saved to: " + credPath);
+            //}
 
-            using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            //TokenResponse response = null;
+
+            // Use the code exchange flow to get an access and refresh token.
+            IAuthorizationCodeFlow flow =
+                new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
+                {
+                    ClientSecrets = new ClientSecrets()
+                    {
+                        ClientId = "840458515587-f6ga1e7rk9k9b3ojcv9fh0lthvt1ka9n",
+                        ClientSecret = "CO7il0cwzM51X1HAtcuKh85t"
+                    },
+                    Scopes = Scopes
+                });
+
+            TokenResponse response = await flow.ExchangeCodeForTokenAsync("", code, "postmessage", CancellationToken.None);
+            TokenResponse token = new TokenResponse
             {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    idUser.ToString(),
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
-            }
+                AccessToken = response.AccessToken,
+                RefreshToken = response.RefreshToken
+            };
+
+            UserCredential credential = new UserCredential(flow, "me", token);
+            bool success = credential.RefreshTokenAsync(CancellationToken.None).Result;
+
+            token = credential.Token;
 
             // Create Google Tasks API service.
             var service = new TasksService(new BaseClientService.Initializer()

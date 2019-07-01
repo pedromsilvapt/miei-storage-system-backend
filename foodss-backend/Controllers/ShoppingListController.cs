@@ -58,12 +58,17 @@ namespace StorageSystem.Controllers
             return shoppingListItemPersisted;
         }
 
+        public class GoogleTaskQuery
+        {
+            public string Code { get; set; }
+        }
+
         [HttpGet("Task")]
-        public async Task<int> GoogleTask()
+        public async Task<int> GoogleTask([FromQuery]GoogleTaskQuery query)
         {
             int userId = userService.GetUserId(this.User);
             GoogleTaskService storageTask = new GoogleTaskService();
-            return storageTask.TransferTask(userId,await ShoppingLists()); 
+            return await storageTask.TransferTask(userId, query.Code, await ShoppingLists()); 
         }
 
         [HttpDelete("{id}")]
