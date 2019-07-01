@@ -6,11 +6,20 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MessageUtil } from '../shared/util/message.util';
 import { Language } from 'angular-l10n';
 
+declare var gapi: any;
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest"];
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+var SCOPES = "https://www.googleapis.com/auth/tasks";
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
+  static googleInit: boolean = false;
+  static auth2: any = null;
 
   @Language() lang: string;
   fileUrl;
@@ -29,6 +38,19 @@ export class HomeComponent implements OnInit {
     // this.buildInfoCardGreen();
     this.buildInfoCardYellow();
     this.buildInfoCardRed();
+
+    if (!HomeComponent.googleInit) {
+      HomeComponent.googleInit = true;
+      gapi.load('auth2', function () {
+        HomeComponent.auth2 = gapi.auth2.init({
+          client_id: '840458515587-f6ga1e7rk9k9b3ojcv9fh0lthvt1ka9n.apps.googleusercontent.com',
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES
+          // Scopes to request in addition to 'profile' and 'email'
+          //scope: 'additional_scope'
+        });
+      });
+    }
   }
 
   buildInfoCardBlue(): void {
@@ -75,8 +97,10 @@ export class HomeComponent implements OnInit {
   }
 
   async openTask() {
+    const token = await HomeComponent.auth2.grantOfflineAccess();
+    console.log(token);
     this.ShowSpinner = true;
-    this.googletask = await this.httpService.get('shoppinglist/Task', { responseType: 'int' }).toPromise();
+    this.googletask = await this.httpService.get('shoppinglist/Task', { responseType: 'int', params: { code: token.code } }).toPromise();
     if (this.googletask == 1) {
       this.messageUtil.addSuccessMessage('general.add_shopping_list', 'general.googleTask');
       this.ShowSpinner = false;
