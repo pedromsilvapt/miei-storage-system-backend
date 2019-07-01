@@ -72,10 +72,9 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  async OK(number: number) {
-
- 
-    if (number == 1) {
+  async OK(notification: any) {
+    const number = this.weather.indexOf(notification);
+    if (number >= 0) {
       this.weather.splice(number, 1);
       this.totalstorageweather -= 1;
       this.total -= 1;
