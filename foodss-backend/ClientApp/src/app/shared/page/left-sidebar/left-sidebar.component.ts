@@ -42,7 +42,7 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
         },
         {
           name: this.translationService.translate('general.storages'),
-          url: '/storages',
+          url: '/storage-system/storage',
           icon: 'icon-drawer'
         }
       ];
