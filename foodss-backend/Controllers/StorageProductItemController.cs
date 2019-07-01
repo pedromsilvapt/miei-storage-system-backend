@@ -24,11 +24,14 @@ namespace StorageSystem.Controllers
 
         private readonly StorageProductItemService itemService;
 
-        public StorageProductItemController(StorageSystemContext context, UserService userService, StorageProductItemService itemService)
+        private readonly StorageProductService shoppinglistService;
+
+        public StorageProductItemController(StorageSystemContext context, UserService userService, StorageProductItemService itemService, StorageProductService shoppinglistService)
         {
             this.context = context;
             this.userService = userService;
             this.itemService = itemService;
+            this.shoppinglistService = shoppinglistService;
         }
 
         protected async Task<Product> GetProduct(int productId)
@@ -79,10 +82,17 @@ namespace StorageSystem.Controllers
         [HttpPost("{id}/consume")]
         public async Task<ProductItemDTO> ConsumeProductItem (int storageId, int productId, int id)
         {
+           
             User user = await userService.GetUserAsync(this.User);
 
             ConsumedProductItem item = await itemService.ConsumeProductItem(user, storageId, productId, id);
 
+            ICollection<ProductItem> items = await itemService.ListProductItems(user, storageId, productId,0,20);
+
+            if (items.Count() <= 3)
+            {
+                await shoppinglistService.AutomaticShoppingList(user, storageId, productId);
+            }
             return ProductItemDTO.FromModel(item);
         }
 

@@ -169,7 +169,29 @@ namespace StorageSystem.Services
             return item;
         }
 
-        public async Task<ShoppingListItem> GetShoopingListItem(User user, int storageId, int id)
+        public async Task<ShoppingListItem> AutomaticShoppingList(User user, int storageId, int id)
+        {
+            ShoppingListItem item = await GetShoopingListItem(user, storageId, id);
+
+            if(item.Count <= 10)
+            {
+                item.Count = item.Count + 5;
+                if (item.Id > 0)
+                {
+                    Context.Update(item);
+                }
+                else
+                {
+                    await Context.AddAsync(item);
+                }
+            }
+
+        await Context.SaveChangesAsync();
+
+            return item;
+        }
+
+    public async Task<ShoppingListItem> GetShoopingListItem(User user, int storageId, int id)
         {
             Storage storage = await storageService.GetStorage(user.Id, storageId);
 
