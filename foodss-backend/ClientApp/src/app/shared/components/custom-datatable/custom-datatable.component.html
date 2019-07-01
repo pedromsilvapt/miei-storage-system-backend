@@ -10,7 +10,7 @@
   </div>
 
   <div class="col-md-8">
-    <div class="pull-right" style="width: 160px">
+    <div class="pull-right" style="width: 160px" matTooltip="{{'tooltip.home.ProductPage' | translate:lang}}">
       <ng-select [allowClear]="false"
                  [items]="['5', '8', '10', '25']"
                  (data)="updateLength($event)"

@@ -25,9 +25,6 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <app-panel [title]="'general.shopping_list_suggestion'">
       <div panel-right-header>
-        <button class="btn p-0" mat-raised-button matTooltip="{{'tooltip.home.buttondetailsShoppingList' | translate:lang}}">
-          <i class="fas fa-cog"></i>
-        </button>&nbsp;
         <button class="btn p-0" (click)="openPDF()" mat-raised-button matTooltip="{{'tooltip.home.downloadpdf' | translate:lang}}" aria-label="Button that displays a tooltip when focused or hovered over">
           <i class="fa fa-file-pdf-o" style="font-size:24px; color:red"></i>
         </button>&nbsp;
@@ -46,9 +43,6 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <app-panel [title]="'general.expiration_date'">
       <div panel-right-header>
-        <button class="btn p-0" mat-raised-button matTooltip="{{'tooltip.home.buttondetailsExpiredDate' | translate:lang}}">
-          <i class="fas fa-cog"></i>
-        </button>
       </div>
       <div panel-body>
         <app-expire-date-table></app-expire-date-table>
@@ -58,9 +52,6 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <app-panel [title]="'general.consumed_and_registered_products_per_month'">
       <div panel-right-header>
-        <button class="btn p-0" mat-raised-button matTooltip="{{'tooltip.home.buttondetailsExpiredDate' | translate:lang}}">
-          <i class="fas fa-cog"></i>
-        </button>
       </div>
       <div panel-body>
         <app-pie-chart></app-pie-chart>

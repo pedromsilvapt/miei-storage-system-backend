@@ -122,7 +122,8 @@
       "buttonGoogleTask": "Add Shopping List to GoogleTask",
       "buttondetailsExpiredDate": "Product with expiration date Definitions",
       "Notifications": "Notifications",
-      "DetailsProduct": "Product Details"
+      "DetailsProduct": "Product Details",
+      "ProductPage": "Number of products that appear per page."
     },
     "addstorage": {
       "city": "This request is for later we can know the temperature of where you are and warn if it passes the temperature of the products and cause damages!"

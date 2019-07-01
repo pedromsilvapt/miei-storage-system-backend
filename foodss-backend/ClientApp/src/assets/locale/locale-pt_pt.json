@@ -121,7 +121,8 @@
       "buttonGoogleTask": "Adicionar a lista de Compras ao GoogleTask",
       "buttondetailsExpiredDate": "Definições dos produtos com data de validade próxima",
       "Notifications": "Notificações",
-      "DetailsProduct": "Detalhes do Produto"
+      "DetailsProduct": "Detalhes do Produto",
+      "ProductPage": "Número de produtos que aparecem por página"
     },
     "addstorage": {
       "city": "Este pedido é para sabermos a temperatura de onde se encontra e avisar caso esta possa causar estragos num produto"
